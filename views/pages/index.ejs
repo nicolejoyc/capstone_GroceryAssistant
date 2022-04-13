@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Grocery Assistant</title>
+  <link href="css/styles.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <div id="grocery-list-wrapper">
+    <h1>Grocery Lists</h1>
+    <div id="buttons-wrapper">
+      <% grocery_list.forEach(function(r) {%>
+        <div class="button-wrapper" id="grocery-list-button-wrapper">
+          <button type="button" class="button grocery-list-button" id='<%= r.id %>'><%= r.name %></button>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+
+  <!-- JQuery Library -->
+  <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+  <!-- Javascript Files -->
+  <script src="js/grocery_assistant.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: none;
+  outline-style: none;
+}
+
+#grocery-list-wrapper {
+  background-color: rgb(127 123 123);
+  border: 4px solid black;
+  border-radius: 25px;
+  margin: 0.2rem auto;
+  max-width: 50rem;
+  min-width: 20rem;
+}
+
+#grocery-list-wrapper h1 {
+  background-color: yellow;
+  border: 2px solid rgb(95 78 78);
+  border-radius: 10px;
+  margin: 1%;
+  padding: 0.75%;
+  text-align: center;
+}
+
+#buttons-wrapper {
+  border: 2px solid rgb(95 78 78);
+  border-radius: 10px;
+  margin: 1%;
+}
+
+.button-wrapper {
+  margin: 1rem auto;
+  height: 3rem;
+}
+
+.button {
+  background-color: coral;
+  border: 1.25px solid black;
+  border-radius: 20px;
+  font-size: 1.5rem;
+  margin: auto;
+  min-width: 17rem;
+  width: 80%;
+  height: 100%;
+  display: block;
+}

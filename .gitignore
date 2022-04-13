@@ -105,3 +105,6 @@ dist
 
 #MacOS auto-generated files
 **/.DS_store
+
+#package
+package-lock.json

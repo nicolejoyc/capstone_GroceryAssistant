@@ -48,3 +48,7 @@
   height: 100%;
   display: block;
 }
+
+.button:hover {
+  background-color: rgb(216 105 65);
+}

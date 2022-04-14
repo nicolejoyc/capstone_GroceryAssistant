@@ -1,8 +1,8 @@
 $(function() {
 
-  $('.grocery-list-button').each((index, e) => {
-    $(e).click((e) => {
-      console.log($(e.target).text());
+  $('.grocery-list-button').each((index, el) => {
+    $(el).click((e) => {
+      console.log($(el).text());
     });
   });
 });

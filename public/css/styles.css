@@ -8,7 +8,7 @@
   outline-style: none;
 }
 
-#grocery-list-wrapper {
+.grocery-list-wrapper {
   background-color: rgb(127 123 123);
   border: 4px solid black;
   border-radius: 25px;
@@ -17,7 +17,7 @@
   min-width: 20rem;
 }
 
-#grocery-list-wrapper h1 {
+.grocery-list-wrapper h1 {
   background-color: yellow;
   border: 2px solid rgb(95 78 78);
   border-radius: 10px;
@@ -26,7 +26,7 @@
   text-align: center;
 }
 
-#buttons-wrapper {
+.buttons-wrapper {
   border: 2px solid rgb(95 78 78);
   border-radius: 10px;
   margin: 1%;

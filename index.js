@@ -34,4 +34,29 @@ express()
       res.send("Error " + err);
     }
   })
+  .post('/log', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const name = req.body.name;
+			
+			const sqlInsert = await client.query(
+`INSERT INTO grocery_list (name)
+VALUES (${name})
+RETURNING id AS new_id;`);
+			
+			const result = {
+				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));

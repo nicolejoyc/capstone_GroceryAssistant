@@ -6,14 +6,32 @@
   <link href="css/styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <div id="grocery-list-wrapper">
+  <div class="grocery-list-wrapper">
     <h1>Grocery Lists</h1>
-    <div id="buttons-wrapper">
+    <div class="buttons-wrapper">
       <% grocery_list.forEach(function(r) {%>
-        <div class="button-wrapper" id="grocery-list-button-wrapper">
+        <div class="button-wrapper grocery-list-button-wrapper">
           <button type="button" class="button grocery-list-button" id='<%= r.id %>'><%= r.name %></button>
         </div>
       <% }); %>
+    </div>
+  </div>
+
+  <div class="grocery-list-wrapper">
+    <h1>Add a List</h1>
+    <div class="buttons-wrapper">
+      <div class="button-wrapper grocery-list-button-wrapper">
+        <button type="button" class="button grocery-list-button add" id="Nicole">Nicole's Grocery List</button>
+      </div>
+      <div class="button-wrapper grocery-list-button-wrapper">
+        <button type="button" class="button grocery-list-button add" id="Brian">Brian's Grocery List</button>
+      </div>
+      <div class="button-wrapper grocery-list-button-wrapper">
+        <button type="button" class="button grocery-list-button add" id="Samantha">Samantha's Grocery List</button>
+      </div>
+      <div class="button-wrapper grocery-list-button-wrapper">
+        <button type="button" class="button grocery-list-button add" id="Richard">Richard's Grocery List</button>
+      </div>
     </div>
   </div>
 

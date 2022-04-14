@@ -18,8 +18,11 @@ CREATE TABLE grocery_list (
   name TEXT NOT NULL
 );
 
+-- INSERT INTO grocery_list (name) VALUES
+--   ('Brian''s Grocery List'),
+--   ('Nicole''s Grocery List'),
+--   ('Richard''s Grocery List'),
+--   ('Samantha''s Grocery List');
+
 INSERT INTO grocery_list (name) VALUES
-  ('Brian''s Grocery List'),
-  ('Nicole''s Grocery List'),
-  ('Richard''s Grocery List'),
-  ('Samantha''s Grocery List');
+  ('My Grocery List');

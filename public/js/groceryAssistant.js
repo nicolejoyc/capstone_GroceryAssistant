@@ -21,9 +21,12 @@ $(function() {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            name: `\' ${personName} ''s Grocery List\'`
+            name: `\' ${personName}''s Grocery List\'`
           })
         });
+        const result = await response.json();
+        console.log(result);
+        location.assign("/");
       
       };
       

@@ -5,6 +5,11 @@
  */
 DROP DATABASE grocery_assistant;
 CREATE DATABASE grocery_assistant;
+
+/*
+ * Postgres CLI command to connect to specific database
+ * (only valid for local database)
+ */
 \c grocery_assistant
 
 DROP TABLE grocery_list;

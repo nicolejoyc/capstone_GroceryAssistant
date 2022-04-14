@@ -22,7 +22,7 @@ $(function() {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            name: personName + "\'s Grocery List"
+            name: '"' + personName + '\'s Grocery List"'
           })
         });
       

@@ -24,5 +24,5 @@ CREATE TABLE grocery_list (
 --   ('Richard''s Grocery List'),
 --   ('Samantha''s Grocery List');
 
-INSERT INTO grocery_list (name) VALUES
-  ('My Grocery List');
+-- INSERT INTO grocery_list (name) VALUES
+--  ('My Grocery List');

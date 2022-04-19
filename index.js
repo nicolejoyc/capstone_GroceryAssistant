@@ -34,6 +34,50 @@ express()
       res.send("Error " + err);
     }
   })
+  .get('/category', async (req, res) => {
+    try {
+      
+
+
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/store', async (req, res) => {
+    try {
+      
+
+      
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/product', async (req, res) => {
+    try {
+      
+
+      
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/grocery-list', async (req, res) => {
+    try {
+      
+
+      
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
   .post('/log', async(req, res) => {
 		try {
 			const client = await pool.connect();
@@ -53,6 +97,50 @@ RETURNING id AS new_id;`);
 				
 			res.json({ requestBody: result });
 			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/category/add', async(req, res) => {
+		try {
+			
+
+
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/store/add', async(req, res) => {
+		try {
+			
+
+
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/product/add', async(req, res) => {
+		try {
+			
+
+
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/grocery-list/add', async(req, res) => {
+		try {
+			
+
+
 		}
 		catch (err) {
 			console.error(err);

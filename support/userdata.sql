@@ -18,6 +18,15 @@ INSERT INTO ListItem (ListItemId, ListId, ProductId, CategoryId, BrandId, SizeId
   
 SELECT setval('listitem_listitemid_seq', (SELECT MAX(ListItemId) FROM ListItem));
 
+INSERT INTO Store (StoreId, UserId, OrdinalId, Name, Website, Phone) VALUES
+  (1, 0, NULL, 'Aldi', 'https://www.aldi.us', '715-235-1111'),
+  (2, 0, NULL, 'Walmart', 'https://www.walmart.com/', '715-235-2222'),
+  (3, 0, NULL, 'MarketPlace', 'https://www.marketplacefoodswi.com/MFstore2582', '715-235-3333'),
+  (4, 0, NULL, 'Target', 'https://www.target.com', '715-235-4444'),
+  (5, 0, NULL, 'Kwik Trip', 'https://www.kwiktrip.com', '715-235-5555');
+
+SELECT setval('store_storeid_seq', (SELECT MAX(StoreId) FROM Store));
+
 TRUNCATE TABLE ProductStore;
 INSERT INTO ProductStore (ProductId, StoreId, UserId) VALUES
   (2, 1, 1),

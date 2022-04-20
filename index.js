@@ -36,9 +36,16 @@ express()
   })
   .get('/category', async (req, res) => {
     try {
-      
+      const client = await pool.connect();
 
-
+      const category = await client.query(
+        `SELECT * FROM Category ORDER BY UserId ASC`
+      );
+      const locals = {
+        'category': (category) ? category.rows : null
+      };
+      res.render('pages/category', locals);
+      client.release();
     }
     catch (err) {
       console.error(err);
@@ -78,6 +85,51 @@ express()
       res.send("Error " + err);
     }
   })
+  .get('/category/add', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      res.render('pages/addCategory');
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/store/add', async (req, res) => {
+    try {
+      
+
+      
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/product/add', async (req, res) => {
+    try {
+      
+
+      
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/grocery-list/add', async (req, res) => {
+    try {
+      
+
+      
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
   .post('/log', async(req, res) => {
 		try {
 			const client = await pool.connect();
@@ -106,7 +158,7 @@ RETURNING id AS new_id;`);
   .post('/category/add', async(req, res) => {
 		try {
 			
-
+      
 
 		}
 		catch (err) {

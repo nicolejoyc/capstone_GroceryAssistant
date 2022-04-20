@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Grocery Assistant - Categories</title>
+  <link href="css/styles.css" rel="stylesheet" type="text/css">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+  <div class="grocery-list-wrapper">
+    <a href="category/add">Add</a>
+    <a href="">Edit</a>
+    <a href="">Delete</a>
+    <h1>Product Categories</h1>
+    <div class="buttons-wrapper">
+      <% category.forEach(function(r) {%>
+        <div class="button-wrapper grocery-list-button-wrapper">
+          <button type="button" class="button grocery-list-button" id='<%= r.categoryid %>'><%= r.name %></button>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+
+  <!-- JQuery Library -->
+  <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+  <!-- Javascript Files -->
+  <!-- <script src=""></script> -->
+</body>
+</html>

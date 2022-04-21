@@ -157,9 +157,24 @@ RETURNING id AS new_id;`);
 	})
   .post('/category/add', async(req, res) => {
 		try {
+			const client = await pool.connect();
+			const categoryName = req.body.category_name;
+			const userId = req.body.user_id;
 			
-      
-
+			const sqlInsert = await client.query(
+`INSERT INTO Category (Name, UserId)
+VALUES (${categoryName}, ${userId})
+RETURNING CategoryId AS new_id;`);
+			
+			const result = {
+				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
 		}
 		catch (err) {
 			console.error(err);

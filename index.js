@@ -34,7 +34,19 @@ express()
       res.send("Error " + err);
     }
   })
-  .get('/category', async (req, res) => {
+  .get('/grocery-data-manager', async (req, res) => {
+    try {
+      const client = await pool.connect();
+      
+      res.render('pages/groceryDataManager');
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/grocery-data-manager/category', async (req, res) => {
     try {
       const client = await pool.connect();
 
@@ -52,7 +64,7 @@ express()
       res.send("Error " + err);
     }
   })
-  .get('/store', async (req, res) => {
+  .get('/grocery-data-manager/store', async (req, res) => {
     try {
       
 
@@ -63,7 +75,7 @@ express()
       res.send("Error " + err);
     }
   })
-  .get('/product', async (req, res) => {
+  .get('/grocery-data-manager/product', async (req, res) => {
     try {
       
 
@@ -85,7 +97,7 @@ express()
       res.send("Error " + err);
     }
   })
-  .get('/category/add', async (req, res) => {
+  .get('/grocery-data-manager/category/add', async (req, res) => {
     try {
       const client = await pool.connect();
 

@@ -21,7 +21,7 @@ $("#submit").click(async function (e) {
 
     const result = await response.json();
     console.log(result);
-    location.assign("/category");
+    location.assign("/grocery-data-manager/category");
 
   } else {
     alert("Please enter a category name.");

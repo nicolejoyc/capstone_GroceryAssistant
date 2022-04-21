@@ -8,17 +8,12 @@
 </head>
 <body>
   <div class="grocery-list-wrapper">
-    <a href="/grocery-data-manager">Back</a>
-    <a href="category/add">Add</a>
-    <a href="">Edit</a>
-    <a href="">Delete</a>
-    <h1>Product Categories</h1>
+    <a href="/">Back</a>
+    <h1>Your Saved Grocery Data</h1>
     <div class="buttons-wrapper">
-      <% category.forEach(function(r) {%>
-        <div class="button-wrapper grocery-list-button-wrapper">
-          <button type="button" class="button grocery-list-button" id='<%= r.categoryid %>'><%= r.name %></button>
-        </div>
-      <% }); %>
+      <a href="" class="button">Products</a>
+      <a href="/grocery-data-manager/category" class="button">Grocery Categories</a>
+      <a href="" class="button">Stores</a>
     </div>
   </div>
 

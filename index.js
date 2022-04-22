@@ -198,7 +198,7 @@ express()
       const parms = {
         'operation': 'add',
         'title': 'Add Grocery List',
-        'name': 'list',
+        'name': 'grocery-list',
         'message': '',
         'inputform': inputForm
       };

@@ -2,22 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Add <%= name %></title>
+  <title><%= title %></title>
   <link href="/css/styles.css" rel="stylesheet" type="text/css">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
   <a href="../<%= name %>">Back</a>
-  <h1>Add New <%= name %></h1>
+  <h1><%= title %></h1>
   <p><%= message %></p>
-  <form action="">
+  <form action="/product/add" method="post">
     <% inputform.forEach(function(i, index) {%>
       <div class="input-wrapper">
         <label for="input-<%= index %>"><%= i.label %>:</label><br>
         <input type="text" name="input-<%= index %>" id="input-<%= index %>" placeholder="<%= i.hint %>" value="<%= i.value %>" required>
       </div>
     <% }); %>
-    <input type="submit" id="submit-<%= name %>" value="Add">
+    <input type="text" name="userid" value="1" hidden>
+    <input type="submit" id="<%= operation %>-<%= name %>" value="Save">
   </form>
 
   <!-- JQuery Library -->

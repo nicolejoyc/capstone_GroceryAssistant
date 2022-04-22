@@ -1,4 +1,4 @@
-$("#submit-product").click(async function (e) { 
+$("#add-product").click(async function (e) { 
   e.preventDefault();
 
   let productName = $('#input-0').val();

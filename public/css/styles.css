@@ -8,16 +8,17 @@
   outline-style: none;
 }
 
-.grocery-list-wrapper {
+.grocery-list-wrapper, .interface-wrapper {
   background-color: rgb(127 123 123);
   border: 4px solid black;
   border-radius: 25px;
   margin: 0.2rem auto;
   max-width: 50rem;
-  min-width: 20rem;
+  min-width: 25rem;
+  height: 100vh;
 }
 
-.grocery-list-wrapper h1 {
+.grocery-list-wrapper h1, .interface-wrapper h1 {
   background-color: yellow;
   border: 2px solid rgb(95 78 78);
   border-radius: 10px;
@@ -26,11 +27,11 @@
   text-align: center;
 }
 
-.buttons-wrapper {
+.buttons-wrapper, .button-list-wrapper {
   border: 2px solid rgb(95 78 78);
   border-radius: 10px;
   margin: 1%;
-  max-height: 200px;
+  height: 83vh;
   overflow: auto;
   scrollbar-color: gray rgb(216 105 65);
 }
@@ -49,7 +50,6 @@
   font-size: 1.5rem;
   margin: auto;
   min-width: 17rem;
-  text-align: center;
   width: 80%;
   height: 100%;
   display: block;
@@ -57,4 +57,53 @@
 
 .button:hover {
   background-color: rgb(216 105 65);
+}
+
+.input-wrapper {
+  margin: 0.25%;
+  width: 60%;
+  height: 80%;
+}
+
+.field-input {
+  border: 1px solid rgb(95, 78, 78);
+  border-radius: 10px;
+  margin: 0.25rem 0.5rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 1.5rem;
+  background-color: rgb(199, 185, 185);
+  width: 92%;
+}
+
+.controls-wrapper {
+  position: relative;
+  border: 2px solid rgb(95, 78, 78);
+  height: 3rem;
+  border-radius: 10px;
+  margin: 1%;
+  padding: 0.25%;
+}
+
+.image-wrapper {
+  display: grid;
+  grid-template-columns: 45px 45px 45px;
+  grid-template-rows: auto;
+  margin: 0.25rem 0.5rem;
+  position: absolute;
+  right: 0rem;
+}
+
+#add-icon {
+  opacity: 30%;
+  border-radius: 30%;
+  background-color: red;
+}
+
+@media screen and (min-width: 37.5rem) { 
+  .input-wrapper {
+    width: 70%;
+  }
+  .image-wrapper {
+    grid-template-columns: 50px 50px 50px;
+  }
 }

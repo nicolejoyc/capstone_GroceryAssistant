@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add <%= name %></title>
+  <link href="/css/styles.css" rel="stylesheet" type="text/css">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+  <a href="../<%= name %>">Back</a>
+  <h1>Add New <%= name %></h1>
+  <p><%= message %></p>
+  <form action="">
+    <% inputform.forEach(function(i, index) {%>
+      <div class="input-wrapper">
+        <label for="input-<%= index %>"><%= i.label %>:</label><br>
+        <input type="text" name="input-<%= index %>" id="input-<%= index %>" value ="<%= i.hint %>" required>
+      </div>
+    <% }); %>
+    <input type="submit" id="submit-<%= name %>" value="Add">
+  </form>
+
+  <!-- JQuery Library -->
+  <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+
+  <!-- Javascript Files -->
+  <script src="/js/add.js"></script>
+  
+</body>
+</html>

@@ -16,17 +16,23 @@ express()
   .use(express.urlencoded({ extended: true }))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
-  .get('/', async (req, res) => {
+  .get('/grocery-list', async (req, res) => {
     try {
       const client = await pool.connect();
 
       const grocery_list = await client.query(
         `SELECT * FROM grocery_list ORDER BY id ASC`
       );
-      const locals = {
+      /* const locals = {
         'grocery_list': (grocery_list) ? grocery_list.rows : null
       };
-      res.render('pages/index', locals);
+      res.render('pages/index', locals);*/
+      const locals = {
+        'title': 'Grocery Assistant',
+        'jsfile': '/js/list.js',
+        'items': (grocery_list) ? grocery_list.rows : null
+      };
+      res.render('pages/interface-1', locals);
       client.release();
     }
     catch (err) {
@@ -114,7 +120,7 @@ express()
     try {
       const client = await pool.connect();
 
-      const products = await client.query(
+      const brands = await client.query(
         `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
       );
       const locals = {
@@ -125,17 +131,6 @@ express()
       res.render('pages/interface-1', locals);
 
       client.release();
-    }
-    catch (err) {
-      console.error(err);
-      res.send("Error " + err);
-    }
-  })
-  .get('/grocery-list', async (req, res) => {
-    try {
-      
-
-      
     }
     catch (err) {
       console.error(err);
@@ -221,9 +216,22 @@ express()
   })
   .get('/grocery-list/add', async (req, res) => {
     try {
-      
+      const client = await pool.connect();
 
-      
+      const inputForm = [
+        { "label" : "Grocery List Name", "hint": "My List", "value": "" }
+      ];
+
+      const parms = {
+        'operation': 'add',
+        'title': 'Add Grocery List',
+        'name': 'list',
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
+      client.release();
     }
     catch (err) {
       console.error(err);

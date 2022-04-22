@@ -291,9 +291,26 @@ RETURNING CategoryId AS new_id;`);
 	})
   .post('/store/add', async(req, res) => {
 		try {
+      const client = await pool.connect();
+			const storeName = req.body.store_name;
+      const userId = req.body.user_id;
+			const storeWebsite = req.body.store_website;
+      const storePhone = req.body.store_phone;
+      	
+			const sqlInsert = await client.query(
+        `INSERT INTO Store (Name, UserId, Website, Phone)
+        VALUES (${storeName}, ${userId}, ${storeWebsite}, ${storePhone})
+        RETURNING StoreId AS new_id;`);
 			
-
-
+			const result = {
+				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
 		}
 		catch (err) {
 			console.error(err);

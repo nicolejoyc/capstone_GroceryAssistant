@@ -66,9 +66,19 @@ express()
   })
   .get('/grocery-data-manager/store', async (req, res) => {
     try {
-      
+      const client = await pool.connect();
 
-      
+      const stores = await client.query(
+        `SELECT StoreId AS id, Name FROM store ORDER BY id ASC`
+      );
+      const locals = {
+        'title': 'Stores',
+        'jsfile': '/js/store.js',
+        'items': (stores) ? stores.rows : null
+      };
+      res.render('pages/interface-1', locals);
+
+      client.release();
     }
     catch (err) {
       console.error(err);
@@ -121,7 +131,24 @@ express()
   })
   .get('/grocery-data-manager/store/add', async (req, res) => {
     try {
-      
+      const client = await pool.connect();
+
+      const inputForm = [
+        { "label" : "Store Name", "hint": "e.g. Kwik Trip, Aldi's, etc.", "value": "" },
+        { "label" : "Website", "hint": "e.g. description", "value": "" },
+        { "label" : "Phone", "hint": "e.g. description", "value": "" }
+      ];
+
+      const parms = {
+        'operation':'add',
+        'title':'Add Store',
+        'name': 'store',
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
+      client.release();
 
       
     }

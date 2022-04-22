@@ -15,7 +15,7 @@ CREATE DATABASE grocery_assistant;
 DROP TABLE grocery_list;
 CREATE TABLE grocery_list (
   id SERIAL PRIMARY KEY,
---  UserId INT NOT NULL,
+  UserId INT NOT NULL,
   Name TEXT NOT NULL
 );
 

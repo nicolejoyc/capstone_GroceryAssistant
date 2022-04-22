@@ -1,3 +1,34 @@
+$("#add-grocery-list").click(async function (e) { 
+  e.preventDefault();
+
+  let groceryListName = $('#input-0').val();
+  console.log("Here");
+  if (groceryListName !== "") {
+    console.log(groceryListName);
+
+    // send info to be stored into the database
+	  const response = await fetch('/grocery-list/add', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: "'1'",
+        grocery_list_name: "'" + groceryListName + "'"
+      })
+    });
+
+    const result = await response.json();
+    console.log(result);
+    location.assign("/grocery-list");
+
+  } else {
+    alert("Please enter a grocery list name.");
+  }
+  
+});
+
 $("#add-product").click(async function (e) { 
   e.preventDefault();
 

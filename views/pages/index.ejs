@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Grocery Assistant</title>
-  <link href="css/styles.css" rel="stylesheet" type="text/css">
+  <link href="/css/styles.css" rel="stylesheet" type="text/css">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
   <div class="grocery-list-wrapper">
+    <a href="">Add</a>
+    <a href="">Edit</a>
+    <a href="">Delete</a>
     <h1>Grocery Lists</h1>
     <div class="buttons-wrapper">
       <% grocery_list.forEach(function(r) {%>
@@ -19,19 +22,9 @@
   </div>
 
   <div class="grocery-list-wrapper">
-    <h1>Add a List</h1>
     <div class="buttons-wrapper">
-      <div class="button-wrapper grocery-list-button-wrapper">
-        <button type="button" class="button grocery-list-button add" id="Nicole">Nicole's Grocery List</button>
-      </div>
-      <div class="button-wrapper grocery-list-button-wrapper">
-        <button type="button" class="button grocery-list-button add" id="Brian">Brian's Grocery List</button>
-      </div>
-      <div class="button-wrapper grocery-list-button-wrapper">
-        <button type="button" class="button grocery-list-button add" id="Samantha">Samantha's Grocery List</button>
-      </div>
-      <div class="button-wrapper grocery-list-button-wrapper">
-        <button type="button" class="button grocery-list-button add" id="Richard">Richard's Grocery List</button>
+      <div class="button-wrapper maintenance-page-button-wrapper">
+        <button type="button" class="button maintenance-page-button add" id="HomePage">Home Page</button>
       </div>
     </div>
   </div>

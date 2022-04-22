@@ -225,7 +225,7 @@ express()
       const parms = {
         'operation': 'add',
         'title': 'Add Grocery List',
-        'name': 'list',
+        'name': 'grocery-list',
         'message': '',
         'inputform': inputForm
       };
@@ -345,9 +345,24 @@ RETURNING CategoryId AS new_id;`);
 	})
   .post('/grocery-list/add', async(req, res) => {
 		try {
+      const client = await pool.connect();
+			const groceryListName = req.body.grocery_list_name;
+			const userId = req.body.user_id;
+      	
+			const sqlInsert = await client.query(
+        `INSERT INTO grocery_list (Name, UserId)
+        VALUES (${groceryListName}, ${userId})
+        RETURNING id AS new_id;`);
 			
-
-
+			const result = {
+				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
 		}
 		catch (err) {
 			console.error(err);

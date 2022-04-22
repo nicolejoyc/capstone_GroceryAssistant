@@ -50,13 +50,17 @@ express()
     try {
       const client = await pool.connect();
 
-      const category = await client.query(
-        `SELECT * FROM Category ORDER BY UserId ASC`
+      const categories = await client.query(
+        `SELECT CategoryId AS id, Name FROM Category ORDER BY id ASC`
       );
+
       const locals = {
-        'category': (category) ? category.rows : null
+        'title': 'Categories',
+        'jsfile': '/js/category.js',
+        'items': (categories) ? categories.rows : null
       };
-      res.render('pages/category', locals);
+
+      res.render('pages/interface-1', locals);
       client.release();
     }
     catch (err) {
@@ -132,7 +136,19 @@ express()
     try {
       const client = await pool.connect();
 
-      res.render('pages/addCategory');
+      const inputForm = [
+        { "label" : "Category Name", "hint": "e.g. Dairy, Meat, Household, etc.", "value": "" }
+      ];
+
+      const parms = {
+        'operation': 'add',
+        'title': 'Add Category',
+        'name': 'category',
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
       client.release();
     }
     catch (err) {

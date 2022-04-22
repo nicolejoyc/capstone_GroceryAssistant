@@ -20,13 +20,20 @@
 }
 
 .grocery-list-wrapper h1,
-.interface-wrapper h1 {
+.header-wrapper {
   background-color: yellow;
   border: 2px solid rgb(95 78 78);
   border-radius: 10px;
   margin: 1%;
   padding: 0.75%;
+}
+
+.header-wrapper h1 {
   text-align: center;
+}
+
+#back-icon {
+  float: left;
 }
 
 .buttons-wrapper,

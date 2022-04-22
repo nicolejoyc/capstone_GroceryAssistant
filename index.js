@@ -119,7 +119,7 @@ express()
       res.send("Error " + err);
     }
   })
-  .get('/store/add', async (req, res) => {
+  .get('/grocery-data-manager/store/add', async (req, res) => {
     try {
       
 

@@ -50,13 +50,17 @@ express()
     try {
       const client = await pool.connect();
 
-      const category = await client.query(
-        `SELECT * FROM Category ORDER BY UserId ASC`
+      const categories = await client.query(
+        `SELECT CategoryId AS id, Name FROM Category ORDER BY id ASC`
       );
+
       const locals = {
-        'category': (category) ? category.rows : null
+        'title': 'Categories',
+        'jsfile': '/js/category.js',
+        'items': (categories) ? categories.rows : null
       };
-      res.render('pages/category', locals);
+
+      res.render('pages/interface-1', locals);
       client.release();
     }
     catch (err) {
@@ -106,6 +110,27 @@ express()
       res.send("Error " + err);
     }
   })
+  .get('/grocery-data-manager/brand', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const products = await client.query(
+        `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
+      );
+      const locals = {
+        'title': 'Brand',
+        'jsfile': '/js/brand.js',
+        'items': (brands) ? brands.rows : null
+      };
+      res.render('pages/interface-1', locals);
+
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
   .get('/grocery-list', async (req, res) => {
     try {
       
@@ -121,7 +146,19 @@ express()
     try {
       const client = await pool.connect();
 
-      res.render('pages/addCategory');
+      const inputForm = [
+        { "label" : "Category Name", "hint": "e.g. Dairy, Meat, Household, etc.", "value": "" }
+      ];
+
+      const parms = {
+        'operation': 'add',
+        'title': 'Add Category',
+        'name': 'category',
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
       client.release();
     }
     catch (err) {
@@ -167,6 +204,8 @@ express()
       ];
 
       const parms = {
+        'operation': 'add',
+        'title': 'Add Product',
         'name': 'product',
         'message': '',
         'inputform': inputForm
@@ -258,7 +297,7 @@ RETURNING CategoryId AS new_id;`);
 			const client = await pool.connect();
 			const productName = req.body.product_name;
 			const userId = req.body.user_id;
-			
+      	
 			const sqlInsert = await client.query(
         `INSERT INTO Product (Name, UserId)
         VALUES (${productName}, ${userId})

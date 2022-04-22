@@ -100,7 +100,7 @@ express()
     try {
       const client = await pool.connect();
 
-      const products = await client.query(
+      const brands = await client.query(
         `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
       );
       const locals = {

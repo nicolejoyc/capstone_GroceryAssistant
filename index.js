@@ -16,17 +16,23 @@ express()
   .use(express.urlencoded({ extended: true }))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
-  .get('/', async (req, res) => {
+  .get('/grocery-list', async (req, res) => {
     try {
       const client = await pool.connect();
 
       const grocery_list = await client.query(
         `SELECT * FROM grocery_list ORDER BY id ASC`
       );
-      const locals = {
+      /* const locals = {
         'grocery_list': (grocery_list) ? grocery_list.rows : null
       };
-      res.render('pages/index', locals);
+      res.render('pages/index', locals);*/
+      const locals = {
+        'title': 'Grocery Assistant',
+        'jsfile': '/js/list.js',
+        'items': (grocery_list) ? grocery_list.rows : null
+      };
+      res.render('pages/interface-1', locals);
       client.release();
     }
     catch (err) {
@@ -50,13 +56,17 @@ express()
     try {
       const client = await pool.connect();
 
-      const category = await client.query(
-        `SELECT * FROM Category ORDER BY UserId ASC`
+      const categories = await client.query(
+        `SELECT CategoryId AS id, Name FROM Category ORDER BY id ASC`
       );
+
       const locals = {
-        'category': (category) ? category.rows : null
+        'title': 'Categories',
+        'jsfile': '/js/category.js',
+        'items': (categories) ? categories.rows : null
       };
-      res.render('pages/category', locals);
+
+      res.render('pages/interface-1', locals);
       client.release();
     }
     catch (err) {
@@ -117,22 +127,23 @@ express()
       res.send("Error " + err);
     }
   })
-  .get('/grocery-list', async (req, res) => {
-    try {
-      
-
-      
-    }
-    catch (err) {
-      console.error(err);
-      res.send("Error " + err);
-    }
-  })
   .get('/grocery-data-manager/category/add', async (req, res) => {
     try {
       const client = await pool.connect();
 
-      res.render('pages/addCategory');
+      const inputForm = [
+        { "label" : "Category Name", "hint": "e.g. Dairy, Meat, Household, etc.", "value": "" }
+      ];
+
+      const parms = {
+        'operation': 'add',
+        'title': 'Add Category',
+        'name': 'category',
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
       client.release();
     }
     catch (err) {
@@ -178,9 +189,22 @@ express()
   })
   .get('/grocery-list/add', async (req, res) => {
     try {
-      
+      const client = await pool.connect();
 
-      
+      const inputForm = [
+        { "label" : "Grocery List Name", "hint": "My List", "value": "" }
+      ];
+
+      const parms = {
+        'operation': 'add',
+        'title': 'Add Grocery List',
+        'name': 'list',
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
+      client.release();
     }
     catch (err) {
       console.error(err);

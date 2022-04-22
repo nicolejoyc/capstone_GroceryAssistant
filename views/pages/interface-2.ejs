@@ -14,7 +14,7 @@
     <% inputform.forEach(function(i, index) {%>
       <div class="input-wrapper">
         <label for="input-<%= index %>"><%= i.label %>:</label><br>
-        <input type="text" name="input-<%= index %>" id="input-<%= index %>" value ="<%= i.hint %>" required>
+        <input type="text" name="input-<%= index %>" id="input-<%= index %>" placeholder="<%= i.hint %>" value="<%= i.value %>" required>
       </div>
     <% }); %>
     <input type="submit" id="submit-<%= name %>" value="Add">
@@ -28,6 +28,6 @@
 
   <!-- Javascript Files -->
   <script src="/js/add.js"></script>
-  
+
 </body>
 </html>

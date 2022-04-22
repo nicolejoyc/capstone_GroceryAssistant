@@ -135,13 +135,13 @@ express()
       const client = await pool.connect();
 
       const inputForm = [
-        { "label" : "Product Name", "hint": "" },
-        { "label" : "Note", "hint": "e.g. description" }
+        { "label" : "Product Name", "hint": "e.g. Milk, Butter, etc.", "value": "" },
+        { "label" : "Note", "hint": "e.g. description", "value": "" }
       ];
 
       const parms = {
         'name': 'product',
-        'message': '(ex. Milk, Block Cheese, Sandwich Bread)',
+        'message': '',
         'inputform': inputForm
       };
 

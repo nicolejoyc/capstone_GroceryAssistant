@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Grocery Data Manager</title>
-  <link href="/css/styles.css" rel="stylesheet" type="text/css">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- Interface HTML head statements -->
+  <%- include('../partials/head-1.ejs') %>
 </head>
 <body>
   <div class="grocery-list-wrapper">
     <header class="header-wrapper">
-      <a href="/grocery-list"><img id="back-icon" class="control" src="/image/hdpi/ic_back.png"></a>
+      <a href="/"><img id="back-icon" class="control" src="/image/hdpi/ic_back.png"></a>
       <h1>Your Saved Grocery Data</h1>
     </header>
     <div class="buttons-wrapper">
@@ -25,12 +23,7 @@
     </div>
   </div>
 
-  <!-- JQuery Library -->
-  <script
-  src="https://code.jquery.com/jquery-3.6.0.min.js"
-  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-  crossorigin="anonymous"></script>
-  <!-- Javascript Files -->
-  <!-- <script src=""></script> -->
+  <!-- Common javascript includes -->
+  <%- include('../partials/common-js.ejs') %>
 </body>
 </html>

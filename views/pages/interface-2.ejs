@@ -1,42 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title><%= title %></title>
-  <link href="/css/styles.css" rel="stylesheet" type="text/css">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-</head>
-<body>
-  <div class="interface-wrapper">
-    <header class="header-wrapper">
-      <a href="../<%= name %>"><img id="back-icon" class="control" src="/image/hdpi/ic_back.png"></a>
-      <h1><%= title %></h1>
-    </header>
-    <p><%= message %></p>
-    <div class="button-list-wrapper">
-      <div class="form-wrapper">
-        <form action="">
-          <% inputform.forEach(function(i, index) {%>
-            <div class="input-wrapper">
-              <label for="input-<%= index %>"><%= i.label %>:</label><br>
-              <input class="field-input" type="text" name="input-<%= index %>" id="input-<%= index %>" placeholder="<%= i.hint %>" value="<%= i.value %>" required>
-            </div>
-          <% }); %>
-          <input type="text" name="userid" value="1" hidden>
-          <input type="submit" id="<%= operation %>-<%= name %>" class="submit" value="Save">
-        </form>
+  <head>
+    <!-- Interface HTML head statements -->
+    <%- include('../partials/head-1.ejs') %>
+  </head>
+  <body>
+    <div class="interface-wrapper">
+      <header class="header-wrapper">
+        <img id="back-icon" class="control" src="/image/hdpi/ic_back.png" onClick='javascript:gotoURLEnd()'>
+        <h1><%= title %></h1>
+      </header>
+      <p><%= message %></p>
+      <div class="button-list-wrapper">
+        <div class="form-wrapper">
+          <form action="">
+            <% inputform.forEach(function(i, index) {%>
+              <div class="input-control-wrapper">
+                <label for="input-<%= index %>"><%= i.label %>:</label><br>
+                <input class="input-control" type="text" name="input-<%= index %>" id="input-<%= index %>" placeholder="<%= i.hint %>" value="<%= i.value %>" required>
+              </div>
+            <% }); %>
+            <input type="text" name="userid" value="1" hidden>
+            <input type="submit" id="<%= operation %>-<%= name %>" class="submit" value="Save">
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-
-  <!-- JQuery Library -->
-  <script
-  src="https://code.jquery.com/jquery-3.6.0.min.js"
-  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-  crossorigin="anonymous"></script>
-
-  <!-- Javascript Files -->
-  <script src="/js/add.js"></script>
-
-</body>
+    <!-- Common javascript includes -->
+    <%- include('../partials/common-js.ejs') %>
+    <!-- Javascript form save handlers -->
+    <script src="/js/add.js"></script>
+  </body>
 </html>

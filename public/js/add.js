@@ -2,12 +2,10 @@ $("#add-grocery-list").click(async function (e) {
   e.preventDefault();
 
   let groceryListName = $('#input-0').val();
-  console.log("Here");
   if (groceryListName !== "") {
-    console.log(groceryListName);
 
     // send info to be stored into the database
-	  const response = await fetch('/grocery-list/add', {
+	  const response = await fetch('/add', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -21,7 +19,7 @@ $("#add-grocery-list").click(async function (e) {
 
     const result = await response.json();
     console.log(result);
-    location.assign("/grocery-list");
+    gotoURLEnd();
 
   } else {
     alert("Please enter a grocery list name.");
@@ -34,8 +32,9 @@ $("#add-product").click(async function (e) {
 
   let productName = $('#input-0').val();
 
+  console.log("HERE");
   if (productName !== "") {
-    console.log(productName);
+  console.log("AND HERE");
 
     // send info to be stored into the database
 	  const response = await fetch('/product/add', {
@@ -66,7 +65,6 @@ $("#add-category").click(async function (e) {
   let categoryName = $('#input-0').val();
 
   if (categoryName !== "") {
-    console.log(categoryName);
 
     // send info to be stored into the database
 	  const response = await fetch('/category/add', {
@@ -98,7 +96,6 @@ $("#add-store").click(async function (e) {
   let storePhone = $('#input-2').val();
 
   if (storeName !== "") {
-    console.log(storeName);
 
     // send info to be stored into the database
 	  const response = await fetch('/store/add', {

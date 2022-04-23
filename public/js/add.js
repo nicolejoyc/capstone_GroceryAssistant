@@ -4,7 +4,6 @@ $("#add-grocery-list").click(async function (e) {
   let groceryListName = $('#input-0').val();
   if (groceryListName !== "") {
 
-    console.log("pre fetch");
     // send info to be stored into the database
 	  const response = await fetch('/add', {
       method: 'POST',
@@ -17,7 +16,6 @@ $("#add-grocery-list").click(async function (e) {
         grocery_list_name: "'" + groceryListName + "'"
       })
     });
-    console.log("post fetch");
 
     const result = await response.json();
     console.log(result);

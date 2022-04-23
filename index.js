@@ -320,6 +320,7 @@ RETURNING CategoryId AS new_id;`);
       const client = await pool.connect();
 			const groceryListName = req.body.grocery_list_name;
 			const userId = req.body.user_id;
+      console.log("/add");
       	
 			const sqlInsert = await client.query(
         `INSERT INTO grocery_list (Name, UserId)
@@ -346,6 +347,7 @@ RETURNING CategoryId AS new_id;`);
       const client = await pool.connect();
 			const groceryListName = req.body.grocery_list_name;
 			const userId = req.body.user_id;
+      console.log("//add");
       	
 			const sqlInsert = await client.query(
         `INSERT INTO grocery_list (Name, UserId)

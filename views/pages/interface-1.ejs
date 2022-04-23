@@ -9,7 +9,9 @@
 <body>
   <div class="interface-wrapper">
     <header class="header-wrapper">
-      <a href="../grocery-data-manager"><img id="back-icon" class="control" src="/image/hdpi/ic_back.png"></a>
+      <% if (title !== 'Grocery Assistant') {%>
+        <a href="../grocery-data-manager"><img id="back-icon" class="control" src="/image/hdpi/ic_back.png"></a>
+      <% } %>
       <h1><%= title %></h1>
     </header>
     <div class="controls-wrapper">

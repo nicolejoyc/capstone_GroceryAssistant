@@ -7,19 +7,27 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
-  <a href="../<%= name %>">Back</a>
-  <h1><%= title %></h1>
-  <p><%= message %></p>
-  <form action="">
-    <% inputform.forEach(function(i, index) {%>
-      <div class="input-wrapper">
-        <label for="input-<%= index %>"><%= i.label %>:</label><br>
-        <input type="text" name="input-<%= index %>" id="input-<%= index %>" placeholder="<%= i.hint %>" value="<%= i.value %>" required>
+  <div class="interface-wrapper">
+    <header class="header-wrapper">
+      <a href="../<%= name %>"><img id="back-icon" class="control" src="/image/hdpi/ic_back.png"></a>
+      <h1><%= title %></h1>
+    </header>
+    <p><%= message %></p>
+    <div class="button-list-wrapper">
+      <div class="form-wrapper">
+        <form action="">
+          <% inputform.forEach(function(i, index) {%>
+            <div class="input-wrapper">
+              <label for="input-<%= index %>"><%= i.label %>:</label><br>
+              <input class="field-input" type="text" name="input-<%= index %>" id="input-<%= index %>" placeholder="<%= i.hint %>" value="<%= i.value %>" required>
+            </div>
+          <% }); %>
+          <input type="text" name="userid" value="1" hidden>
+          <input type="submit" id="<%= operation %>-<%= name %>" class="submit" value="Save">
+        </form>
       </div>
-    <% }); %>
-    <input type="text" name="userid" value="1" hidden>
-    <input type="submit" id="<%= operation %>-<%= name %>" value="Save">
-  </form>
+    </div>
+  </div>
 
   <!-- JQuery Library -->
   <script

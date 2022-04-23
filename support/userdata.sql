@@ -5,9 +5,9 @@
  */
 
 TRUNCATE TABLE grocery_list;
-INSERT INTO grocery_list (id, Name) VALUES
-  ( 1, 'Tom''s Grocery List'),
-  ( 2, 'Jerry''s Grocery List');
+INSERT INTO grocery_list (id, UserId, Name) VALUES
+  ( 1, 1, 'Tom''s Grocery List'),
+  ( 2, 1, 'Jerry''s Grocery List');
 
 SELECT setval('grocery_list_id_seq', (SELECT MAX(id) FROM grocery_list));
 
@@ -18,6 +18,7 @@ INSERT INTO ListItem (ListItemId, ListId, ProductId, CategoryId, BrandId, SizeId
   
 SELECT setval('listitem_listitemid_seq', (SELECT MAX(ListItemId) FROM ListItem));
 
+TRUNCATE TABLE Store;
 INSERT INTO Store (StoreId, UserId, OrdinalId, Name, Website, Phone) VALUES
   (1, 0, NULL, 'Aldi', 'https://www.aldi.us', '715-235-1111'),
   (2, 0, NULL, 'Walmart', 'https://www.walmart.com/', '715-235-2222'),

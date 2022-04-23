@@ -76,9 +76,19 @@ express()
   })
   .get('/grocery-data-manager/store', async (req, res) => {
     try {
-      
+      const client = await pool.connect();
 
-      
+      const stores = await client.query(
+        `SELECT StoreId AS id, Name FROM store ORDER BY id ASC`
+      );
+      const locals = {
+        'title': 'Stores',
+        'jsfile': '/js/store.js',
+        'items': (stores) ? stores.rows : null
+      };
+      res.render('pages/interface-1', locals);
+
+      client.release();
     }
     catch (err) {
       console.error(err);
@@ -153,7 +163,24 @@ express()
   })
   .get('/grocery-data-manager/store/add', async (req, res) => {
     try {
-      
+      const client = await pool.connect();
+
+      const inputForm = [
+        { "label" : "Store Name", "hint": "e.g. Kwik Trip, Aldi's, etc.", "value": "" },
+        { "label" : "Website", "hint": "e.g. description", "value": "" },
+        { "label" : "Phone", "hint": "e.g. description", "value": "" }
+      ];
+
+      const parms = {
+        'operation':'add',
+        'title':'Add Store',
+        'name': 'store',
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
+      client.release();
 
       
     }
@@ -264,9 +291,26 @@ RETURNING CategoryId AS new_id;`);
 	})
   .post('/store/add', async(req, res) => {
 		try {
+      const client = await pool.connect();
+			const storeName = req.body.store_name;
+      const userId = req.body.user_id;
+			const storeWebsite = req.body.store_website;
+      const storePhone = req.body.store_phone;
+      	
+			const sqlInsert = await client.query(
+        `INSERT INTO Store (Name, UserId, Website, Phone)
+        VALUES (${storeName}, ${userId}, ${storeWebsite}, ${storePhone})
+        RETURNING StoreId AS new_id;`);
 			
-
-
+			const result = {
+				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
 		}
 		catch (err) {
 			console.error(err);
@@ -301,9 +345,24 @@ RETURNING CategoryId AS new_id;`);
 	})
   .post('/grocery-list/add', async(req, res) => {
 		try {
+      const client = await pool.connect();
+			const groceryListName = req.body.grocery_list_name;
+			const userId = req.body.user_id;
+      	
+			const sqlInsert = await client.query(
+        `INSERT INTO grocery_list (Name, UserId)
+        VALUES (${groceryListName}, ${userId})
+        RETURNING id AS new_id;`);
 			
-
-
+			const result = {
+				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
 		}
 		catch (err) {
 			console.error(err);

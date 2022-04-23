@@ -5,7 +5,7 @@ $("#add-grocery-list").click(async function (e) {
   if (groceryListName !== "") {
 
     // send info to be stored into the database
-	  const response = await fetch('/add', {
+	  const response = await fetch('//add', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

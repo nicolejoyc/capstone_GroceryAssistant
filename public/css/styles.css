@@ -121,10 +121,10 @@
   width: 5rem;
 }
 
-#add-icon {
-  opacity: 0.3;
+#add-icon, #edit-icon, #delete-icon  {
+  opacity: 100%;
   border-radius: 30%;
-  background-color: red;
+  background-color: rgb(103, 95, 95);
 }
 
 .url-control-wrapper {

@@ -1,3 +1,10 @@
+<%#
+  Creates a HTML block containing a named button (name) which when clicked
+  redirects to the specified URL (url).
+
+  Requires:
+  const url_control = { 'name' : 'User URL Name', 'url': 'User URL' }
+%>
 <div class="control-wrapper url-control-wrapper">
   <button type='button' class='control button url-button' onClick='javascript:serverRequest("<%= url_control.url %>")'><%= url_control.name %></button>
 </div>

@@ -1,3 +1,18 @@
+<%#
+  Creates an HTML DIV element containing a list of named buttons (name) which
+  when clicked trigger a redirect to the assigned URL (url).
+
+  Requires array:
+  const url_list = [
+    { 'name': 'Button Name 1', 'url'; 'target url' },
+    { 'name': 'Button Name 2', 'url'; 'target url' }
+  ]
+Example:
+  const url_list = [
+    { 'name': 'Button Name 1', 'url'; '/button-1' },
+    { 'name': 'Button Name 2', 'url'; '/button-2' }
+  ]
+%>
 <div class="button-list-wrapper url-button-list-wrapper">
   <% url_list.forEach(function(u, index) {%>
     <div class="button-wrapper url-button-wrapper">

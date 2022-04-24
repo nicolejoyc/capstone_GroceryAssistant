@@ -235,6 +235,30 @@ express()
       res.send("Error " + err);
     }
   })
+  .get('/grocery-data-manager/brand/add', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const inputForm = [
+        { "label" : "Brand Name", "hint": "e.g. Kemps, Heinz etc.", "value": "" }
+      ];
+
+      const parms = {
+        'operation': 'add',
+        'title': 'Add Brand',
+        'name': 'brand',
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
   .post('/add', async(req, res) => {
 		try {
       const client = await pool.connect();
@@ -325,6 +349,32 @@ express()
         `INSERT INTO Product (Name, UserId)
         VALUES (${productName}, ${userId})
         RETURNING ProductId AS new_id;`);
+			
+			const result = {
+				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/brand/add', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const brandName = req.body.brand_name;
+			const userId = req.body.user_id;
+      	
+			const sqlInsert = await client.query(
+        `INSERT INTO Brand (Name, UserId)
+        VALUES (${brandName}, ${userId})
+        RETURNING BrandId AS new_id;`);
 			
 			const result = {
 				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null

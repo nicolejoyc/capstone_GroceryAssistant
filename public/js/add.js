@@ -32,9 +32,7 @@ $("#add-product").click(async function (e) {
 
   let productName = $('#input-0').val();
 
-  console.log("HERE");
   if (productName !== "") {
-  console.log("AND HERE");
 
     // send info to be stored into the database
 	  const response = await fetch('/product/add', {
@@ -88,6 +86,37 @@ $("#add-category").click(async function (e) {
   }
   
 });
+
+$("#add-brand").click(async function (e) { 
+  e.preventDefault();
+
+  let brandName = $('#input-0').val();
+
+  if (brandName !== "") {
+
+    // send info to be stored into the database
+	  const response = await fetch('/brand/add', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: "'1'",
+        brand_name: "'" + brandName + "'"
+      })
+    });
+
+    const result = await response.json();
+    console.log(result);
+    location.assign("/grocery-data-manager/brand");
+
+  } else {
+    alert("Please enter a brand name.");
+  }
+  
+});
+
 $("#add-store").click(async function (e) { 
   e.preventDefault();
 

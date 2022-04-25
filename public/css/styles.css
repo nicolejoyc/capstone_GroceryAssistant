@@ -8,7 +8,6 @@
   outline-style: none;
 }
 
-.grocery-list-wrapper,
 .interface-wrapper {
   background-color: rgb(127 123 123);
   border: 4px solid black;
@@ -35,6 +34,7 @@
   float: left;
 }
 
+.form-container,
 .buttons-wrapper,
 .button-list-wrapper {
   border: 2px solid rgb(95 78 78);
@@ -68,17 +68,22 @@
   background-color: rgb(216 105 65);
 }
 
-.input-control-wrapper, .url-control-wrapper {
+.form-input-wrapper,
+.search-control-wrapper,
+.url-control-wrapper {
   margin: 0.25%;
   width: 60%;
   height: 80%;
 }
 
-.input-control-wrapper label {
+.form-input-wrapper label,
+.search-control-wrapper label {
   font-size: 1.5rem;
 }
 
-.input-control, .url-control {
+.form-input,
+.search-control,
+.url-control {
   border: 1px solid rgb(95 78 78);
   border-radius: 10px;
   margin: 0.25rem 0.5rem;
@@ -88,7 +93,8 @@
   width: 92%;
 }
 
-.controls-wrapper, .tool-bar-wrapper {
+.controls-wrapper,
+.tool-bar-wrapper {
   position: relative;
   border: 2px solid rgb(95 78 78);
   height: 3rem;
@@ -121,7 +127,9 @@
   width: 5rem;
 }
 
-#add-icon, #edit-icon, #delete-icon  {
+#add-icon,
+#edit-icon,
+#delete-icon  {
   opacity: 100%;
   border-radius: 30%;
   background-color: rgb(103, 95, 95);
@@ -140,7 +148,11 @@
 }
 
 @media screen and (min-width: 37.5rem) {
-  .input-control-wrapper {
+  .form-input-wrapper {
+    width: 70%;
+  }
+
+  .search-control-wrapper {
     width: 70%;
   }
 

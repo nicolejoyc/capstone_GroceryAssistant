@@ -6,25 +6,10 @@
   </head>
   <body>
     <div class="interface-wrapper">
-      <header class="header-wrapper">
-        <img id="back-icon" class="control" src="/image/hdpi/ic_back.png" onClick='javascript:gotoURLEnd()'>
-        <h1><%= title %></h1>
-      </header>
-      <p><%= message %></p>
-      <div class="button-list-wrapper">
-        <div class="form-wrapper">
-          <form action="">
-            <% inputform.forEach(function(i, index) {%>
-              <div class="input-control-wrapper">
-                <label for="input-<%= index %>"><%= i.label %>:</label><br>
-                <input class="input-control" type="text" name="input-<%= index %>" id="input-<%= index %>" placeholder="<%= i.hint %>" value="<%= i.value %>" required>
-              </div>
-            <% }); %>
-            <input type="text" name="userid" value="1" hidden>
-            <input type="submit" id="<%= operation %>-<%= name %>" class="submit" value="Save">
-          </form>
-        </div>
-      </div>
+      <!-- Interface header with back button -->
+      <%- include('../partials/header-2.ejs') %>
+      <!-- Interface input form -->
+      <%- include('../partials/input-form.ejs') %>
     </div>
     <!-- Common javascript includes -->
     <%- include('../partials/common-js.ejs') %>

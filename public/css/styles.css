@@ -68,7 +68,8 @@
   background-color: rgb(216 105 65);
 }
 
-.input-control-wrapper, .url-control-wrapper {
+.input-control-wrapper,
+.url-control-wrapper {
   margin: 0.25%;
   width: 60%;
   height: 80%;
@@ -78,7 +79,8 @@
   font-size: 1.5rem;
 }
 
-.input-control, .url-control {
+.input-control,
+.url-control {
   border: 1px solid rgb(95 78 78);
   border-radius: 10px;
   margin: 0.25rem 0.5rem;
@@ -88,7 +90,8 @@
   width: 92%;
 }
 
-.controls-wrapper, .tool-bar-wrapper {
+.controls-wrapper,
+.tool-bar-wrapper {
   position: relative;
   border: 2px solid rgb(95 78 78);
   height: 3rem;
@@ -121,10 +124,12 @@
   width: 5rem;
 }
 
-#add-icon, #edit-icon, #delete-icon  {
-  opacity: 100%;
+#add-icon,
+#edit-icon,
+#delete-icon {
+  opacity: 1;
   border-radius: 30%;
-  background-color: rgb(103, 95, 95);
+  background-color: rgb(103 95 95);
 }
 
 .url-control-wrapper {

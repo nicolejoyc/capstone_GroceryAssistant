@@ -15,11 +15,10 @@
   border-radius: 25px;
   margin: 0.2rem auto;
   max-width: 50rem;
-  min-width: 25rem;
+  min-width: 28rem;
   height: 100vh;
 }
 
-.grocery-list-wrapper h1,
 .header-wrapper {
   background-color: yellow;
   border: 2px solid rgb(95 78 78);
@@ -69,13 +68,19 @@
   background-color: rgb(216 105 65);
 }
 
-.input-wrapper {
+.input-control-wrapper,
+.url-control-wrapper {
   margin: 0.25%;
   width: 60%;
   height: 80%;
 }
 
-.field-input {
+.input-control-wrapper label {
+  font-size: 1.5rem;
+}
+
+.input-control,
+.url-control {
   border: 1px solid rgb(95 78 78);
   border-radius: 10px;
   margin: 0.25rem 0.5rem;
@@ -85,7 +90,8 @@
   width: 92%;
 }
 
-.controls-wrapper {
+.controls-wrapper,
+.tool-bar-wrapper {
   position: relative;
   border: 2px solid rgb(95 78 78);
   height: 3rem;
@@ -94,7 +100,7 @@
   padding: 0.25%;
 }
 
-.image-wrapper {
+.icon-controls-wrapper {
   display: grid;
   grid-template-columns: 45px 45px 45px;
   grid-template-rows: auto;
@@ -103,18 +109,47 @@
   right: 0;
 }
 
-#add-icon {
-  opacity: 0.3;
+.form-wrapper {
+  margin: 2%;
+}
+
+.submit {
+  background-color: rgb(216 105 65);
+  border: 2px solid rgb(95 78 78);
+  border-radius: 10px;
+  font-size: 1rem;
+  height: 2rem;
+  margin: 1%;
+  padding: 0.5% 1%;
+  width: 5rem;
+}
+
+#add-icon,
+#edit-icon,
+#delete-icon {
+  opacity: 1;
   border-radius: 30%;
-  background-color: red;
+  background-color: rgb(103 95 95);
+}
+
+.url-control-wrapper {
+  margin-top: 0.25rem;
+}
+
+.url-control-wrapper .control {
+  border-radius: 5px;
+  margin-left: 0.5rem;
+  background-color: yellowgreen;
+  font-size: 1.25rem;
+  max-width: fit-content;
 }
 
 @media screen and (min-width: 37.5rem) {
-  .input-wrapper {
+  .input-control-wrapper {
     width: 70%;
   }
 
-  .image-wrapper {
+  .icon-controls-wrapper {
     grid-template-columns: 50px 50px 50px;
   }
 }

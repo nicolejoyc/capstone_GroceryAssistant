@@ -16,23 +16,19 @@ express()
   .use(express.urlencoded({ extended: true }))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
-  .get('/grocery-list', async (req, res) => {
+  .get('/', async (req, res) => {
     try {
       const client = await pool.connect();
 
       const grocery_list = await client.query(
         `SELECT * FROM grocery_list ORDER BY id ASC`
       );
-      /* const locals = {
-        'grocery_list': (grocery_list) ? grocery_list.rows : null
-      };
-      res.render('pages/index', locals);*/
       const locals = {
         'title': 'Grocery Assistant',
-        'jsfile': '/js/list.js',
+        'url_control': { 'name' : 'Grocery Data Manager', 'url': 'grocery-data-manager' },
         'items': (grocery_list) ? grocery_list.rows : null
       };
-      res.render('pages/interface-1', locals);
+      res.render('pages/index', locals);
       client.release();
     }
     catch (err) {
@@ -43,8 +39,10 @@ express()
   .get('/grocery-data-manager', async (req, res) => {
     try {
       const client = await pool.connect();
+
+      const params = { 'title' : 'Grocery Data Manager'};
       
-      res.render('pages/groceryDataManager');
+      res.render('pages/groceryDataManager', params);
       client.release();
     }
     catch (err) {
@@ -137,6 +135,30 @@ express()
       res.send("Error " + err);
     }
   })
+  .get('//add', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const inputForm = [
+        { "label" : "Grocery List Name", "hint": "My List", "value": "" }
+      ];
+
+      const parms = {
+        'operation': 'add',
+        'title': 'Add Grocery List',
+        'name': 'grocery-list',
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
   .get('/grocery-data-manager/category/add', async (req, res) => {
     try {
       const client = await pool.connect();
@@ -194,8 +216,7 @@ express()
       const client = await pool.connect();
 
       const inputForm = [
-        { "label" : "Product Name", "hint": "e.g. Milk, Butter, etc.", "value": "" },
-        { "label" : "Note", "hint": "e.g. description", "value": "" }
+        { "label" : "Product Name", "hint": "e.g. Milk, Butter, etc.", "value": "" }
       ];
 
       const parms = {
@@ -214,18 +235,18 @@ express()
       res.send("Error " + err);
     }
   })
-  .get('/grocery-list/add', async (req, res) => {
+  .get('/grocery-data-manager/brand/add', async (req, res) => {
     try {
       const client = await pool.connect();
 
       const inputForm = [
-        { "label" : "Grocery List Name", "hint": "My List", "value": "" }
+        { "label" : "Brand Name", "hint": "e.g. Kemps, Heinz etc.", "value": "" }
       ];
 
       const parms = {
         'operation': 'add',
-        'title': 'Add Grocery List',
-        'name': 'grocery-list',
+        'title': 'Add Brand',
+        'name': 'brand',
         'message': '',
         'inputform': inputForm
       };
@@ -238,15 +259,16 @@ express()
       res.send("Error " + err);
     }
   })
-  .post('/log', async(req, res) => {
+  .post('/add', async(req, res) => {
 		try {
-			const client = await pool.connect();
-			const name = req.body.name;
-			
+      const client = await pool.connect();
+			const groceryListName = req.body.grocery_list_name;
+			const userId = req.body.user_id;
+      	
 			const sqlInsert = await client.query(
-`INSERT INTO grocery_list (name)
-VALUES (${name})
-RETURNING id AS new_id;`);
+        `INSERT INTO grocery_list (Name, UserId)
+        VALUES (${groceryListName}, ${userId})
+        RETURNING id AS new_id;`);
 			
 			const result = {
 				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
@@ -270,9 +292,9 @@ RETURNING id AS new_id;`);
 			const userId = req.body.user_id;
 			
 			const sqlInsert = await client.query(
-`INSERT INTO Category (Name, UserId)
-VALUES (${categoryName}, ${userId})
-RETURNING CategoryId AS new_id;`);
+        `INSERT INTO Category (Name, UserId)
+        VALUES (${categoryName}, ${userId})
+        RETURNING CategoryId AS new_id;`);
 			
 			const result = {
 				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
@@ -343,16 +365,16 @@ RETURNING CategoryId AS new_id;`);
 			res.send("Error: " + err);
 		}
 	})
-  .post('/grocery-list/add', async(req, res) => {
+  .post('/brand/add', async(req, res) => {
 		try {
-      const client = await pool.connect();
-			const groceryListName = req.body.grocery_list_name;
+			const client = await pool.connect();
+			const brandName = req.body.brand_name;
 			const userId = req.body.user_id;
       	
 			const sqlInsert = await client.query(
-        `INSERT INTO grocery_list (Name, UserId)
-        VALUES (${groceryListName}, ${userId})
-        RETURNING id AS new_id;`);
+        `INSERT INTO Brand (Name, UserId)
+        VALUES (${brandName}, ${userId})
+        RETURNING BrandId AS new_id;`);
 			
 			const result = {
 				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null

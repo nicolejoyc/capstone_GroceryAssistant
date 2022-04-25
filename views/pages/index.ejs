@@ -1,40 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Grocery Assistant</title>
-  <link href="/css/styles.css" rel="stylesheet" type="text/css">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+   <!-- Interface HTML head statements -->
+   <%- include('../partials/head-1.ejs') %>
 </head>
-<body>
-  <div class="grocery-list-wrapper">
-    <a href="">Add</a>
-    <a href="">Edit</a>
-    <a href="">Delete</a>
-    <h1>Grocery Lists</h1>
-    <div class="buttons-wrapper">
-      <% grocery_list.forEach(function(r) {%>
-        <div class="button-wrapper grocery-list-button-wrapper">
-          <button type="button" class="button grocery-list-button" id='<%= r.id %>'><%= r.name %></button>
-        </div>
-      <% }); %>
+  <body>
+    <div class="interface-wrapper">
+      <!-- Interface header -->
+      <%- include('../partials/header-1.ejs') %>
+      <!-- Interface toolbar (url & icons) -->
+      <%- include('../partials/tool-bar-2.ejs') %>
+      <!-- Interface list of grocery lists -->
+      <%- include('../partials/button-list.ejs') %>
     </div>
-  </div>
-
-  <div class="grocery-list-wrapper">
-    <div class="buttons-wrapper">
-      <div class="button-wrapper maintenance-page-button-wrapper">
-        <button type="button" class="button maintenance-page-button add" id="HomePage">Home Page</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- JQuery Library -->
-  <script
-  src="https://code.jquery.com/jquery-3.6.0.min.js"
-  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-  crossorigin="anonymous"></script>
-  <!-- Javascript Files -->
-  <script src="js/groceryAssistant.js"></script>
-</body>
+    <!-- Common javascript includes -->
+    <%- include('../partials/common-js.ejs') %>
+  </body>
 </html>

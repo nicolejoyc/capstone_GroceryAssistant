@@ -1,0 +1,16 @@
+<%#
+  Creates a grid contianing controls which include icons for add (plus sign),
+  edit (pencil), and delete (trash can).
+%>
+<div class="icon-controls-wrapper">
+  <div class="icon-control-wrapper">
+    <img id="add-icon" class="control icon-control" src="/image/hdpi/ic_add.png" onClick='javascript:serverRequest("/add")'>
+  </div>
+  <div class="icon-control-wrapper">
+    <img id="edit-icon" class="control icon-control" src="/image/hdpi/ic_edit.png" onClick='javascript:serverRequest("/edit")'>
+  </div>
+  <div class="icon-control-wrapper">
+    <img id="delete-icon" class="control icon-control" src="/image/hdpi/ic_delete.png"
+    onClick='javascript:serverRequest("/delete")'>
+  </div>
+</div>

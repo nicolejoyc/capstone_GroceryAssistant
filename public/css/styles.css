@@ -129,10 +129,10 @@
 
 #add-icon,
 #edit-icon,
-#delete-icon  {
-  opacity: 100%;
+#delete-icon {
+  opacity: 1;
   border-radius: 30%;
-  background-color: rgb(103, 95, 95);
+  background-color: rgb(103 95 95);
 }
 
 .url-control-wrapper {

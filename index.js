@@ -189,8 +189,8 @@ express()
 
       const inputForm = [
         { "label" : "Store Name", "hint": "e.g. Kwik Trip, Aldi's, etc.", "value": "" },
-        { "label" : "Website", "hint": "e.g. description", "value": "" },
-        { "label" : "Phone", "hint": "e.g. description", "value": "" }
+        { "label" : "Website", "hint": "e.g. www.walmart.com", "value": "" },
+        { "label" : "Phone", "hint": "e.g. 555-555-5555", "value": "" }
       ];
 
       const parms = {

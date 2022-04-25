@@ -1,3 +1,4 @@
+## Version 0.0.0 Release Notes
 # About Grocery Assistant
 >  
 >
@@ -53,4 +54,16 @@
 >
 > heroku open 
 >
-
+## Version 0.1.0 Release Notes
+>
+> With this release the user can add products, lists, brands, categories, and stores to the database.
+>
+> The user cannot yet edit or delete from the database.
+>
+> User interface implented to be worked on in the upcoming releases. (Editing, deleting, and search).
+>
+> Project designed in a way that code can be used for several different pages.
+>
+> User can access a homepage with their lists or they can redirect to the data-manager page to manage the database.
+>
+> 

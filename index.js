@@ -24,6 +24,7 @@ express()
         `SELECT * FROM grocery_list ORDER BY id ASC`
       );
       const locals = {
+        'table': 'grocery_list',
         'title': 'Grocery Assistant',
         'url_control': { 'name' : 'Grocery Data Manager', 'url': 'grocery-data-manager' },
         'items': (grocery_list) ? grocery_list.rows : null
@@ -55,10 +56,11 @@ express()
       const client = await pool.connect();
 
       const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM Category ORDER BY id ASC`
+        `SELECT CategoryId AS id, Name FROM category ORDER BY id ASC`
       );
 
       const locals = {
+        'table': 'category',
         'title': 'Categories',
         'jsfile': '/js/category.js',
         'items': (categories) ? categories.rows : null
@@ -80,6 +82,7 @@ express()
         `SELECT StoreId AS id, Name FROM store ORDER BY id ASC`
       );
       const locals = {
+        'table': 'store',
         'title': 'Stores',
         'jsfile': '/js/store.js',
         'items': (stores) ? stores.rows : null
@@ -101,6 +104,7 @@ express()
         `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
       );
       const locals = {
+        'table': 'product',
         'title': 'Products',
         'jsfile': '/js/product.js',
         'items': (products) ? products.rows : null
@@ -122,6 +126,7 @@ express()
         `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
       );
       const locals = {
+        'table': 'brand',
         'title': 'Brand',
         'jsfile': '/js/brand.js',
         'items': (brands) ? brands.rows : null
@@ -252,6 +257,131 @@ express()
       };
 
       res.render('pages/interface-2', parms);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/grocery-data-manager/product/view', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const id = req.query.id;
+			const name = req.query.name;
+
+      const item = await client.query(
+        `SELECT ProductId AS id, Name FROM product WHERE ProductId = ` + id
+      );
+
+      const locals = {
+        'table': 'product',
+        'title': name,
+        'item': (item) ? item.rows : null
+      };
+
+      res.render('pages/interface-5', locals);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/grocery-data-manager/category/view', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const id = req.query.id;
+			const name = req.query.name;
+
+      const item = await client.query(
+        `SELECT CategoryId AS id, Name FROM category WHERE CategoryId = ` + id
+      );
+
+      const locals = {
+        'table': 'category',
+        'title': name,
+        'item': (item) ? item.rows : null
+      };
+
+      res.render('pages/interface-4', locals);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/grocery-data-manager/store/view', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const id = req.query.id;
+			const name = req.query.name;
+
+      const item = await client.query(
+        `SELECT StoreId AS id, Name FROM store WHERE StoreId = ` + id
+      );
+
+      const locals = {
+        'table': 'store',
+        'title': name,
+        'item': (item) ? item.rows : null
+      };
+
+      res.render('pages/interface-4', locals);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/grocery-data-manager/brand/view', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const id = req.query.id;
+			const name = req.query.name;
+
+      const item = await client.query(
+        `SELECT BrandId AS id, Name FROM brand WHERE BrandId = ` + id
+      );
+
+      const locals = {
+        'table': 'brand',
+        'title': name,
+        'item': (item) ? item.rows : null
+      };
+
+      res.render('pages/interface-4', locals);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/view', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const id = req.query.id;
+			const name = req.query.name;
+
+      const item = await client.query(
+        `SELECT id, Name FROM grocery_list WHERE id = ` + id
+      );
+
+      const locals = {
+        'table': 'grocery_list',
+        'title': name,
+        'item': (item) ? item.rows : null
+      };
+
+      res.render('pages/interface-4', locals);
       client.release();
     }
     catch (err) {

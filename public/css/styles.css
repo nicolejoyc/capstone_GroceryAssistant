@@ -48,6 +48,7 @@
 .button-wrapper {
   margin: 1rem auto;
   height: 3rem;
+  position: relative;
 }
 
 .button {
@@ -66,6 +67,16 @@
 
 .button:hover {
   background-color: rgb(216 105 65);
+}
+
+.open-button {
+  position: absolute;;
+  font-size: 1rem;
+  min-width: 4rem;
+  font-weight: bold;
+  width: 10%;
+  top: 3%;
+  right: 10%;
 }
 
 .form-input-wrapper,

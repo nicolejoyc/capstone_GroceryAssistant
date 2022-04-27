@@ -135,8 +135,6 @@ CREATE TABLE Unit (
 );
 
 INSERT INTO Product (ProductId, UserId, Name) VALUES
-  (0, 0, 'None'),
-  (1, 0, 'Any'),
   (2, 0, 'Apple'),
   (3, 0, 'Orange'),
   (4, 0, 'Banana'),
@@ -271,16 +269,14 @@ INSERT INTO Product (ProductId, UserId, Name) VALUES
 SELECT setval('product_productid_seq', (SELECT MAX(ProductId) FROM Product));
 
 INSERT INTO Category (CategoryId, UserId, Name) VALUES
-  (0, 0, 'None'),
-  (1, 0, 'Any'),
   (2, 0, 'Fruit'),
-  (3, 0, 'Dairy');
-  /*
+  (3, 0, 'Dairy'),
   (4, 0, 'Canned Goods'),
   (5, 0, 'Frozen'),
   (6, 0, 'Produce'),
   (7, 0, 'Bakery'),
-  (8, 0, 'Deli'),
+  (8, 0, 'Deli');
+  /*
   (9, 0, 'Condiment'),
   (10, 0, 'Meat'),
   (11, 0, 'Organic'),
@@ -307,8 +303,9 @@ INSERT INTO Category (CategoryId, UserId, Name) VALUES
 SELECT setval('category_categoryid_seq', (SELECT MAX(CategoryId) FROM Category));
 
 INSERT INTO Brand (BrandId, UserId, Name) VALUES
-  (0, 0, 'None'),
-  (1, 0, 'Any');
+  (2, 0, 'Johnson & Johnson'),
+  (3, 0, 'Dole'),
+  (4, 0, 'Famous Daves');
 
 SELECT setval('brand_brandid_seq', (SELECT MAX(BrandId) FROM Brand));
 
@@ -319,8 +316,6 @@ INSERT INTO Size (SizeId, UserId, UnitId, Quantity) VALUES
 SELECT setval('size_sizeid_seq', (SELECT MAX(SizeId) FROM Size));
 
 INSERT INTO Unit (UnitId, UserId, Name) VALUES
-  (0, 0, 'None'),
-  (1, 0, 'Any'),
   (2, 0, 'pt'),
   (3, 0, 'qt'),
   (4, 0, 'gal'),

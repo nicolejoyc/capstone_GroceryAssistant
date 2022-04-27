@@ -205,6 +205,18 @@
   opacity: 0.2;
 }
 
+.icon-control-wrapper {
+  position: relative;
+}
+
+.icon-button {
+  position: absolute;
+  border-radius: 30%;
+  width: 35px;
+  height: 35px;
+  background-color: transparent;
+}
+
 @media screen and (min-width: 37.5rem) {
   .form-input-wrapper {
     width: 70%;

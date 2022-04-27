@@ -130,7 +130,6 @@
 #add-icon,
 #edit-icon,
 #delete-icon {
-  opacity: 1;
   border-radius: 30%;
   background-color: rgb(103 95 95);
 }
@@ -145,6 +144,37 @@
   background-color: yellowgreen;
   font-size: 1.25rem;
   max-width: fit-content;
+}
+
+/* List Button Styles */
+.list-button-active {
+  font-weight: bold;
+  background-color: lime;
+}
+
+.list-button-active:hover {
+  background-color: lime;
+}
+
+.list-button-inactive {
+  font-weight: normal;
+  text-decoration: none;
+  background-color: rgb(255 127 80);
+}
+
+.list-button-disabled {
+  font-weight: normal;
+  text-decoration: none;
+  background-color: rgb(216 105 65);
+}
+
+/* Icon control Styles */
+.icon-active {
+  opacity: 1;
+}
+
+.icon-inactive {
+  opacity: 0.2;
 }
 
 @media screen and (min-width: 37.5rem) {

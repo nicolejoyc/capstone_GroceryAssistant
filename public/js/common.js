@@ -16,3 +16,10 @@ const gotoURLEnd = () => {
   window.location.href = url.join('/');
 };
 
+const openItem = async function(table, id, name) {
+  if (table === "grocery_list") {
+    window.location.href = ('/view?id=' + id + '&name=' + name);
+  } else {
+    window.location.href = ('/grocery-data-manager/' + table + '/view?id=' + id + '&name=' + name);
+  }
+};

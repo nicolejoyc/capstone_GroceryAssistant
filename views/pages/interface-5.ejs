@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Interface HTML head statements -->
+    <%- include('../partials/head-1.ejs') %>
+  </head>
+  <body>
+    <div class="interface-wrapper">
+      <!-- Interface header -->
+      <%- include('../partials/header-2.ejs') %>
+
+      <h2>Preferred Categories for <%= item[0].name %></h2>
+      <h2>Preferred Stores for <%= item[0].name %></h2>
+      <h2>Preferred Brands for <%= item[0].name %></h2>
+      
+    </div>
+    <!-- Common javascript includes -->
+    <%- include('../partials/common-js.ejs') %>
+  </body>
+</html>

@@ -1,7 +1,6 @@
 productButtons = document.querySelectorAll(".open-button");
 
 productButtons.forEach(function(i) {
-  console.log(i);
   i.classList.add('open-button-active');
 });
 

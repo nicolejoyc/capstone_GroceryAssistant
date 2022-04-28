@@ -121,29 +121,11 @@ $("#add-brand").click(async function (e) {
 $("#add-store").click(async function (e) { 
   e.preventDefault();
 
-  let invalid = [];
-  let valid = [];
+  let storeName = $('#input-0').val();
+  let storeWebsite = $('#input-1').val();
+  let storePhone = $('#input-2').val();
 
-  for (let i = 0; i < 3; i++) {
-    if ($('#input-' + i).val() === "") {
-      invalid.push('#validate-' + i);
-    } else {
-      valid.push('#validate-' + i);
-    }
-  }
-
-  invalid.forEach(function(i) {
-    $(i).css('display', 'block');
-  });
-
-  valid.forEach(function(i) {
-    $(i).css('display', 'none');
-  });
-
-  if (invalid.length === 0) {
-    let storeName = $('#input-0').val();
-    let storeWebsite = $('#input-1').val();
-    let storePhone = $('#input-2').val();
+  if (storeName !== "") {
 
     // send info to be stored into the database
 	  const response = await fetch('/store/add', {
@@ -164,5 +146,8 @@ $("#add-store").click(async function (e) {
     console.log(result);
     location.assign("/grocery-data-manager/store");
 
+  } else {
+    $('#validate-0').css('display', 'block');
   }
+  
 });

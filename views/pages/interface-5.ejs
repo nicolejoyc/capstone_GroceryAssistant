@@ -6,13 +6,10 @@
   </head>
   <body>
     <div class="interface-wrapper">
-      <!-- Interface header -->
+      <!-- Interface header with back button-->
       <%- include('../partials/header-2.ejs') %>
-
-      <h2>Preferred Categories for <%= item[0].name %></h2>
-      <h2>Preferred Stores for <%= item[0].name %></h2>
-      <h2>Preferred Brands for <%= item[0].name %></h2>
-      
+      <!-- Interface list of url buttons -->
+      <%- include('../partials/button-list.ejs') %>
     </div>
     <!-- Common javascript includes -->
     <%- include('../partials/common-js.ejs') %>

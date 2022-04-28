@@ -19,7 +19,7 @@ $("#add-grocery-list").click(async function (e) {
 
     const result = await response.json();
     console.log(result);
-    gotoURLEnd();
+    location.assign("/");
 
   } else {
     alert("Please enter a grocery list name.");

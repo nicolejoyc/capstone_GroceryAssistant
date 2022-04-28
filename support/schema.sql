@@ -139,7 +139,9 @@ INSERT INTO Product (ProductId, UserId, Name) VALUES
   (3, 0, 'Orange'),
   (4, 0, 'Banana'),
   (5, 0, 'Milk'),
-  (6, 0, 'Cheese');
+  (6, 0, 'Cheese'),
+  (7, 0, 'Peas'),
+  (8, 0, 'Corn');
   /*
   (2, 0, 'Beans Green French'),
   (3, 0, 'Beans Green Cut'),

@@ -1,5 +1,8 @@
 const serverRequest = function(url) {
-  window.location.href += url;
+  var baseURL = (window.location.href.split('?')[0]);
+  console.log(baseURL);
+  console.log(url);
+  window.location.href = baseURL + url;
 };
 
 // Build full path (absolute) URL string

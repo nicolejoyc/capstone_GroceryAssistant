@@ -264,6 +264,30 @@ express()
       res.send("Error " + err);
     }
   })
+  .get('/view/add', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const inputForm = [
+        { "label" : "Item Name", "hint": "e.g. something", "value": "" }
+      ];
+
+      const parms = {
+        'operation': 'add',
+        'title': 'Add List Item',
+        'name': 'listitem',
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
   .get('/grocery-data-manager/product/view', async (req, res) => {
     try {
       const client = await pool.connect();
@@ -371,17 +395,18 @@ express()
       const id = req.query.id;
 			const name = req.query.name;
 
-      const item = await client.query(
-        `SELECT id, Name FROM grocery_list WHERE id = ` + id
+      const items = await client.query(
+        `SELECT ProductId as id, name FROM ListItem INNER JOIN Product USING (ProductId)
+        WHERE Listid = ` + id
       );
 
       const locals = {
-        'table': 'grocery_list',
+        'table': 'listitem',
         'title': name,
-        'item': (item) ? item.rows : null
+        'items': (items) ? items.rows : null
       };
 
-      res.render('pages/interface-4', locals);
+      res.render('pages/interface-1', locals);
       client.release();
     }
     catch (err) {

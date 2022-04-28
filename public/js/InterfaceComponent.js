@@ -151,7 +151,7 @@ class InterfaceButtonList extends InterfaceComponent {
   }
 
   buttonStateChange(button) {
-    this.parent.buttonStateChange(this);
+    this.parent.buttonStateChange(button);
   }
 
   // Get button
@@ -219,7 +219,7 @@ class ControlInterface {
     this.selectButtonList = new InterfaceButtonList(this, 'select-button');
   }
 
-  buttonStateChange(component) {
+  buttonStateChange(button) {
     switch(this.selectButtonList.getActiveCount()) {
       case 0:
         this.toolbar.enableAddIcon();

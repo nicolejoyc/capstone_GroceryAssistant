@@ -1,4 +1,4 @@
-<!-- Interface for Product Preferences (before clicking on a product) -->
+<!-- Interface for setting product preferences (with checkboxes) -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,10 +7,12 @@
   </head>
   <body>
     <div class="interface-wrapper">
-      <!-- Interface header with back button-->
+      <!-- Interface header -->
       <%- include('../partials/header-2.ejs') %>
-      <!-- Interface list of url buttons -->
-      <%- include('../partials/button-list.ejs') %>
+
+      <!-- Preferences -->
+      <%- include('../partials/preference-groups.ejs') %>
+      
     </div>
     <!-- Common javascript includes -->
     <%- include('../partials/common-js.ejs') %>

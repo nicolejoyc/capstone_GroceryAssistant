@@ -24,9 +24,10 @@ express()
         `SELECT * FROM grocery_list ORDER BY id ASC`
       );
       const locals = {
+        'preference': false,
         'table': 'grocery_list',
         'title': 'Grocery Assistant',
-        'url_control': { 'name' : 'Grocery Data Manager', 'url': 'grocery-data-manager' },
+        'url_control': { 'name' : 'Settings', 'url': 'grocery-data-manager' },
         'items': (grocery_list) ? grocery_list.rows : null
       };
       res.render('pages/index', locals);
@@ -60,6 +61,7 @@ express()
       );
 
       const locals = {
+        'preference': false,
         'table': 'category',
         'title': 'Categories',
         'jsfile': '/js/category.js',
@@ -82,6 +84,7 @@ express()
         `SELECT StoreId AS id, Name FROM store ORDER BY id ASC`
       );
       const locals = {
+        'preference': false,
         'table': 'store',
         'title': 'Stores',
         'jsfile': '/js/store.js',
@@ -104,6 +107,7 @@ express()
         `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
       );
       const locals = {
+        'preference': false,
         'table': 'product',
         'title': 'Products',
         'jsfile': '/js/product.js',
@@ -126,12 +130,89 @@ express()
         `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
       );
       const locals = {
+        'preference': false,
         'table': 'brand',
         'title': 'Brand',
         'jsfile': '/js/brand.js',
         'items': (brands) ? brands.rows : null
       };
       res.render('pages/interface-1', locals);
+
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/grocery-data-manager/product-preferences', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const products = await client.query(
+        `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
+      );
+      const locals = {
+        'preference': true,
+        'table': 'product',
+        'title': 'Product Preferences',
+        'items': (products) ? products.rows : null
+      };
+      res.render('pages/interface-5', locals);
+
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/grocery-data-manager/product-preferences/view', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const id = req.query.id;
+			const name = req.query.name;
+
+      const item = await client.query(
+        `SELECT ProductId AS id, Name FROM product WHERE ProductId = ` + id
+      );
+
+      const categories = await client.query(
+        `SELECT CategoryId AS id, Name FROM category ORDER BY id ASC`
+      );
+
+      const preferredCategories = await client.query(
+        `SELECT ProductId, CategoryId, UserId FROM productcategory`
+      );
+
+      const stores = await client.query(
+        `SELECT StoreId AS id, Name FROM store ORDER BY id ASC`
+      );
+
+      const preferredStores = await client.query(
+        `SELECT ProductId, StoreId, UserId FROM productstore`
+      );
+
+      const brands = await client.query(
+        `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
+      );
+
+      const preferredBrands = await client.query(
+        `SELECT ProductId, BrandId, UserId FROM productbrand`
+      );
+
+      const locals = {
+        'title': name,
+        'item': (item) ? item.rows : null,
+        'categories': (categories) ? categories.rows : null,
+        'prefCat': (preferredCategories) ? preferredCategories.rows : null,
+        'stores': (stores) ? stores.rows : null,
+        'prefStore': (preferredStores) ? preferredStores.rows : null,
+        'brands': (brands) ? brands.rows : null,
+        'prefBrand': (preferredBrands) ? preferredBrands.rows : null
+      };
+      res.render('pages/interface-6', locals);
 
       client.release();
     }
@@ -305,7 +386,7 @@ express()
         'item': (item) ? item.rows : null
       };
 
-      res.render('pages/interface-5', locals);
+      res.render('pages/interface-4', locals);
       client.release();
     }
     catch (err) {
@@ -533,6 +614,62 @@ express()
 			
 			const result = {
 				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/edit-preference', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const userId = req.body.user_id;
+			const productId = req.body.product_id;
+			const preferenceTable = req.body.preference_table;
+			const preferenceId = req.body.preference_id;
+      const uppercaseTable = preferenceTable.charAt(0).toUpperCase() + preferenceTable.slice(1);
+      	
+			const sqlInsert = await client.query(
+        `INSERT INTO product` + preferenceTable + ` (ProductId, ` + uppercaseTable + `Id, UserId)
+        VALUES (${productId}, ${preferenceId}, ${userId});`);
+			
+			const result = {
+				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/remove-preference', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const userId = req.body.user_id;
+			const productId = req.body.product_id;
+			const preferenceTable = req.body.preference_table;
+			const preferenceId = req.body.preference_id;
+      const uppercaseTable = preferenceTable.charAt(0).toUpperCase() + preferenceTable.slice(1);
+      
+			const sqlDelete = await client.query(
+        `DELETE FROM product` + preferenceTable + ` WHERE ProductId = ` + productId + 
+        ` AND ` + uppercaseTable + `Id = ` + preferenceId + ` AND UserId = ` + userId + `;`);
+
+			const result = {
+				'response': (sqlDelete) ? (sqlDelete.rows[0]) : null
 			};
 			res.set({
 				'Content-Type': 'application/json'

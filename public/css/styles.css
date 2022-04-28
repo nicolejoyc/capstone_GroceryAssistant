@@ -45,6 +45,14 @@
   scrollbar-color: gray rgb(216 105 65);
 }
 
+.validate {
+  color: white;
+  display: none;
+  font-weight: bold;
+  margin: 0.25rem 0.5rem;
+  text-shadow: 1px 1px rgb(216 105 65);
+}
+
 .button-wrapper {
   margin: 1rem auto;
   height: 3rem;
@@ -159,10 +167,11 @@
   border-right: none;
   border-bottom: none;
   font-size: 1rem;
+  font-weight: bold;
   min-width: 4rem;
   width: 10%;
   height: 96%;
-  top: 2%;
+  top: 3%;
   right: 10%;
   display: none;
 }
@@ -204,6 +213,57 @@
 .icon-inactive {
   opacity: 0.2;
 }
+
+/* Styles for preferences (GDM & interface-5) */
+.hr {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.preference-wrapper {
+  width: 80%;
+  margin: 2%;
+  position: relative;
+}
+
+.preference-wrapper h2 {
+  background-color: coral;
+  border: 1.25px solid black;
+  border-radius: 20px;
+  color: black;
+  font-family: sans-serif;
+  font-size: 1.5rem;
+  padding: 5px;
+}
+
+.preference-wrapper a {
+  color: black;
+  font-size: 1.3rem;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.close {
+  display: none;
+}
+
+.open {
+  display: block;
+}
+
+.preference-wrapper input[type="checkbox"] {
+  height: 1.2rem;
+  margin: 1% 0 1% 3%;
+  width: 1.2rem;
+}
+
+.preference-wrapper label {
+  margin-left: 1%;
+  font-size: 1.5rem;
+}
+
+/* End preference styles */
 
 .icon-control-wrapper {
   position: relative;

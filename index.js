@@ -482,6 +482,7 @@ express()
       );
 
       const locals = {
+        'preference': false,
         'table': 'listitem',
         'title': name,
         'items': (items) ? items.rows : null

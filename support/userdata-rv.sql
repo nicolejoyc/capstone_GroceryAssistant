@@ -14,7 +14,12 @@ SELECT setval('grocery_list_id_seq', (SELECT MAX(id) FROM grocery_list));
 TRUNCATE TABLE ListItem;
 INSERT INTO ListItem (ListItemId, ListId, ProductId, CategoryId, BrandId, SizeId, UrgencyId, UrgencyAlert, ItemCount, SaverAlertId, Purchased, Hide) VALUES
   ( 1, 1, 2, 2, 0, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE),
-  ( 2, 2, 5, 3, 0, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE);
+  ( 2, 1, 5, 3, 1, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE),
+  ( 3, 1, 6, 3, 1, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE),
+  ( 4, 1, 7, 6, 1, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE),
+  ( 5, 2, 3, 2, 1, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE),
+  ( 6, 2, 8, 6, 1, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE),
+  ( 7, 2, 5, 3, 0, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE);
   
 SELECT setval('listitem_listitemid_seq', (SELECT MAX(ListItemId) FROM ListItem));
 

@@ -78,9 +78,10 @@ const ButtonState = {
  * Interface Button
  */
 class InterfaceButton extends InterfaceComponent {
-  constructor(buttonList, name, id) {
+  constructor(buttonList, type, name, id) {
     super(buttonList);
     this.name = name;
+    this.type = type;
     this.id = id;
     this.$button = null;
     this.state = ButtonState.Inactive;
@@ -90,7 +91,6 @@ class InterfaceButton extends InterfaceComponent {
   init() {
     this.$button = $(`#${this.id}`);
     this.$button.click((e) => {
-      this.removeClassAttribute();
       if(this.state === ButtonState.Active) {
         this.deactivate();
       } else {
@@ -103,17 +103,20 @@ class InterfaceButton extends InterfaceComponent {
 
   // Control button appearance / state
   activate() {
-    this.$button.addClass('list-button-active');
+    this.removeClassAttribute();
+    this.$button.addClass(`${this.type}-active`);
     this.$button.prop('disabled', false);
     this.state = ButtonState.Active;
   }
   deactivate() {
-    this.$button.addClass('list-button-inactive');
+    this.removeClassAttribute();
+    this.$button.addClass(`${this.type}-inactive`);
     this.$button.prop('disabled', false);
     this.state = ButtonState.Inactive;
   }
   disable() {
-    this.$button.addClass('list-button-disabled');
+    this.removeClassAttribute();
+    this.$button.addClass(`${this.type}-disabled`);
     this.$button.prop('disabled', true);
     this.state = ButtonState.Disabled;
   }
@@ -121,45 +124,53 @@ class InterfaceButton extends InterfaceComponent {
   removeClassAttribute() {
     switch(this.state) {
       case ButtonState.Active:
-        this.$button.removeClass('list-button-active');
+        this.$button.removeClass(`${this.type}-active`);
         break;
       case ButtonState.Inactive:
-        this.$button.removeClass('list-button-inactive');
+        this.$button.removeClass(`${this.type}-inactive`);
         break;
       case ButtonState.Disabled:
-        this.$button.removeClass('list-button-disabled');
+        this.$button.removeClass(`${this.type}-disabled`);
         break;
     }
   }
 }
 
 class InterfaceButtonList extends InterfaceComponent {
-  constructor(parent) {
+  constructor(parent, buttonType) {
     super(parent);
     this.buttons = [];
+    this.buttonType = buttonType;
     this.init();
   }
 
   init() {
-    $('.list-button').each((index, e) => {
-      this.buttons.push({
-        'button': new InterfaceButton(this, String($(e).text()).trim(), e.id),
-        'state': ButtonState.Inactive
-      });
+    $(`.${this.buttonType}`).each((index, e) => {
+      this.buttons.push(new InterfaceButton(this, this.buttonType, String($(e).text()).trim(), e.id));
     });
   }
 
   buttonStateChange(button) {
-    let buttonElement = this.buttons.find((element) => element.button.id === button.id);
-    if( buttonElement !== -1 )  {
-      buttonElement.state = button.state;
+    this.parent.buttonStateChange(button);
+  }
+
+  // Get button
+  getButton(index) {
+    if(index < this.buttons.length) {
+      return this.buttons[index];
     }
-    this.parent.buttonStateChange(this);
   }
 
   // Button active state
   getActiveCount()   { return this.getActiveButtons().length; }
   getActiveButtons() { return this.filterButtonsByState(ButtonState.Active); }
+
+  // Get index of first active button
+  getActiveIndex() { 
+    return this.buttons.findIndex(function(button) { 
+        return button.state === ButtonState.Active;
+    });
+  }
 
   // Get button by state
   filterButtonsByState(state) {
@@ -176,15 +187,16 @@ class InterfaceButtonList extends InterfaceComponent {
  *  to be selected (active) at any given time.
  */
 class InterfaceButtonList_SelectOne extends InterfaceButtonList {
-  constructor(parent) {
-    super(parent);
+  constructor(parent, buttonType) {
+    super(parent, buttonType);
   }
 
   buttonStateChange(button) {
-    let activeButtons = this.filterButtonsByState(ButtonState.Active);
-    activeButtons.forEach(element => {
-      element.button.deactivate();
-      element.state = ButtonState.Inactive;
+    let activeButtons = this.getActiveButtons();
+    activeButtons.forEach(listButton => {
+      if(listButton.id !== button.id) {
+        listButton.deactivate();
+      }
     });
     super.buttonStateChange(button);
   }
@@ -196,31 +208,50 @@ class InterfaceButtonList_SelectOne extends InterfaceButtonList {
 class ControlInterface {
   constructor() {
     this.toolbar =null;
-    this.buttonList =null;
+    this.openButtonList =null;
+    this.selectButtonList =null;
     this.init();
   }
 
   init() {
     this.toolbar = new InterfaceToolbar(this);
-    this.buttonList = new InterfaceButtonList(this);
+    this.openButtonList = new InterfaceButtonList(this, 'open-button');
+    this.selectButtonList = new InterfaceButtonList(this, 'select-button');
   }
 
-  buttonStateChange(component) {
-    switch(this.buttonList.getActiveCount()) {
+  buttonStateChange(button) {
+    switch(this.selectButtonList.getActiveCount()) {
       case 0:
         this.toolbar.enableAddIcon();
         this.toolbar.disableEditIcon();
         this.toolbar.disableDeleteIcon();
+        this.deactivateOpenButton();
         break;
       case 1:
         this.toolbar.disableAddIcon();
         this.toolbar.enableEditIcon();
         this.toolbar.enableDeleteIcon();
+        this.deactivateOpenButton();
+        this.activateOpenButton(this.selectButtonList.getActiveIndex());
         break;
       default:
         this.toolbar.disableAddIcon();
         this.toolbar.disableEditIcon();
         this.toolbar.enableDeleteIcon();
+        this.deactivateOpenButton();
+    }
+  }
+
+  deactivateOpenButton() {
+    let activeButton = this.openButtonList.getActiveButtons()[0];
+    if( activeButton ) {
+        activeButton.deactivate();
+    }
+  }
+
+  activateOpenButton(index) {
+    if(index !== -1) {
+      this.openButtonList.getButton(index).activate();
     }
   }
 }

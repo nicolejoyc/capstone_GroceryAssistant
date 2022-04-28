@@ -2,10 +2,11 @@ $("#add-grocery-list").click(async function (e) {
   e.preventDefault();
 
   let groceryListName = $('#input-0').val();
+
   if (groceryListName !== "") {
 
     // send info to be stored into the database
-	  const response = await fetch('/add', {
+    const response = await fetch('/add', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -19,10 +20,10 @@ $("#add-grocery-list").click(async function (e) {
 
     const result = await response.json();
     console.log(result);
-    gotoURLEnd();
+    location.assign("/");
 
   } else {
-    alert("Please enter a grocery list name.");
+    $('#validate-0').css('display', 'block');
   }
   
 });
@@ -52,7 +53,7 @@ $("#add-product").click(async function (e) {
     location.assign("/grocery-data-manager/product");
 
   } else {
-    alert("Please enter a product name.");
+    $('#validate-0').css('display', 'block');
   }
   
 });
@@ -82,7 +83,7 @@ $("#add-category").click(async function (e) {
     location.assign("/grocery-data-manager/category");
 
   } else {
-    alert("Please enter a category name.");
+    $('#validate-0').css('display', 'block');
   }
   
 });
@@ -112,7 +113,7 @@ $("#add-brand").click(async function (e) {
     location.assign("/grocery-data-manager/brand");
 
   } else {
-    alert("Please enter a brand name.");
+    $('#validate-0').css('display', 'block');
   }
   
 });
@@ -120,11 +121,29 @@ $("#add-brand").click(async function (e) {
 $("#add-store").click(async function (e) { 
   e.preventDefault();
 
-  let storeName = $('#input-0').val();
-  let storeWebsite = $('#input-1').val();
-  let storePhone = $('#input-2').val();
+  let invalid = [];
+  let valid = [];
 
-  if (storeName !== "") {
+  for (let i = 0; i < 3; i++) {
+    if ($('#input-' + i).val() === "") {
+      invalid.push('#validate-' + i);
+    } else {
+      valid.push('#validate-' + i);
+    }
+  }
+
+  invalid.forEach(function(i) {
+    $(i).css('display', 'block');
+  });
+
+  valid.forEach(function(i) {
+    $(i).css('display', 'none');
+  });
+
+  if (invalid.length === 0) {
+    let storeName = $('#input-0').val();
+    let storeWebsite = $('#input-1').val();
+    let storePhone = $('#input-2').val();
 
     // send info to be stored into the database
 	  const response = await fetch('/store/add', {
@@ -145,8 +164,5 @@ $("#add-store").click(async function (e) {
     console.log(result);
     location.assign("/grocery-data-manager/store");
 
-  } else {
-    alert("Please enter a store name.");
- }
-  
+  }
 });

@@ -13,9 +13,10 @@
 <div class="button-list-wrapper">
   <% items.forEach(function(r) {%>
     <div class="button-wrapper">
-      <button type="button" class="button list-button" id=list-button-<%= r.id %>><%= r.name %></button>
-      <button type="button" class="button open-button" id='<%= r.id %>' 
-        onclick='javascript:openItem("<%= table %>", "<%= r.id %>", "<%= r.name %>")'><%= r.name %>
+      <button type="button" class="button list-button select-button" id=select-button-<%= r.id %>><%= r.name %></button>
+      <button type="button" class="button list-button open-button" id='open-button-<%= r.id %>' 
+        onclick='javascript:openItem("<%= table %>", "<%= r.id %>", "<%= r.name %>", "<%= preference %>")'>
+        <% if (!preference) {%> Open <%} else {%> Select <% } %>
       </button>
     </div>
   <% }); %>

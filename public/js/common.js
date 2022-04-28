@@ -1,5 +1,8 @@
 const serverRequest = function(url) {
-  window.location.href += url;
+  var baseURL = (window.location.href.split('?')[0]);
+  console.log(baseURL);
+  console.log(url);
+  window.location.href = baseURL + url;
 };
 
 // Build full path (absolute) URL string
@@ -16,10 +19,14 @@ const gotoURLEnd = () => {
   window.location.href = url.join('/');
 };
 
-const openItem = async function(table, id, name) {
+const openItem = function(table, id, name, preference) {
   if (table === "grocery_list") {
     window.location.href = ('/view?id=' + id + '&name=' + name);
   } else {
-    window.location.href = ('/grocery-data-manager/' + table + '/view?id=' + id + '&name=' + name);
+    if (preference === 'true') {
+      window.location.href = ('/grocery-data-manager/product-preferences/view?id=' + id + '&name=' + name);
+    } else {
+      window.location.href = ('/grocery-data-manager/' + table + '/view?id=' + id + '&name=' + name);
+    }
   }
 };

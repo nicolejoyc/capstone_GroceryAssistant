@@ -69,16 +69,6 @@
   background-color: rgb(216 105 65);
 }
 
-.open-button {
-  position: absolute;
-  font-size: 1rem;
-  min-width: 4rem;
-  font-weight: bold;
-  width: 10%;
-  top: 3%;
-  right: 10%;
-}
-
 .form-input-wrapper,
 .search-control-wrapper,
 .url-control-wrapper {
@@ -145,6 +135,10 @@
   background-color: rgb(103 95 95);
 }
 
+.icon-control {
+  opacity: 0.2;
+}
+
 .url-control-wrapper {
   margin-top: 0.25rem;
 }
@@ -158,22 +152,46 @@
 }
 
 /* List Button Styles */
-.list-button-active {
+.open-button {
+  background-color: rgb(250 172 143);
+  position: absolute;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  font-size: 1rem;
+  font-weight: bold;
+  min-width: 4rem;
+  width: 10%;
+  height: 96%;
+  top: 3%;
+  right: 10%;
+  display: none;
+}
+
+.open-button-active {
+  display: block;
+}
+
+.open-button-inactive {
+  display: none;
+}
+
+.select-button-active {
   font-weight: bold;
   background-color: lime;
 }
 
-.list-button-active:hover {
+.select-button-active:hover {
   background-color: lime;
 }
 
-.list-button-inactive {
+.select-button-inactive {
   font-weight: normal;
   text-decoration: none;
   background-color: rgb(255 127 80);
 }
 
-.list-button-disabled {
+.select-button-disabled {
   font-weight: normal;
   text-decoration: none;
   background-color: rgb(216 105 65);
@@ -224,6 +242,18 @@
 
 .open {
   display: block;
+}
+
+.icon-control-wrapper {
+  position: relative;
+}
+
+.icon-button {
+  position: absolute;
+  border-radius: 30%;
+  width: 35px;
+  height: 35px;
+  background-color: transparent;
 }
 
 @media screen and (min-width: 37.5rem) {

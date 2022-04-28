@@ -45,6 +45,14 @@
   scrollbar-color: gray rgb(216 105 65);
 }
 
+.validate {
+  color: white;
+  display: none;
+  font-weight: bold;
+  margin: 0.25rem 0.5rem;
+  text-shadow: 1px 1px rgb(216 105 65);
+}
+
 .button-wrapper {
   margin: 1rem auto;
   height: 3rem;

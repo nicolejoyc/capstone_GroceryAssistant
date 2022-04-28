@@ -27,7 +27,7 @@ express()
         'preference': false,
         'table': 'grocery_list',
         'title': 'Grocery Assistant',
-        'url_control': { 'name' : 'Grocery Data Manager', 'url': 'grocery-data-manager' },
+        'url_control': { 'name' : 'Settings', 'url': 'grocery-data-manager' },
         'items': (grocery_list) ? grocery_list.rows : null
       };
       res.render('pages/index', locals);

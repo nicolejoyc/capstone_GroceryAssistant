@@ -114,7 +114,7 @@
 
 .icon-controls-wrapper {
   display: grid;
-  grid-template-columns: 45px 45px 45px;
+  grid-template-columns: 45px 45px 45px 45px;
   grid-template-rows: auto;
   margin: 0.25rem 0.5rem;
   position: absolute;
@@ -138,13 +138,20 @@
 
 #add-icon,
 #edit-icon,
-#delete-icon {
+#delete-icon,
+#home-icon,
+#settings-icon {
   border-radius: 30%;
   background-color: rgb(103 95 95);
 }
 
 .icon-control {
   opacity: 0.2;
+}
+
+#home-icon,
+#settings-icon {
+  opacity: 1;
 }
 
 .url-control-wrapper {
@@ -287,6 +294,6 @@
   }
 
   .icon-controls-wrapper {
-    grid-template-columns: 50px 50px 50px;
+    grid-template-columns: 50px 50px 50px 50px;
   }
 }

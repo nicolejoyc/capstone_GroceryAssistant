@@ -18,4 +18,15 @@
     <button type="button" class="icon-button" id="delete-icon-button" onClick='javascript:serverRequest("/delete")'></button>
     <img id="delete-icon" class="control icon-control" src="/image/hdpi/ic_delete.png">
   </div>
+ <% if (icon === 'settings') { %>
+  <div class="icon-control-wrapper">
+    <button type="button" class="icon-button" id="settings-icon-button" onClick='gotoURL("/grocery-data-manager")'></button>
+    <img id="settings-icon" class="control icon-control" src="/image/hdpi/ic_settings.png">
+  </div>
+ <% } else { %>
+  <div class="icon-control-wrapper">
+    <button type="button" class="icon-button" id="home-icon-button" onClick='gotoURL("/")'></button>
+    <img id="settings-icon" class="control icon-control" src="/image/hdpi/ic_home.png">
+  </div>
+ <% } %>
 </div>

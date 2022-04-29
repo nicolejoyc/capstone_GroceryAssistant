@@ -8,8 +8,12 @@
   outline-style: none;
 }
 
+body {
+  background-color: #D5F6E5;
+}
+
 .interface-wrapper {
-  background-color: rgb(127 123 123);
+  background-color: #01A66F;
   border: 4px solid black;
   border-radius: 25px;
   margin: 0.2rem auto;
@@ -19,7 +23,7 @@
 }
 
 .header-wrapper {
-  background-color: yellow;
+  background-color: #75CE9F;
   border: 2px solid rgb(95 78 78);
   border-radius: 10px;
   margin: 1%;
@@ -38,9 +42,9 @@
 .buttons-wrapper,
 .button-list-wrapper {
   border: 2px solid rgb(95 78 78);
-  border-radius: 10px;
+  border-radius: 20px;
   margin: 1%;
-  height: 83vh;
+  height: auto;
   overflow: auto;
   scrollbar-color: gray rgb(216 105 65);
 }
@@ -57,10 +61,12 @@
   margin: 1rem auto;
   height: 3rem;
   position: relative;
+  text-align: center;
+  line-height: 45px;
 }
 
 .button {
-  background-color: coral;
+  background-color: #BDD99E;
   border: 1.25px solid black;
   border-radius: 20px;
   color: black;
@@ -74,7 +80,7 @@
 }
 
 .button:hover {
-  background-color: rgb(216 105 65);
+  background-color: #6F9842;
 }
 
 .form-input-wrapper,
@@ -114,7 +120,7 @@
 
 .icon-controls-wrapper {
   display: grid;
-  grid-template-columns: 45px 45px 45px;
+  grid-template-columns: 45px 45px 45px 45px;
   grid-template-rows: auto;
   margin: 0.25rem 0.5rem;
   position: absolute;
@@ -126,7 +132,7 @@
 }
 
 .submit {
-  background-color: rgb(216 105 65);
+  background-color: #BDD99E;
   border: 2px solid rgb(95 78 78);
   border-radius: 10px;
   font-size: 1rem;
@@ -136,15 +142,23 @@
   width: 5rem;
 }
 
+#settings-icon,
 #add-icon,
 #edit-icon,
-#delete-icon {
+#delete-icon,
+#home-icon,
+#settings-icon {
   border-radius: 30%;
-  background-color: rgb(103 95 95);
+  background-color: #177820;
 }
 
 .icon-control {
   opacity: 0.2;
+}
+
+#home-icon,
+#settings-icon {
+  opacity: 1;
 }
 
 .url-control-wrapper {
@@ -154,14 +168,14 @@
 .url-control-wrapper .control {
   border-radius: 5px;
   margin-left: 0.5rem;
-  background-color: yellowgreen;
+  background-color: #BDD99E;
   font-size: 1.25rem;
   max-width: fit-content;
 }
 
 /* List Button Styles */
 .open-button {
-  background-color: rgb(250 172 143);
+  background-color: #719A44;
   position: absolute;
   border-top: none;
   border-right: none;
@@ -186,23 +200,23 @@
 
 .select-button-active {
   font-weight: bold;
-  background-color: lime;
+  background-color: #94B86C;
 }
 
 .select-button-active:hover {
-  background-color: lime;
+  background-color: #6F9842;
 }
 
 .select-button-inactive {
   font-weight: normal;
   text-decoration: none;
-  background-color: rgb(255 127 80);
+  background-color: #BDD99E;
 }
 
 .select-button-disabled {
   font-weight: normal;
   text-decoration: none;
-  background-color: rgb(216 105 65);
+  background-color: #BDD99E;
 }
 
 /* Icon control Styles */
@@ -227,7 +241,7 @@
 }
 
 .preference-wrapper h2 {
-  background-color: coral;
+  background-color: #BDD99E;
   border: 1.25px solid black;
   border-radius: 20px;
   color: black;
@@ -277,16 +291,47 @@
   background-color: transparent;
 }
 
-@media screen and (min-width: 37.5rem) {
+/*Only Tablet*/
+@media only screen and (max-width: 64em) {
+  body {
+    background-color: #01A66F;
+    margin: 0px;
+  }
+
+  .interface-wrapper { 
+    min-width: 0px;
+    width: auto;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+  }
+}
+
+/*Only Mobile*/
+@media only screen and (max-width: 37.5em) {
+  .interface-wrapper {
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+  }
+
   .form-input-wrapper {
     width: 70%;
   }
 
   .search-control-wrapper {
-    width: 70%;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .tool-bar-wrapper, .button-list-wrapper-1 {
+    padding-bottom: 60px;
   }
 
   .icon-controls-wrapper {
-    grid-template-columns: 50px 50px 50px;
+    grid-template-columns: 100px 100px 100px 100px;
+    position: relative;
   }
 }

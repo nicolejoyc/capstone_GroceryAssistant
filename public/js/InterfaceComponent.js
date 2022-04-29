@@ -10,6 +10,7 @@ class InterfaceComponent {
 class InterfaceToolbar extends InterfaceComponent {
   constructor(parent) {
     super(parent);
+    this.$settingsIcon = null;
     this.$addIcon = null;
     this.$editIcon = null;
     this.$deleteIcon = null;
@@ -18,10 +19,12 @@ class InterfaceToolbar extends InterfaceComponent {
   }
 
   init() {
+    this.$settingsIcon = $('#settings-icon');
     this.$addIcon = $('#add-icon');
     this.$editIcon = $('#edit-icon');
     this.$deleteIcon = $('#delete-icon');
     this.$searchControl = $('#search-control');
+    this.enableIcon(this.$settingsIcon);
     this.enableIcon(this.$addIcon);
     this.disableIcon(this.$editIcon);
     this.disableIcon(this.$deleteIcon);
@@ -29,6 +32,14 @@ class InterfaceToolbar extends InterfaceComponent {
     this.$searchControl.keydown((e) => {
       console.log("search change");
     });
+  }
+
+  // Settings icon apperance / behavior
+  enableSettingsIcon() {
+    this.enableIcon(this.$settingsIcon);
+  }
+  disableSettingsIcon() {
+    this.disableIcon(this.$settingsIcon);
   }
 
   // Add icon apperance / behavior

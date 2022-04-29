@@ -15,36 +15,35 @@
               <div class="form-input-wrapper">
                 <label for="dropdown-product"> Product:</label>
                 <select class="form-input" name="dropdown-product" id="dropdown-product" placeholder="select product" required>
-                <option value="apples">Apples</option>
-                <option value="bread">Bread</option>
-                <option value="eggs">Eggs</option>
-                <option value="hamburger">Hamburger</option></select>
+                  <% products.forEach(function(r) {%>
+                    <option value="product-<%= r.id %>"><%= r.name %></option>
+                  <% }); %>
+                  </select>
 
                 <label for="dropdown-cat"> Category:</label>
                 <select class="form-input"  name="dropdown-cat" id="dropdown-cat" placeholder="select category name" required>
-                <option value="Bakery">Bakery</option>
-                <option value="Dairy">Dairy</option>
-                <option value="Meats">Meats</option>
-                <option value="Produce">Produce</option></select>
+                <% categories.forEach(function(r) {%>
+                  <option value="category-<%= r.id %>"><%= r.name %></option>
+                <% }); %>
+                </select>
 
                 <label for="dropdown-store"> Store:</label>
                 <select class="form-input" name="dropdown-store" id="dropdown-store" placeholder="select store name" required>
-                <option value="aldi">Aldi</option>
-                <option value="hansens">Hansens</option>
-                <option value="kwiktrip">Kwik Trip</option>
-                <option value="walmart">Wal-Mart</option></select>
+                  <% stores.forEach(function(r) {%>
+                    <option value="store-<%= r.id %>"><%= r.name %></option>
+                  <% }); %>
+                  </select>
 
                 <label for="dropdown-brand"> Brand:</label>
                 <select class="form-input" name="dropdown-store" id="dropdown-brand" placeholder="select brand name" required>
-                <option value="fairfield">fairfield</option>
-                <option value="eggland">Eggland</option>
-                <option value="wonder">Wonder</option>
-                <option value="freds">Fred's</option></select>
+                  <% brands.forEach(function(r) {%>
+                    <option value="brand-<%= r.id %>"><%= r.name %></option>
+                  <% }); %>
+                  </select>
 
                 <br>
-
                 <label for="quantity"> Quantity:</label><br>
-                <input class="form-input" type="text" name="quantity" id="quantity" placeholder="select quantity" value="" required>
+                <input class="form-input" type="numeric" name="quantity" id="quantity" placeholder="Enter quantity" value="1" required>
 
     </select>
               </div>
@@ -57,6 +56,6 @@
     </div>
     <!-- Common javascript includes -->
     <%- include('../partials/common-js.ejs') %>
-    <script>src="/js/listitem.js"</script>
+    <script src="/js/add.js"></script>
   </body>
 </html>

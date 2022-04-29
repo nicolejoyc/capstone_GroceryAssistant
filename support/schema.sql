@@ -26,7 +26,7 @@ CREATE TABLE ListItem (
   ProductId INT NOT NULL,
   CategoryId INT NOT NULL,
   BrandId INT NOT NULL,
-  SizeId INT NOT NULL,
+  SizeId INT,
   UrgencyId INT,
   UrgencyAlert DATE,
   ItemCount SMALLINT DEFAULT 1,

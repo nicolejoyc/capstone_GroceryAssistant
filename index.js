@@ -640,6 +640,38 @@ express()
 			res.send("Error: " + err);
 		}
 	})
+  .post('/view/add', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const listId = req.body.list_id;
+      const productId = req.body.product_id;
+      const categoryId = req.body.category_id;
+      const storeId = req.body.store_id;
+      const brandId = req.body.brand_id;
+      const itemCount = req.body.item_count;
+      console.log(productId);
+      
+			const sqlInsert = await client.query(
+        `INSERT INTO listitem (listid, productid, categoryid, brandid, itemcount)
+        VALUES (${listId}, ${productId}, ${categoryId}, ${brandId}, ${itemCount})
+        RETURNING listItemId AS new_id;`);
+			console.log(sqlInsert);
+
+			const result = {
+				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
   .post('/edit-preference', async(req, res) => {
 		try {
 			const client = await pool.connect();

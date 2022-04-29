@@ -239,3 +239,45 @@ $("#add-store").click(async function (e) {
   }
   
 });
+$("#add-listitem").click(async function (e) { 
+  e.preventDefault();
+  let productID = $('#dropdown-product').val().split('-')[1];
+  let categoryID = $('#dropdown-cat').val().split('-')[1]; 
+  let storeID = $('#dropdown-store').val().split('-')[1];
+  let brandID = $('#dropdown-brand').val().split('-')[1];
+  let itemCount =$('#quantity').val();  
+ // if (brandName.replace(/\s/g, '') !== "" && charLessThanTwenty(brandName)) {
+
+    // send info to be stored into the database
+	  const response = await fetch('/view/add', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        list_id: 1,
+        product_id: "'" + productID + "'",
+        category_id: "'" + categoryID + "'",
+        store_id: "'" + storeID + "'",
+        brand_id: "'" + brandID + "'",
+        item_count: "'" + itemCount + "'",
+      })
+    });
+
+    const result = await response.json();
+    console.log(result);
+    location.assign("/view?id=1&name=Tom%27s%20Grocery%20List");
+
+  // } 
+  // else {
+  //   validate = $('#validate-0');
+  //   if (!charLessThanTwenty(brandName)) {
+  //     validate.html('Name must be 20 characters or less.');
+  //   } else {
+  //     validate.html('Please fill out this field.');
+  //   }
+  //   $('#validate-0').css('display', 'block');
+  // }
+  
+});

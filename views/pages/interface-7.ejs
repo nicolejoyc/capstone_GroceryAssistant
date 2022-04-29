@@ -12,15 +12,12 @@
       <div class="form-container">
         <div class="form-wrapper">
           <form action="">
-            <% inputform.forEach(function(i, index) {%>
               <div class="form-input-wrapper">
-                <label for="input-<%= index %>"><%= i.label %>:</label><br>
-                <input class="form-input" type="text" name="input-<%= index %>" id="input-<%= index %>" placeholder="<%= i.hint %>" value="<%= i.value %>" required>
-                <p id="validate-<%= index %>" class="validate">* Please fill out this field.</p>
+                <label for="listitem-0"> Product Name:</label><br>
+                <input class="form-input" type="text" name="listitem-0" id="listitem-0" placeholder="select product name" value="" required>
               </div>
-            <% }); %>
             <input type="text" name="userid" value="1" hidden>
-            <input type="submit" id="<%= operation %>-<%= name %>" class="submit" value="Save">
+            <input type="submit" id="add-listitem" class="submit" value="Save">
           </form>
         </div>
       </div>

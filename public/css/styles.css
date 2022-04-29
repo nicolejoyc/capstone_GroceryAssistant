@@ -284,16 +284,47 @@ body {
   background-color: transparent;
 }
 
-@media screen and (min-width: 600px) {
+/*Only Tablet*/
+@media only screen and (max-width: 64em) {
+  body {
+    background-color: #01A66F;
+    margin: 0px;
+  }
+
+  .interface-wrapper { 
+    min-width: 0px;
+    width: auto;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+  }
+}
+
+/*Only Mobile*/
+@media only screen and (max-width: 37.5em) {
+  .interface-wrapper {
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+  }
+
   .form-input-wrapper {
     width: 70%;
   }
 
   .search-control-wrapper {
-    width: 70%;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .tool-bar-wrapper, .button-list-wrapper-1 {
+    padding-bottom: 60px;
   }
 
   .icon-controls-wrapper {
-    grid-template-columns: 50px 50px 50px 50px;
+    grid-template-columns: 100px 100px 100px 100px;
+    position: relative;
   }
 }

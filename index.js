@@ -353,7 +353,7 @@ express()
       const client = await pool.connect();
 
       const inputForm = [
-        { "label" : "Item Name", "hint": "e.g. something", "value": "" }
+        { "label" : "Product Name", "hint": "Enter a product", "value": "" }
       ];
 
       const parms = {
@@ -364,7 +364,7 @@ express()
         'inputform': inputForm
       };
 
-      res.render('pages/interface-2', parms);
+      res.render('pages/interface-7', parms);
       client.release();
     }
     catch (err) {

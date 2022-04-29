@@ -13,8 +13,40 @@
         <div class="form-wrapper">
           <form action="">
               <div class="form-input-wrapper">
-                <label for="listitem-0"> Product Name:</label><br>
-                <input class="form-input" type="text" name="listitem-0" id="listitem-0" placeholder="select product name" value="" required>
+                <label for="dropdown-product"> Product:</label>
+                <select class="form-input" name="dropdown-product" id="dropdown-product" placeholder="select product" required>
+                <option value="aldi">Aldi</option>
+                <option value="hansens">Hansens</option>
+                <option value="kwiktrip">Kwik Trip</option>
+                <option value="walmart">Business</option></select>
+
+                <label for="dropdown-cat"> Category:</label>
+                <select class="form-input"  name="dropdown-cat" id="dropdown-cat" placeholder="select category name" required>
+                <option value="Bakery">Bakery</option>
+                <option value="Dairy">Dairy</option>
+                <option value="Meats">Meats</option>
+                <option value="Produce">Business</option></select>
+
+                <label for="dropdown-store"> Store:</label>
+                <select class="form-input" name="dropdown-store" id="dropdown-store" placeholder="select store name" required>
+                <option value="aldi">Aldi</option>
+                <option value="hansens">Hansens</option>
+                <option value="kwiktrip">Kwik Trip</option>
+                <option value="walmart">Business</option></select>
+
+                <label for="dropdown-brand"> Brand:</label>
+                <select class="form-input" name="dropdown-store" id="dropdown-brand" placeholder="select brand name" required>
+                <option value="aldi">Aldi</option>
+                <option value="hansens">Hansens</option>
+                <option value="kwiktrip">Kwik Trip</option>
+                <option value="walmart">Business</option></select>
+
+                <br>
+
+                <label for="quantity"> Quantity:</label><br>
+                <input class="form-input" type="text" name="quantity" id="quantity" placeholder="select quantity" value="" required>
+
+    </select>
               </div>
             <input type="text" name="userid" value="1" hidden>
             <input type="submit" id="add-listitem" class="submit" value="Save">
@@ -25,5 +57,6 @@
     </div>
     <!-- Common javascript includes -->
     <%- include('../partials/common-js.ejs') %>
+    <script>src="/js/listitem.js"</script>
   </body>
 </html>

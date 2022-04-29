@@ -303,9 +303,6 @@ express()
 
       const inputForm = [
         { "label" : "Product Name", "hint": "e.g. Milk, Butter, etc.", "value": "" },
-        { "label" : "Category", "hint": "Produce, Dairy, Meats, etc.", "value": "" },
-        { "label" : "Brand Name", "hint": "e.g. Anacin, Sanka, Tang, etc.", "value": "" },
-        { "label" : "Quantity", "hint": "1-99", "value": "" }
       ];
 
       const parms = {
@@ -352,19 +349,31 @@ express()
     try {
       const client = await pool.connect();
 
-      const inputForm = [
-        { "label" : "Product Name", "hint": "Enter a product", "value": "" }
-      ];
+      const products = await client.query(
+        `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
+      );
 
-      const parms = {
-        'operation': 'add',
+      const categories = await client.query(
+        `SELECT CategoryId AS id, Name FROM category ORDER BY id ASC`
+      );
+
+      const stores = await client.query(
+        `SELECT StoreId AS id, Name FROM store ORDER BY id ASC`
+      );
+
+      const brands = await client.query(
+        `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
+      );
+
+      const locals = {
         'title': 'Add List Item',
-        'name': 'listitem',
-        'message': '',
-        'inputform': inputForm
+        'products': (products) ? products.rows : null,
+        'categories': (categories) ? categories.rows : null,
+        'stores': (stores) ? stores.rows : null,
+        'brands': (brands) ? brands.rows : null
       };
 
-      res.render('pages/interface-7', parms);
+      res.render('pages/interface-7', locals);
       client.release();
     }
     catch (err) {

@@ -6,6 +6,14 @@ charLessThanTwenty = function(name) {
   }
 };
 
+charLessThanThirty = function(name) {
+  if (name.length <= 30) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 $("#add-grocery-list").click(async function (e) { 
   e.preventDefault();
 
@@ -21,8 +29,8 @@ $("#add-grocery-list").click(async function (e) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        user_id: "'1'",
-        grocery_list_name: "'" + groceryListName + "'"
+        user_id: 1,
+        grocery_list_name: "'" + groceryListName.replace(/'/g, "''") + "'"
       })
     });
 
@@ -57,8 +65,8 @@ $("#add-product").click(async function (e) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        user_id: "'1'",
-        product_name: "'" + productName + "'"
+        user_id: 1,
+        product_name: "'" + productName.replace(/'/g, "''") + "'"
       })
     });
 
@@ -93,8 +101,8 @@ $("#add-category").click(async function (e) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        user_id: "'11'", // just a random number > 0
-        category_name: "'" + categoryName + "'"
+        user_id: 11, // just a random number > 0
+        category_name: "'" + categoryName.replace(/'/g, "''") + "'"
       })
     });
 
@@ -129,8 +137,8 @@ $("#add-brand").click(async function (e) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        user_id: "'1'",
-        brand_name: "'" + brandName + "'"
+        user_id: 1,
+        brand_name: "'" + brandName.replace(/'/g, "''") + "'"
       })
     });
 
@@ -176,11 +184,20 @@ $("#add-store").click(async function (e) {
       if (currentField.val() === "") {
         valid.push(i);
       } else {
-        if (!charLessThanTwenty(currentField.val())) {
-          invalid.push(i);
-          message[i] = 'Field must be 20 characters or less.';
+        if (i === 1) {
+          if (!charLessThanThirty(currentField.val())) {
+            invalid.push(i);
+            message[i] = 'Field must be 30 characters or less.';
+          } else {
+            valid.push(i);
+          }
         } else {
-          valid.push(i);
+          if (!charLessThanTwenty(currentField.val())) {
+            invalid.push(i);
+            message[i] = 'Field must be 20 characters or less.';
+          } else {
+            valid.push(i);
+          }
         }
       }
     }
@@ -208,10 +225,10 @@ $("#add-store").click(async function (e) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        user_id: "'11'", // just a random number > 0
-        store_name: "'" + storeName + "'",
-        store_website: "'" + storeWebsite + "'",
-        store_phone: "'" + storePhone + "'"
+        user_id: 11, // just a random number > 0
+        store_name: "'" + storeName.replace(/'/g, "''") + "'",
+        store_website: "'" + storeWebsite.replace(/'/g, "''") + "'",
+        store_phone: "'" + storePhone.replace(/'/g, "''") + "'"
       })
     });
 

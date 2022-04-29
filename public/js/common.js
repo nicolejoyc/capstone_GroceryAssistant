@@ -13,7 +13,12 @@ const buildURLString = (targetPage) => {
 };
 
 // Get last path from URL string
-const gotoURLEnd = () => {
+const gotoURL = (url) => {
+  window.location.href = url;
+};
+
+// Get last path from URL string
+const urlBackOne = () => {
   var url = (window.location.href.split('/'));
   url.pop();
   window.location.href = url.join('/');

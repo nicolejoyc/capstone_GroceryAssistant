@@ -1,14 +1,29 @@
 <%#
-  Creates a grid contianing controls which include icons for add (plus sign),
+  Creates a grid contianing controls which include icons for settings (gear), add (plus sign),
   edit (pencil), and delete (trash can).
 
   Addition of button with the click handler is to allow disabling the click
   event. The button is layered over the image and made transparent.
 %>
 <div class="icon-controls-wrapper">
+  <% if (icon === 'settings') { %>
+    <div class="icon-control-wrapper">
+      <button type="button" class="icon-button" id="settings-icon-button" onClick='gotoURL("/grocery-data-manager")'></button>
+      <img id="settings-icon" class="control icon-control" src="/image/hdpi/ic_settings.png">
+    </div>
+  <% } else { %>
+    <div class="icon-control-wrapper">
+      <button type="button" class="icon-button" id="home-icon-button" onClick='gotoURL("/")'></button>
+      <img id="settings-icon" class="control icon-control" src="/image/hdpi/ic_home.png">
+    </div>
+  <% } %>
   <div class="icon-control-wrapper">
     <button type="button" class="icon-button" id="add-icon-button" onClick='javascript:serverRequest("/add")'></button>
     <img id="add-icon" class="control icon-control" src="/image/hdpi/ic_add.png">
+  </div>
+  <div class="icon-control-wrapper">
+    <button type="button" class="icon-button" id="open-icon-button"></button>
+    <img id="open-icon" class="control icon-control" src="/image/hdpi/ic_open.png">
   </div>
   <div class="icon-control-wrapper">
     <button type="button" class="icon-button" id="edit-icon-button" onClick='javascript:serverRequest("/edit")'></button>

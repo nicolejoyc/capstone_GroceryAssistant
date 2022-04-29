@@ -1,9 +1,17 @@
+charLessThanTwenty = function(name) {
+  if (name.length <= 20) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 $("#add-grocery-list").click(async function (e) { 
   e.preventDefault();
 
   let groceryListName = $('#input-0').val();
 
-  if (groceryListName !== "") {
+  if (groceryListName.replace(/\s/g, '') !== "" && charLessThanTwenty(groceryListName)) {
 
     // send info to be stored into the database
     const response = await fetch('/add', {
@@ -23,7 +31,13 @@ $("#add-grocery-list").click(async function (e) {
     location.assign("/");
 
   } else {
-    $('#validate-0').css('display', 'block');
+    validate = $('#validate-0');
+    if (!charLessThanTwenty(groceryListName)) {
+      validate.html('Name must be 20 characters or less.');
+    } else {
+      validate.html('Please fill out this field.');
+    }
+    validate.css('display', 'block');
   }
   
 });
@@ -33,7 +47,7 @@ $("#add-product").click(async function (e) {
 
   let productName = $('#input-0').val();
 
-  if (productName !== "") {
+  if (productName.replace(/\s/g, '') !== "" && charLessThanTwenty(productName)) {
 
     // send info to be stored into the database
 	  const response = await fetch('/product/add', {
@@ -53,6 +67,12 @@ $("#add-product").click(async function (e) {
     location.assign("/grocery-data-manager/product");
 
   } else {
+    validate = $('#validate-0');
+    if (!charLessThanTwenty(productName)) {
+      validate.html('Name must be 20 characters or less.');
+    } else {
+      validate.html('Please fill out this field.');
+    }
     $('#validate-0').css('display', 'block');
   }
   
@@ -63,7 +83,7 @@ $("#add-category").click(async function (e) {
 
   let categoryName = $('#input-0').val();
 
-  if (categoryName !== "") {
+  if (categoryName.replace(/\s/g, '') !== "" && charLessThanTwenty(categoryName)) {
 
     // send info to be stored into the database
 	  const response = await fetch('/category/add', {
@@ -83,6 +103,12 @@ $("#add-category").click(async function (e) {
     location.assign("/grocery-data-manager/category");
 
   } else {
+    validate = $('#validate-0');
+    if (!charLessThanTwenty(categoryName)) {
+      validate.html('Name must be 20 characters or less.');
+    } else {
+      validate.html('Please fill out this field.');
+    }
     $('#validate-0').css('display', 'block');
   }
   
@@ -93,7 +119,7 @@ $("#add-brand").click(async function (e) {
 
   let brandName = $('#input-0').val();
 
-  if (brandName !== "") {
+  if (brandName.replace(/\s/g, '') !== "" && charLessThanTwenty(brandName)) {
 
     // send info to be stored into the database
 	  const response = await fetch('/brand/add', {
@@ -113,6 +139,12 @@ $("#add-brand").click(async function (e) {
     location.assign("/grocery-data-manager/brand");
 
   } else {
+    validate = $('#validate-0');
+    if (!charLessThanTwenty(brandName)) {
+      validate.html('Name must be 20 characters or less.');
+    } else {
+      validate.html('Please fill out this field.');
+    }
     $('#validate-0').css('display', 'block');
   }
   
@@ -123,21 +155,44 @@ $("#add-store").click(async function (e) {
 
   let invalid = [];
   let valid = [];
+  let message = [];
 
   for (let i = 0; i < 3; i++) {
-    if ($('#input-' + i).val() === "") {
-      invalid.push('#validate-' + i);
+    let currentField = $('#input-' + i);
+
+    if (i === 0) {
+      if (currentField.val().replace(/\s/g, '') === "") {
+        invalid.push(i);
+        message[i] = 'Please fill out this field.';
+      } else {
+        if (!charLessThanTwenty(currentField.val())) {
+          invalid.push(i);
+          message[i] = 'Field must be 20 characters or less.';
+        } else {
+          valid.push(i);
+        }
+      }
     } else {
-      valid.push('#validate-' + i);
+      if (currentField.val() === "") {
+        valid.push(i);
+      } else {
+        if (!charLessThanTwenty(currentField.val())) {
+          invalid.push(i);
+          message[i] = 'Field must be 20 characters or less.';
+        } else {
+          valid.push(i);
+        }
+      }
     }
   }
 
   invalid.forEach(function(i) {
-    $(i).css('display', 'block');
+    $('#validate-' + i).html(message[i]);
+    $('#validate-' + i).css('display', 'block');
   });
 
   valid.forEach(function(i) {
-    $(i).css('display', 'none');
+    $('#validate-' + i).css('display', 'none');
   });
 
   if (invalid.length === 0) {
@@ -165,4 +220,5 @@ $("#add-store").click(async function (e) {
     location.assign("/grocery-data-manager/store");
 
   }
+  
 });

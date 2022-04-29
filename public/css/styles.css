@@ -120,7 +120,7 @@ body {
 
 .icon-controls-wrapper {
   display: grid;
-  grid-template-columns: 45px 45px 45px 45px;
+  grid-template-columns: 45px 45px 45px 45px 45px;
   grid-template-rows: auto;
   margin: 0.25rem 0.5rem;
   position: absolute;
@@ -142,8 +142,8 @@ body {
   width: 5rem;
 }
 
-#settings-icon,
 #add-icon,
+#open-icon,
 #edit-icon,
 #delete-icon,
 #home-icon,

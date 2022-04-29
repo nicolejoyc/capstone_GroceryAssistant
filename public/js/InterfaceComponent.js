@@ -12,6 +12,7 @@ class InterfaceToolbar extends InterfaceComponent {
     super(parent);
     this.$settingsIcon = null;
     this.$addIcon = null;
+    this.$openIcon = null;
     this.$editIcon = null;
     this.$deleteIcon = null;
     this.$searchControl = null;
@@ -21,11 +22,13 @@ class InterfaceToolbar extends InterfaceComponent {
   init() {
     this.$settingsIcon = $('#settings-icon');
     this.$addIcon = $('#add-icon');
+    this.$openIcon = $('#open-icon');
     this.$editIcon = $('#edit-icon');
     this.$deleteIcon = $('#delete-icon');
     this.$searchControl = $('#search-control');
     this.enableIcon(this.$settingsIcon);
     this.enableIcon(this.$addIcon);
+    this.disableIcon(this.$openIcon);
     this.disableIcon(this.$editIcon);
     this.disableIcon(this.$deleteIcon);
 
@@ -41,7 +44,6 @@ class InterfaceToolbar extends InterfaceComponent {
   disableSettingsIcon() {
     this.disableIcon(this.$settingsIcon);
   }
-
   // Add icon apperance / behavior
   enableAddIcon() {
     this.enableIcon(this.$addIcon);
@@ -50,12 +52,18 @@ class InterfaceToolbar extends InterfaceComponent {
     this.disableIcon(this.$addIcon);
   }
   // Edit icon apperance / behavior
+  enableOpenIcon() {
+    this.enableIcon(this.$openIcon);
+  }
+  disableOpenIcon() {
+    this.disableIcon(this.$openIcon);
+  }
+  // Edit icon apperance / behavior
   enableEditIcon() {
     this.enableIcon(this.$editIcon);
   }
   disableEditIcon() {
     this.disableIcon(this.$editIcon);
-    this.$editIcon.prop('disabled', false);
   }
   // Delete icon apperance / behavior
   enableDeleteIcon() {
@@ -234,12 +242,14 @@ class ControlInterface {
     switch(this.selectButtonList.getActiveCount()) {
       case 0:
         this.toolbar.enableAddIcon();
+        this.toolbar.disableOpenIcon();
         this.toolbar.disableEditIcon();
         this.toolbar.disableDeleteIcon();
         this.deactivateOpenButton();
         break;
       case 1:
         this.toolbar.disableAddIcon();
+        this.toolbar.enableOpenIcon();
         this.toolbar.enableEditIcon();
         this.toolbar.enableDeleteIcon();
         this.deactivateOpenButton();
@@ -247,6 +257,7 @@ class ControlInterface {
         break;
       default:
         this.toolbar.disableAddIcon();
+        this.toolbar.disableOpenIcon();
         this.toolbar.disableEditIcon();
         this.toolbar.enableDeleteIcon();
         this.deactivateOpenButton();

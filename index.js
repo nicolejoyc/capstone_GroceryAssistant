@@ -274,7 +274,7 @@ express()
       const client = await pool.connect();
 
       const inputForm = [
-        { "label" : "Store Name", "hint": "e.g. Kwik Trip, Aldi's, etc.", "value": "" },
+        { "label" : "Store Name", "hint": "e.g. Kwik Trip, Aldi, etc.", "value": "" },
         { "label" : "Website", "hint": "e.g. www.walmart.com", "value": "" },
         { "label" : "Phone", "hint": "e.g. 555-555-5555", "value": "" }
       ];
@@ -302,7 +302,10 @@ express()
       const client = await pool.connect();
 
       const inputForm = [
-        { "label" : "Product Name", "hint": "e.g. Milk, Butter, etc.", "value": "" }
+        { "label" : "Product Name", "hint": "e.g. Milk, Butter, etc.", "value": "" },
+        { "label" : "Category", "hint": "Produce, Dairy, Meats, etc.", "value": "" },
+        { "label" : "Brand Name", "hint": "e.g. Anacin, Sanka, Tang, etc.", "value": "" },
+        { "label" : "Quantity", "hint": "1-99", "value": "" }
       ];
 
       const parms = {
@@ -350,7 +353,7 @@ express()
       const client = await pool.connect();
 
       const inputForm = [
-        { "label" : "Item Name", "hint": "e.g. something", "value": "" }
+        { "label" : "Product Name", "hint": "Enter a product", "value": "" }
       ];
 
       const parms = {
@@ -361,7 +364,7 @@ express()
         'inputform': inputForm
       };
 
-      res.render('pages/interface-2', parms);
+      res.render('pages/interface-7', parms);
       client.release();
     }
     catch (err) {

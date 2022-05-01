@@ -14,6 +14,13 @@ class InterfaceToolbar extends InterfaceComponent {
   }
 
   init() {
+    if($('#view-list-icon').length) {
+      this.disableIcon($('#view-list-icon'));
+      // View-list icon click hander
+      $('#view-list-icon-button').click((e) => {
+        this.parent.viewListIconClick();
+      });
+    }
     if($('#settings-icon')) {
       this.enableIcon($('#settings-icon'));
     }
@@ -27,16 +34,16 @@ class InterfaceToolbar extends InterfaceComponent {
 
     // Icon click handers
     $('#add-icon-button').click((e) => {
-      this.parent.addItem();
+      this.parent.addItemIconClick();
     });
     $('#open-icon-button').click((e) => {
-      this.parent.openItem();
+      this.parent.openItemIconClick();
     });
     $('#edit-icon-button').click((e) => {
-      this.parent.editItem();
+      this.parent.editItemIconClick();
     });
     $('#delete-icon-button').click((e) => {
-      this.parent.deleteItem();
+      this.parent.deleteItemIconClick();
     });
     $('#search-control').keydown((e) => {
       console.log("search change");
@@ -55,15 +62,22 @@ class InterfaceToolbar extends InterfaceComponent {
   // Delete icon apperance / behavior
   enableDeleteIcon()  { this.enableIcon($('#delete-icon')); }
   disableDeleteIcon() { this.disableIcon($('#delete-icon')); }
+  // View List icon apperance / behavior
+  enableViewListIcon()  { this.enableIcon($('#view-list-icon')); }
+  disableViewListIcon() { this.disableIcon($('#view-list-icon')); }
 
   // Enable / disable icon controls
   enableIcon($icon) {
-    $icon.addClass('icon-active');
-    $icon.removeClass('icon-inactive');
+    if($icon.length) {
+      $icon.addClass('icon-active');
+      $icon.removeClass('icon-inactive');
+    }
   }
   disableIcon($icon) {
-    $icon.addClass('icon-inactive');
-    $icon.removeClass('icon-active');
+    if($icon.length) {
+      $icon.addClass('icon-inactive');
+      $icon.removeClass('icon-active');
+    }
   }
 }
 
@@ -219,36 +233,43 @@ class ControlInterface {
         this.toolbar.disableOpenIcon();
         this.toolbar.disableEditIcon();
         this.toolbar.disableDeleteIcon();
+        this.toolbar.disableViewListIcon();
         break;
       case 1:
         this.toolbar.disableAddIcon();
         this.toolbar.enableOpenIcon();
         this.toolbar.enableEditIcon();
         this.toolbar.enableDeleteIcon();
+        this.toolbar.enableViewListIcon();
         break;
       default:
         this.toolbar.disableAddIcon();
         this.toolbar.disableOpenIcon();
         this.toolbar.disableEditIcon();
         this.toolbar.enableDeleteIcon();
+        this.toolbar.disableViewListIcon();
     }
   }
 
   // Toolbar add callback
-  addItem() {
+  addItemIconClick() {
     window.location.href = this.getURL('add');
   }
   // Toolbar open callback
-  openItem() {
+  openItemIconClick() {
     window.location.href = this.getURL('view');
   }
   // Toolbar edit callback
-  editItem() {
+  editItemIconClick() {
     window.location.href = this.getURL('edit');
   }
   // Toolbar delete callback
-  deleteItem() {
+  deleteItemIconClick() {
     window.location.href = this.getURL('delete');
+  }
+  // Toolbar add callback
+  viewListIconClick() {
+    window.location.href = this.getURL('view-list');
   }
 
   /*
@@ -285,17 +306,14 @@ class GroceryListControlInterface extends ControlInterface {
   getURL(operation) {
     switch(operation) {
       case 'back':
-        var tokens = window.location.href.split('/');
-        tokens.pop();
-        console.log(tokens.join('/'));
-        return tokens.join('/');
-      case 'add':
-        return window.location.href + '/' + operation;
-      default:
+        return '/'; // No back button on page
+      case 'view-list':
         const activeButton = this.selectButtonList.getActiveButtons()[0];
         const id = activeButton.id.split('-').pop();
         const name = activeButton.name;
-        return window.location.href + operation + '?id=' + id + '&name=' + name;
+        return window.location.href + 'view?id=' + id + '&name=' + name;
+      default:
+        return window.location.href + '/' + operation;
     }
   }
 }

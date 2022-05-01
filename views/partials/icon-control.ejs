@@ -6,6 +6,12 @@
   event. The button is layered over the image and made transparent.
 %>
 <div class="icon-controls-wrapper">
+  <% if (icon === 'settings') { %>
+  <div class="icon-control-wrapper">
+    <button type="button" class="icon-button" id="view-list-icon-button"></button>
+    <img id="view-list-icon" class="control icon-control" src="/image/hdpi/ic_view_list.png">
+  </div>
+  <% } %>
   <div class="icon-control-wrapper">
     <button type="button" class="icon-button" id="add-icon-button"></button>
     <img id="add-icon" class="control icon-control" src="/image/hdpi/ic_add.png">

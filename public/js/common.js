@@ -3,8 +3,8 @@ const serverRequest = function(url) {
   window.location.href = baseURL + url;
 };
 
-// Get parent URL string
-const parentURL = () => {
+// Go to parent URL
+const gotoParentURL = () => {
   var url = (window.location.href.split('/'));
   url.pop();
   window.location.href = url.join('/');

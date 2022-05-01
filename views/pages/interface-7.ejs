@@ -7,7 +7,7 @@
   <body>
     <div class="interface-wrapper">
       <!-- Interface header -->
-      <%- include('../partials/header-2.ejs') %>
+      <%- include('../partials/header-3.ejs') %>
 
       <div class="form-container">
         <div class="form-wrapper">
@@ -47,7 +47,9 @@
 
     </select>
               </div>
-            <input type="text" name="userid" value="1" hidden>
+            <input type="text" id="user-id" value="1" hidden>
+            <input type="text" id="list-id" value="<%= list_id %>" hidden>
+            <input type="text" id="list-name" value="<%= list_name %>" hidden>
             <input type="submit" id="add-listitem" class="submit" value="Save">
           </form>
         </div>
@@ -57,5 +59,13 @@
     <!-- Common javascript includes -->
     <%- include('../partials/common-js.ejs') %>
     <script src="/js/add.js"></script>
+
+    <!-- Implement click handler for back button -->
+    <script>
+      $('#back-icon').click(() => {
+        console.log('here');
+        window.location.href = '/view?id=' + $('#list-id').val() + '&name=' + $('#list-name').val();
+      });
+    </script>
   </body>
 </html>

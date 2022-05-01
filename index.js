@@ -64,7 +64,6 @@ express()
         'preference': false,
         'table': 'category',
         'title': 'Categories',
-        'jsfile': '/js/category.js',
         'items': (categories) ? categories.rows : null
       };
 
@@ -87,7 +86,6 @@ express()
         'preference': false,
         'table': 'store',
         'title': 'Stores',
-        'jsfile': '/js/store.js',
         'items': (stores) ? stores.rows : null
       };
       res.render('pages/interface-1', locals);
@@ -110,7 +108,6 @@ express()
         'preference': false,
         'table': 'product',
         'title': 'Products',
-        'jsfile': '/js/product.js',
         'items': (products) ? products.rows : null
       };
       res.render('pages/interface-1', locals);
@@ -133,7 +130,6 @@ express()
         'preference': false,
         'table': 'brand',
         'title': 'Brand',
-        'jsfile': '/js/brand.js',
         'items': (brands) ? brands.rows : null
       };
       res.render('pages/interface-1', locals);
@@ -345,9 +341,11 @@ express()
       res.send("Error " + err);
     }
   })
-  .get('/view/add', async (req, res) => {
+  .get('/view/listitem/add', async (req, res) => {
     try {
       const client = await pool.connect();
+      const listId = req.query.listid;
+      const listName = req.query.listname;
 
       const products = await client.query(
         `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
@@ -367,6 +365,8 @@ express()
 
       const locals = {
         'title': 'Add List Item',
+        'list_id' : listId,
+        'list_name' : listName,
         'products': (products) ? products.rows : null,
         'categories': (categories) ? categories.rows : null,
         'stores': (stores) ? stores.rows : null,
@@ -508,6 +508,38 @@ express()
       res.send("Error " + err);
     }
   })
+  .get('/grocery-data-manager/product/edit', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const id = req.query.id;
+			const name = req.query.name;
+
+      const item = await client.query(
+        `SELECT ProductId AS id, Name FROM product WHERE ProductId = ${id}`
+      );
+
+      const inputForm = [
+        { "label" : "Product Name", "hint": "", "value": item.rows[0].name },
+      ];
+
+      const parms = {
+        'operation': 'edit',
+        'title': 'Edit Product',
+        'name': 'product',
+        'item_id': id,
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
   .post('/add', async(req, res) => {
 		try {
       const client = await pool.connect();
@@ -640,25 +672,50 @@ express()
 			res.send("Error: " + err);
 		}
 	})
-  .post('/view/add', async(req, res) => {
+  .post('/view/listitem/add', async(req, res) => {
 		try {
 			const client = await pool.connect();
-			const listId = req.body.list_id;
+      const listId = req.body.list_id;
       const productId = req.body.product_id;
       const categoryId = req.body.category_id;
       const storeId = req.body.store_id;
       const brandId = req.body.brand_id;
       const itemCount = req.body.item_count;
-      console.log(productId);
       
 			const sqlInsert = await client.query(
         `INSERT INTO listitem (listid, productid, categoryid, brandid, itemcount)
         VALUES (${listId}, ${productId}, ${categoryId}, ${brandId}, ${itemCount})
         RETURNING listItemId AS new_id;`);
-			console.log(sqlInsert);
 
 			const result = {
 				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/product/edit', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const productId = req.body.item_id;
+			const productName = req.body.item_name;
+			const userId = req.body.user_id;
+      	
+      // TODO: add user id to where clause
+			const sqlUpdate = await client.query(
+        `UPDATE Product SET Name = ${productName}
+          WHERE ProductId = ${productId};`);
+			
+			const result = {
+				'response': (sqlUpdate) ? (sqlUpdate.rows[0]) : null
 			};
 			res.set({
 				'Content-Type': 'application/json'

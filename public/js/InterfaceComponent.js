@@ -269,7 +269,7 @@ class ControlInterface {
   }
   // Toolbar add callback
   viewListIconClick() {
-    window.location.href = this.getURL('view-list');
+    window.location.href = this.getURL('list');
   }
 
   /*
@@ -307,13 +307,17 @@ class GroceryListControlInterface extends ControlInterface {
     switch(operation) {
       case 'back':
         return '/'; // No back button on page
-      case 'view-list':
+      case 'add':
+        return window.location.href + '/' + operation;
+      default:
         const activeButton = this.selectButtonList.getActiveButtons()[0];
         const id = activeButton.id.split('-').pop();
         const name = activeButton.name;
-        return window.location.href + 'view?id=' + id + '&name=' + name;
-      default:
-        return window.location.href + '/' + operation;
+        if(operation === 'list') {
+          return window.location.href + 'list?id=' + id + '&name=' + name;
+        } else {
+          return window.location.href + '/' + operation + '?id=' + id + '&name=' + name;
+        }
     }
   }
 }
@@ -336,7 +340,7 @@ class GroceryListitemControlInterface extends ControlInterface {
       case 'back':
         return baseURL;
       case 'add':
-        return baseURL + '/view/listitem/' + operation + '?listid=' + listId + '&listname=' + listName;
+        return baseURL + '/list/listitem/' + operation + '?listid=' + listId + '&listname=' + listName;
       default:
         const activeButton = this.selectButtonList.getActiveButtons()[0];
         const id = activeButton.id.split('-').pop();

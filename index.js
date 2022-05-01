@@ -38,6 +38,121 @@ express()
       res.send("Error " + err);
     }
   })
+  .get('//add', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const inputForm = [
+        { "label" : "Grocery List Name", "hint": "My List", "value": "" }
+      ];
+
+      const parms = {
+        'operation': 'add',
+        'title': 'Add Grocery List',
+        'name': 'grocery-list',
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('//view', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const id = req.query.id;
+			const name = req.query.name;
+
+      const item = await client.query(
+        `SELECT id, Name FROM grocery_list WHERE id = ` + id
+      );
+
+      const inputForm = [
+        { "label" : "List Name", "hint": "", "value": item.rows[0].name },
+      ];
+
+      const parms = {
+        'operation': 'view',
+        'title': 'View List',
+        'name': 'list',
+        'item_id': id,
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('//edit', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const id = req.query.id;
+			const name = req.query.name;
+
+      const item = await client.query(
+        `SELECT id, Name FROM grocery_list WHERE id = ${id}`
+      );
+
+      const inputForm = [
+        { "label" : "List Name", "hint": "", "value": item.rows[0].name },
+      ];
+
+      const parms = {
+        'operation': 'edit',
+        'title': 'Edit List',
+        'name': 'list',
+        'item_id': id,
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/list', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const id = req.query.id;
+			const name = req.query.name;
+
+      const items = await client.query(
+        `SELECT ProductId as id, name FROM ListItem INNER JOIN Product USING (ProductId)
+        WHERE Listid = ` + id
+      );
+
+      const locals = {
+        'preference': false,
+        'table': 'listitem',
+        'title': name,
+        'items': (items) ? items.rows : null
+      };
+
+      res.render('pages/interface-1', locals);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
   .get('/grocery-data-manager', async (req, res) => {
     try {
       const client = await pool.connect();
@@ -217,30 +332,6 @@ express()
       res.send("Error " + err);
     }
   })
-  .get('//add', async (req, res) => {
-    try {
-      const client = await pool.connect();
-
-      const inputForm = [
-        { "label" : "Grocery List Name", "hint": "My List", "value": "" }
-      ];
-
-      const parms = {
-        'operation': 'add',
-        'title': 'Add Grocery List',
-        'name': 'grocery-list',
-        'message': '',
-        'inputform': inputForm
-      };
-
-      res.render('pages/interface-2', parms);
-      client.release();
-    }
-    catch (err) {
-      console.error(err);
-      res.send("Error " + err);
-    }
-  })
   .get('/grocery-data-manager/category/add', async (req, res) => {
     try {
       const client = await pool.connect();
@@ -341,7 +432,7 @@ express()
       res.send("Error " + err);
     }
   })
-  .get('/view/listitem/add', async (req, res) => {
+  .get('/list/listitem/add', async (req, res) => {
     try {
       const client = await pool.connect();
       const listId = req.query.listid;
@@ -504,33 +595,6 @@ express()
       };
 
       res.render('pages/interface-2', parms);
-      client.release();
-    }
-    catch (err) {
-      console.error(err);
-      res.send("Error " + err);
-    }
-  })
-  .get('/view', async (req, res) => {
-    try {
-      const client = await pool.connect();
-
-      const id = req.query.id;
-			const name = req.query.name;
-
-      const items = await client.query(
-        `SELECT ProductId as id, name FROM ListItem INNER JOIN Product USING (ProductId)
-        WHERE Listid = ` + id
-      );
-
-      const locals = {
-        'preference': false,
-        'table': 'listitem',
-        'title': name,
-        'items': (items) ? items.rows : null
-      };
-
-      res.render('pages/interface-1', locals);
       client.release();
     }
     catch (err) {
@@ -861,6 +925,33 @@ express()
 			const sqlUpdate = await client.query(
         `UPDATE Brand SET Name = ${brandName}
           WHERE BrandId = ${brandId};`);
+			
+			const result = {
+				'response': (sqlUpdate) ? (sqlUpdate.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/edit', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const listId = req.body.item_id;
+			const listName = req.body.item_name;
+			const userId = req.body.user_id;
+      	
+      // TODO: add user id to where clause
+			const sqlUpdate = await client.query(
+        `UPDATE grocery_list SET Name = ${listName}
+          WHERE id = ${listId};`);
 			
 			const result = {
 				'response': (sqlUpdate) ? (sqlUpdate.rows[0]) : null

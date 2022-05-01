@@ -2,6 +2,16 @@ $(function() {
 
   const item = $('#table-name').val();
 
+  let fetch_url;
+  let redirect_url;
+  if(item === 'list') {
+    fetch_url = '/edit';
+    redirect_url = '/';
+  } else {
+    fetch_url = `/${item}/edit`;
+    redirect_url = `/grocery-data-manager/${item}`;
+  }
+
   $(`#edit-${item}`).click(async function (e) { 
     e.preventDefault();
 
@@ -12,7 +22,7 @@ $(function() {
     if (itemName.replace(/\s/g, '') !== "" && charLessThanTwenty(itemName)) {
 
       // send info to be stored into the database
-      const response = await fetch(`/${item}/edit`, {
+      const response = await fetch(fetch_url, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -27,7 +37,7 @@ $(function() {
 
       const result = await response.json();
       console.log(result);
-      location.assign(`/grocery-data-manager/${item}`);
+      location.assign(redirect_url);
 
     } else {
       validate = $('#validate-0');

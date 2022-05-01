@@ -63,8 +63,7 @@
     <!-- Implement click handler for back button -->
     <script>
       $('#back-icon').click(() => {
-        console.log('here');
-        window.location.href = '/view?id=' + $('#list-id').val() + '&name=' + $('#list-name').val();
+        window.location.href = '/list?id=' + $('#list-id').val() + '&name=' + $('#list-name').val();
       });
     </script>
   </body>

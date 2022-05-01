@@ -239,6 +239,7 @@ $("#add-store").click(async function (e) {
   }
   
 });
+
 $("#add-listitem").click(async function (e) { 
   e.preventDefault();
   let productID = $('#dropdown-product').val().split('-')[1];
@@ -268,6 +269,6 @@ $("#add-listitem").click(async function (e) {
 
     const result = await response.json();
     console.log(result);
-    location.assign('/view?id=' + listId + '&name=' + listName);
+    location.assign('/list?id=' + listId + '&name=' + listName);
 
 });

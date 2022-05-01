@@ -7,7 +7,7 @@
 %>
 <div class="icon-controls-wrapper">
   <div class="icon-control-wrapper">
-    <button type="button" class="icon-button" id="add-icon-button" onClick='javascript:serverRequest("/add")'></button>
+    <button type="button" class="icon-button" id="add-icon-button"></button>
     <img id="add-icon" class="control icon-control" src="/image/hdpi/ic_add.png">
   </div>
   <div class="icon-control-wrapper">
@@ -15,21 +15,21 @@
     <img id="open-icon" class="control icon-control" src="/image/hdpi/ic_open.png">
   </div>
   <div class="icon-control-wrapper">
-    <button type="button" class="icon-button" id="edit-icon-button" onClick='javascript:serverRequest("/edit")'></button>
+    <button type="button" class="icon-button" id="edit-icon-button"></button>
     <img id="edit-icon" class="control icon-control" src="/image/hdpi/ic_edit.png">
   </div>
   <div class="icon-control-wrapper">
-    <button type="button" class="icon-button" id="delete-icon-button" onClick='javascript:serverRequest("/delete")'></button>
+    <button type="button" class="icon-button" id="delete-icon-button"></button>
     <img id="delete-icon" class="control icon-control" src="/image/hdpi/ic_delete.png">
   </div>
   <% if (icon === 'settings') { %>
     <div class="icon-control-wrapper">
-      <button type="button" class="icon-button" id="settings-icon-button" onClick='gotoURL("/grocery-data-manager")'></button>
+      <button type="button" class="icon-button" id="settings-icon-button" onClick='{ window.location.href = "/grocery-data-manager" }'></button>
       <img id="settings-icon" class="control icon-control" src="/image/hdpi/ic_settings.png">
     </div>
   <% } else { %>
     <div class="icon-control-wrapper">
-      <button type="button" class="icon-button" id="home-icon-button" onClick='gotoURL("/")'></button>
+      <button type="button" class="icon-button" id="home-icon-button" onClick='{ window.location.href = "/"; }'></button>
       <img id="settings-icon" class="control icon-control" src="/image/hdpi/ic_home.png">
     </div>
   <% } %>

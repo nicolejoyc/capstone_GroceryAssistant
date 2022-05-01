@@ -10,68 +10,51 @@ class InterfaceComponent {
 class InterfaceToolbar extends InterfaceComponent {
   constructor(parent) {
     super(parent);
-    this.$settingsIcon = null;
-    this.$addIcon = null;
-    this.$openIcon = null;
-    this.$editIcon = null;
-    this.$deleteIcon = null;
-    this.$searchControl = null;
     this.init();
   }
 
   init() {
-    this.$settingsIcon = $('#settings-icon');
-    this.$addIcon = $('#add-icon');
-    this.$openIcon = $('#open-icon');
-    this.$editIcon = $('#edit-icon');
-    this.$deleteIcon = $('#delete-icon');
-    this.$searchControl = $('#search-control');
-    this.enableIcon(this.$settingsIcon);
-    this.enableIcon(this.$addIcon);
-    this.disableIcon(this.$openIcon);
-    this.disableIcon(this.$editIcon);
-    this.disableIcon(this.$deleteIcon);
+    if($('#settings-icon')) {
+      this.enableIcon($('#settings-icon'));
+    }
+    if($('#home-icon')) {
+      this.enableIcon($('#home-icon'));
+    }
+    this.enableAddIcon();
+    this.disableOpenIcon();
+    this.disableEditIcon();
+    this.disableDeleteIcon();
 
-    this.$searchControl.keydown((e) => {
+    // Icon click handers
+    $('#add-icon-button').click((e) => {
+      this.parent.addItem();
+    });
+    $('#open-icon-button').click((e) => {
+      this.parent.openItem();
+    });
+    $('#edit-icon-button').click((e) => {
+      this.parent.editItem();
+    });
+    $('#delete-icon-button').click((e) => {
+      this.parent.deleteItem();
+    });
+    $('#search-control').keydown((e) => {
       console.log("search change");
     });
   }
 
-  // Settings icon apperance / behavior
-  enableSettingsIcon() {
-    this.enableIcon(this.$settingsIcon);
-  }
-  disableSettingsIcon() {
-    this.disableIcon(this.$settingsIcon);
-  }
   // Add icon apperance / behavior
-  enableAddIcon() {
-    this.enableIcon(this.$addIcon);
-  }
-  disableAddIcon() {
-    this.disableIcon(this.$addIcon);
-  }
+  enableAddIcon()  { this.enableIcon($('#add-icon')); }
+  disableAddIcon() { this.disableIcon($('#add-icon')); }
   // Edit icon apperance / behavior
-  enableOpenIcon() {
-    this.enableIcon(this.$openIcon);
-  }
-  disableOpenIcon() {
-    this.disableIcon(this.$openIcon);
-  }
+  enableOpenIcon()  { this.enableIcon($('#open-icon')); }
+  disableOpenIcon() { this.disableIcon($('#open-icon')); }
   // Edit icon apperance / behavior
-  enableEditIcon() {
-    this.enableIcon(this.$editIcon);
-  }
-  disableEditIcon() {
-    this.disableIcon(this.$editIcon);
-  }
+  enableEditIcon()  { this.enableIcon($('#edit-icon')); }
+  disableEditIcon() { this.disableIcon($('#edit-icon')); }
   // Delete icon apperance / behavior
-  enableDeleteIcon() {
-    this.enableIcon(this.$deleteIcon);
-  }
-  disableDeleteIcon() {
-    this.disableIcon(this.$deleteIcon);
-  }
+  enableDeleteIcon()  { this.enableIcon($('#delete-icon')); }
+  disableDeleteIcon() { this.disableIcon($('#delete-icon')); }
 
   // Enable / disable icon controls
   enableIcon($icon) {
@@ -97,8 +80,8 @@ const ButtonState = {
  * Interface Button
  */
 class InterfaceButton extends InterfaceComponent {
-  constructor(buttonList, type, name, id) {
-    super(buttonList);
+  constructor(parent, type, name, id) {
+    super(parent);
     this.name = name;
     this.type = type;
     this.id = id;
@@ -159,38 +142,28 @@ class InterfaceButtonList extends InterfaceComponent {
   constructor(parent, buttonType) {
     super(parent);
     this.buttons = [];
-    this.buttonType = buttonType;
-    this.init();
+    this.init(buttonType);
   }
 
-  init() {
-    $(`.${this.buttonType}`).each((index, e) => {
-      this.buttons.push(new InterfaceButton(this, this.buttonType, String($(e).text()).trim(), e.id));
+  // Initialize object
+  init(buttonType) {
+    $(`.${buttonType}`).each((index, e) => {
+      this.buttons.push(new InterfaceButton(this, buttonType, String($(e).text()).trim(), e.id));
     });
   }
 
+  // Button state change callback
   buttonStateChange(button) {
     this.parent.buttonStateChange(button);
   }
-
-  // Get button
-  getButton(index) {
-    if(index < this.buttons.length) {
-      return this.buttons[index];
-    }
+  // Get count of current active buttons
+  getActiveCount() {
+    return this.getActiveButtons().length;
   }
-
-  // Button active state
-  getActiveCount()   { return this.getActiveButtons().length; }
-  getActiveButtons() { return this.filterButtonsByState(ButtonState.Active); }
-
-  // Get index of first active button
-  getActiveIndex() { 
-    return this.buttons.findIndex(function(button) { 
-        return button.state === ButtonState.Active;
-    });
+  // Get array of active buttons
+  getActiveButtons() {
+    return this.filterButtonsByState(ButtonState.Active);
   }
-
   // Get button by state
   filterButtonsByState(state) {
     return this.buttons.filter(function(button) { 
@@ -205,7 +178,7 @@ class InterfaceButtonList extends InterfaceComponent {
  *  The button list only allows a single button within the list
  *  to be selected (active) at any given time.
  */
-class InterfaceButtonList_SelectOne extends InterfaceButtonList {
+class InterfaceButtonList_OneActive extends InterfaceButtonList {
   constructor(parent, buttonType) {
     super(parent, buttonType);
   }
@@ -227,15 +200,16 @@ class InterfaceButtonList_SelectOne extends InterfaceButtonList {
 class ControlInterface {
   constructor() {
     this.toolbar =null;
-    this.openButtonList =null;
     this.selectButtonList =null;
     this.init();
   }
 
   init() {
     this.toolbar = new InterfaceToolbar(this);
-    this.openButtonList = new InterfaceButtonList(this, 'open-button');
-    this.selectButtonList = new InterfaceButtonList(this, 'select-button');
+    this.selectButtonList = new InterfaceButtonList_OneActive(this, 'select-button');
+    $('#back-icon').click((e) => {
+      window.location.href = this.getURL('back');
+    });
   }
 
   buttonStateChange(button) {
@@ -245,38 +219,112 @@ class ControlInterface {
         this.toolbar.disableOpenIcon();
         this.toolbar.disableEditIcon();
         this.toolbar.disableDeleteIcon();
-        this.deactivateOpenButton();
         break;
       case 1:
         this.toolbar.disableAddIcon();
         this.toolbar.enableOpenIcon();
         this.toolbar.enableEditIcon();
         this.toolbar.enableDeleteIcon();
-        this.deactivateOpenButton();
-        this.activateOpenButton(this.selectButtonList.getActiveIndex());
         break;
       default:
         this.toolbar.disableAddIcon();
         this.toolbar.disableOpenIcon();
         this.toolbar.disableEditIcon();
         this.toolbar.enableDeleteIcon();
-        this.deactivateOpenButton();
     }
   }
 
-  deactivateOpenButton() {
-    let activeButton = this.openButtonList.getActiveButtons()[0];
-    if( activeButton ) {
-        activeButton.deactivate();
-    }
+  // Toolbar add callback
+  addItem() {
+    window.location.href = this.getURL('add');
+  }
+  // Toolbar open callback
+  openItem() {
+    window.location.href = this.getURL('view');
+  }
+  // Toolbar edit callback
+  editItem() {
+    window.location.href = this.getURL('edit');
+  }
+  // Toolbar delete callback
+  deleteItem() {
+    window.location.href = this.getURL('delete');
   }
 
-  activateOpenButton(index) {
-    if(index !== -1) {
-      this.openButtonList.getButton(index).activate();
+  /*
+   * Get URL (icon click event)
+   *
+   *  Subclasses over-ride to build specific URLs including
+   *  necessary URL paramters.
+   */
+  getURL(operation) {
+    switch(operation) {
+      case 'back':
+        var tokens = window.location.href.split('/');
+        tokens.pop();
+        return tokens.join('/');
+      case 'add':
+        return window.location.href + '/' + operation;
+      default:
+        const activeButton = this.selectButtonList.getActiveButtons()[0];
+        const id = activeButton.id.split('-').pop();
+        const name = activeButton.name;
+        return window.location.href + '/' + operation + '?id=' + id + '&name=' + name;
     }
   }
 }
 
-// Create Control Interface
-let controlInterface = new ControlInterface();
+/*
+ * Grocery List Table Interface
+ */
+class GroceryListControlInterface extends ControlInterface {
+  constructor() {
+    super();
+  }
+
+  getURL(operation) {
+    switch(operation) {
+      case 'back':
+        var tokens = window.location.href.split('/');
+        tokens.pop();
+        console.log(tokens.join('/'));
+        return tokens.join('/');
+      case 'add':
+        return window.location.href + '/' + operation;
+      default:
+        const activeButton = this.selectButtonList.getActiveButtons()[0];
+        const id = activeButton.id.split('-').pop();
+        const name = activeButton.name;
+        return window.location.href + operation + '?id=' + id + '&name=' + name;
+    }
+  }
+}
+
+/*
+ * Grocery Listitem Table Interface
+ */
+class GroceryListitemControlInterface extends ControlInterface {
+  constructor() {
+    super();
+  }
+
+  getURL(operation) {
+    const baseURL = window.location.origin;
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const listId = urlParams.get('id');
+    const listName = urlParams.get('name');
+    switch(operation) {
+      case 'back':
+        return baseURL;
+      case 'add':
+        return baseURL + '/view/listitem/' + operation + '?listid=' + listId + '&listname=' + listName;
+      default:
+        const activeButton = this.selectButtonList.getActiveButtons()[0];
+        const id = activeButton.id.split('-').pop();
+        const name = activeButton.name;
+        return baseURL + '/listitem/' + operation + '?listid=' + listId + '&listname=' + listName + '&id=' + id + '&name=' + name;
+    }
+  }
+}
+

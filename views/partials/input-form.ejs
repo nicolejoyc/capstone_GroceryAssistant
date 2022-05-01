@@ -8,8 +8,21 @@
           <p id="validate-<%= index %>" class="validate">* Please fill out this field.</p>
         </div>
       <% }); %>
-      <input type="text" name="userid" value="1" hidden>
-      <input type="submit" id="<%= operation %>-<%= name %>" class="submit" value="Save">
+      <input type="text" id="user-id" value="1" hidden>
+      <input type="text" id="table-name" value="<%= name %>" hidden>
+      <% if (operation === 'add') { %>
+        <input type="submit" id="<%= operation %>-<%= name %>" class="submit" value="Save">
+      <% } else if (operation === 'open' ) { %>
+        <input type="text" id="item-id" value="<%= item_id %>" hidden>
+        <input type="submit" id="<%= operation %>-<%= name %>" class="submit" value="Done">
+      <% } else if (operation === 'edit' ) { %>
+        <input type="text" id="item-id" value="<%= item_id %>" hidden>
+        <input type="submit" id="<%= operation %>-<%= name %>" class="submit" value="Update">
+      <% } else { %>
+        <input type="text" id="item-id" value="<%= item_id %>" hidden>
+        <input type="submit" id="<%= operation %>-<%= name %>-cancel" class="submit" value="Cancel">
+        <input type="submit" id="<%= operation %>-<%= name %>-confirm" class="submit" value="Confirm">
+      <% } %>
     </form>
   </div>
 </div>

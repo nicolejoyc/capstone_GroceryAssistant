@@ -135,7 +135,7 @@ express()
 
       const items = await client.query(
         `SELECT ProductId as id, name FROM ListItem INNER JOIN Product USING (ProductId)
-        WHERE Listid = ` + id
+          WHERE Listid = ${id} ORDER BY name ASC`
       );
 
       const locals = {
@@ -172,7 +172,7 @@ express()
       const client = await pool.connect();
 
       const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM category ORDER BY id ASC`
+        `SELECT CategoryId AS id, Name FROM category ORDER BY name ASC`
       );
 
       const locals = {
@@ -195,7 +195,7 @@ express()
       const client = await pool.connect();
 
       const stores = await client.query(
-        `SELECT StoreId AS id, Name FROM store ORDER BY id ASC`
+        `SELECT StoreId AS id, Name FROM store ORDER BY name ASC`
       );
       const locals = {
         'preference': false,
@@ -217,7 +217,7 @@ express()
       const client = await pool.connect();
 
       const products = await client.query(
-        `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
+        `SELECT ProductId AS id, Name FROM product ORDER BY name ASC`
       );
       const locals = {
         'preference': false,
@@ -239,7 +239,7 @@ express()
       const client = await pool.connect();
 
       const brands = await client.query(
-        `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
+        `SELECT BrandId AS id, Name FROM Brand ORDER BY name ASC`
       );
       const locals = {
         'preference': false,
@@ -261,7 +261,7 @@ express()
       const client = await pool.connect();
 
       const products = await client.query(
-        `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
+        `SELECT ProductId AS id, Name FROM product ORDER BY name ASC`
       );
       const locals = {
         'preference': true,
@@ -290,7 +290,7 @@ express()
       );
 
       const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM category ORDER BY id ASC`
+        `SELECT CategoryId AS id, Name FROM category ORDER BY name ASC`
       );
 
       const preferredCategories = await client.query(
@@ -298,7 +298,7 @@ express()
       );
 
       const stores = await client.query(
-        `SELECT StoreId AS id, Name FROM store ORDER BY id ASC`
+        `SELECT StoreId AS id, Name FROM store ORDER BY name ASC`
       );
 
       const preferredStores = await client.query(
@@ -306,7 +306,7 @@ express()
       );
 
       const brands = await client.query(
-        `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
+        `SELECT BrandId AS id, Name FROM Brand ORDER BY name ASC`
       );
 
       const preferredBrands = await client.query(

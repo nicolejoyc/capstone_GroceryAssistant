@@ -267,9 +267,9 @@ express()
         'preference': true,
         'table': 'product',
         'title': 'Product Preferences',
-        'items': (products) ? products.rows : null
+        'url_list': (products) ? products.rows : null
       };
-      res.render('pages/interface-5', locals);
+      res.render('pages/interface-3', locals);
 
       client.release();
     }

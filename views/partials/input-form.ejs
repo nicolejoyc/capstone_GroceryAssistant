@@ -4,7 +4,11 @@
       <% inputform.forEach(function(i, index) {%>
         <div class="form-input-wrapper">
           <label for="input-<%= index %>"><%= i.label %>:</label><br>
-          <input class="form-input" type="text" name="input-<%= index %>" id="input-<%= index %>" placeholder="<%= i.hint %>" value="<%= i.value %>" required>
+          <% if (operation === 'view' ) { %>
+            <input class="form-input" type="text" name="input-<%= index %>" id="input-<%= index %>" placeholder="<%= i.hint %>" value="<%= i.value %>" disabled>
+          <% } else { %>
+            <input class="form-input" type="text" name="input-<%= index %>" id="input-<%= index %>" placeholder="<%= i.hint %>" value="<%= i.value %>" required>
+          <% } %>
           <p id="validate-<%= index %>" class="validate">* Please fill out this field.</p>
         </div>
       <% }); %>

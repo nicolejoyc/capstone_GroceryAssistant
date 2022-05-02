@@ -345,7 +345,7 @@ class GroceryListitemControlInterface extends ControlInterface {
         const activeButton = this.selectButtonList.getActiveButtons()[0];
         const id = activeButton.id.split('-').pop();
         const name = activeButton.name;
-        return baseURL + '/listitem/' + operation + '?listid=' + listId + '&listname=' + listName + '&id=' + id + '&name=' + name;
+        return baseURL + '/list/listitem/' + operation + '?listid=' + listId + '&listname=' + listName + '&id=' + id + '&name=' + name;
     }
   }
 }

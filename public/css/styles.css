@@ -120,11 +120,18 @@ body {
 
 .icon-controls-wrapper {
   display: grid;
-  grid-template-columns: 45px 45px 45px 45px 45px;
   grid-template-rows: auto;
   margin: 0.25rem 0.5rem;
   position: absolute;
   right: 0;
+}
+
+.tool-bar-wrapper-1 .icon-controls-wrapper {
+  grid-template-columns: repeat(6, 45px);
+}
+
+.tool-bar-wrapper-2 .icon-controls-wrapper {
+  grid-template-columns: repeat(5, 45px);
 }
 
 .form-wrapper {
@@ -147,6 +154,7 @@ body {
 #edit-icon,
 #delete-icon,
 #home-icon,
+#view-list-icon,
 #settings-icon {
   border-radius: 30%;
   background-color: #177820;
@@ -331,7 +339,14 @@ body {
   }
 
   .icon-controls-wrapper {
-    grid-template-columns: 100px 100px 100px 100px;
     position: relative;
+  }
+
+  .tool-bar-wrapper-1 .icon-controls-wrapper {
+    grid-template-columns: repeat(6, 70px);
+  }
+
+  .tool-bar-wrapper-2 .icon-controls-wrapper {
+    grid-template-columns: repeat(5, 88px);
   }
 }

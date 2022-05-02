@@ -220,7 +220,7 @@ class ControlInterface {
 
   init() {
     this.toolbar = new InterfaceToolbar(this);
-    this.selectButtonList = new InterfaceButtonList_OneActive(this, 'select-button');
+    this.selectButtonList = new InterfaceButtonList(this, 'select-button');
     $('#back-icon').click((e) => {
       window.location.href = this.getURL('back');
     });

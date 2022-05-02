@@ -16,7 +16,7 @@ Example:
 <div class="button-list-wrapper url-button-list-wrapper">
   <% url_list.forEach(function(u, index) {%>
     <div class="button-wrapper url-button-wrapper">
-      <button type='button' class='button list-button url-button' onClick='javascript:serverRequest("<%= u.url %>")'><%= u.name %></button>
+      <button type='button' class='button list-button url-button' onClick='javascript:openItem("<%= table %>", "<%= u.id %>", "<%= u.name %>", "<%= preference %>")'><%= u.name %></button>
     </div>
   <% }); %>
 </div>

@@ -55,10 +55,8 @@ class InterfaceSearch extends InterfaceComponent {
         {
           if(this.matchingTargets.length) {
             let target = $(this.matchingTargets[this.matchingTargetIndex]);
-            $(this.searchSelector).val($(target).text());
-            $(target).removeClass('show-hover');
+            this.reset().disable();
             target.trigger('click');
-            this.disable();
           }
           return;
         }
@@ -114,10 +112,7 @@ class InterfaceSearch extends InterfaceComponent {
     }
     // Input Empty, Open Targets
     else {
-      $(this.targetSelector).each((i, target) => {
-        $(target).parent().removeClass('hide').addClass('show');
-        $(target).removeClass('show-hover');
-      });
+      this.reset();
       return;
     }
     $(this.matchingTargets[this.matchingTargetIndex]).addClass('show-hover');
@@ -125,12 +120,20 @@ class InterfaceSearch extends InterfaceComponent {
 
   // Enable search entry
   enable() {
-    $(this.searchSelector).val('');
     $(this.searchSelector).attr('disabled', false);
   }
   // Disable search entry
   disable() {
     $(this.searchSelector).attr('disabled', true);
+  }
+  reset() {
+    $(this.searchSelector).val('');
+    $(this.targetSelector).each((i, target) => {
+      $(target).parent().removeClass('hide').addClass('show');
+      $(target).removeClass('show-hover');
+    });
+    this.enable();
+    return this;
   }
   // Access functions
   isSearchStringEmpty() { return this.searchString.length === 0; }
@@ -355,7 +358,7 @@ class ControlInterface {
     $('#back-icon').click((e) => {
       window.location.href = this.getURL('back');
     });
-    this.search.enable();
+    this.search.reset();
   }
 
   // Process selection change
@@ -375,7 +378,7 @@ class ControlInterface {
         this.icons.enableEditIcon();
         this.icons.enableDeleteIcon();
         this.icons.enableViewListIcon();
-        this.search.disable();
+        this.search.reset().disable();
         break;
       default:
         this.icons.disableAddIcon();
@@ -383,7 +386,7 @@ class ControlInterface {
         this.icons.disableEditIcon();
         this.icons.enableDeleteIcon();
         this.icons.disableViewListIcon();
-        this.search.disable();
+        this.search.reset().disable();
     }
   }
   // Toolbar add callback

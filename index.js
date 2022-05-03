@@ -134,7 +134,7 @@ express()
 			const name = req.query.name;
 
       const items = await client.query(
-        `SELECT ProductId as id, name FROM ListItem INNER JOIN Product USING (ProductId)
+        `SELECT ListItemId as id, name FROM ListItem INNER JOIN Product USING (ProductId)
           WHERE Listid = ${id} ORDER BY name ASC`
       );
 
@@ -830,7 +830,7 @@ express()
 			res.send("Error: " + err);
 		}
 	})
-  .post('/view/listitem/add', async(req, res) => {
+  .post('/list/listitem/add', async(req, res) => {
 		try {
 			const client = await pool.connect();
       const listId = req.body.list_id;

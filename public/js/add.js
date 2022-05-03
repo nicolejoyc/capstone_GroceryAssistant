@@ -251,7 +251,7 @@ $("#add-listitem").click(async function (e) {
   let listId =$('#list-id').val();
 
     // send info to be stored into the database
-	  const response = await fetch('/view/listitem/add', {
+	  const response = await fetch('/list/listitem/add', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

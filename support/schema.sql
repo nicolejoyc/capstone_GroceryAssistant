@@ -341,3 +341,9 @@ INSERT INTO Unit (UnitId, UserId, Name) VALUES
   (19, 0, 'lg');
 
 SELECT setval('unit_unitid_seq', (SELECT MAX(UnitId) FROM Unit));
+
+INSERT INTO Store (StoreId, UserId, OrdinalId, Name, Website, Phone) VALUES
+  (0, 0, NULL, 'None', '', ''),
+  (1, 0, NULL, 'Any', '', '');
+
+SELECT setval('store_storeid_seq', (SELECT MAX(StoreId) FROM Store));

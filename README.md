@@ -67,3 +67,22 @@
 > User can access a homepage with their lists or they can redirect to the data-manager page to manage the database.
 >
 > 
+## Version 0.2.0 Release Notes
+>
+>With this release the user can enter into the list and add a list item to the user's list.
+>
+>This release add design changes to support mobile devices. Icon additions make for easy navigation.
+>
+>Users can set product preferences such as a user could set dairy for the preferred category for milk.
+>
+>Allow users to interact by clicking on one or multiple items with new icons added.
+>
+>Bug fix: ' are now allowed in data entry.
+>
+>Improved color theme.
+>
+>Editing capabilities are being implemented, currently available for everything except stores and list items.
+>
+>New data entry validation added.
+>
+>

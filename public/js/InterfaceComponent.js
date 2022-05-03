@@ -55,8 +55,9 @@ class InterfaceSearch extends InterfaceComponent {
         {
           if(this.matchingTargets.length) {
             let target = $(this.matchingTargets[this.matchingTargetIndex]);
-            this.reset().disable();
             target.trigger('click');
+            $(this.searchSelector).val($(target).text());
+            this.disable();
           }
           return;
         }
@@ -110,7 +111,7 @@ class InterfaceSearch extends InterfaceComponent {
         }
       }
     }
-    // Input Empty, Open Targets
+    // Input empty, reset
     else {
       this.reset();
       return;
@@ -121,19 +122,25 @@ class InterfaceSearch extends InterfaceComponent {
   // Enable search entry
   enable() {
     $(this.searchSelector).attr('disabled', false);
+    if(this.matchingTargets.length) {
+      $(this.matchingTargets[this.matchingTargetIndex]).addClass('show-hover');
+    }
   }
   // Disable search entry
   disable() {
     $(this.searchSelector).attr('disabled', true);
+    if(this.matchingTargets.length) {
+      $(this.matchingTargets[this.matchingTargetIndex]).removeClass('show-hover');
+    }
   }
   reset() {
+    this.matchingTargets = [];
     $(this.searchSelector).val('');
     $(this.targetSelector).each((i, target) => {
       $(target).parent().removeClass('hide').addClass('show');
       $(target).removeClass('show-hover');
     });
     this.enable();
-    return this;
   }
   // Access functions
   isSearchStringEmpty() { return this.searchString.length === 0; }
@@ -378,7 +385,7 @@ class ControlInterface {
         this.icons.enableEditIcon();
         this.icons.enableDeleteIcon();
         this.icons.enableViewListIcon();
-        this.search.reset().disable();
+        this.search.disable();
         break;
       default:
         this.icons.disableAddIcon();
@@ -386,7 +393,7 @@ class ControlInterface {
         this.icons.disableEditIcon();
         this.icons.enableDeleteIcon();
         this.icons.disableViewListIcon();
-        this.search.reset().disable();
+        this.search.disable();
     }
   }
   // Toolbar add callback

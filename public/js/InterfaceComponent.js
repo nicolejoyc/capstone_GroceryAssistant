@@ -5,9 +5,141 @@ class InterfaceComponent {
 }
 
 /*
+ * Define key code constants
+ */
+const KeyCode = {
+  Shift: 16,
+  UpArrow: 38,
+  DownArrow: 40,
+  CarriageReturn : 13
+};
+
+/*
  * Interface Toolbar
  */
-class InterfaceToolbar extends InterfaceComponent {
+class InterfaceSearch extends InterfaceComponent {
+  constructor(parent, searchSelector, targetSelector) {
+    super(parent);
+    this.searchSelector = searchSelector;
+    this.targetSelector = targetSelector;
+    this.matchingTargetIndex = 0;
+    this.matchingTargets = [];
+    this.searchString = null;
+    this.keyCode = null;
+    this.init();
+  }
+  init() {
+    $(this.searchSelector).keyup((e) => {
+      this.searchString = e.target.value;
+      this.keyCode = e.keyCode;
+      console.log(this.keyCode);
+      this.search(e);
+    });
+  }
+
+  /*
+   * Search For Match
+   *
+   *  Function searches a list for matches to the user search string
+   *  (search bar input). Matches include strings in list containing
+   *  the search pattern as a substring positioned at index 0 of the
+   *  target string (list).
+   */
+  search(e) {
+    // Search String Not Empty
+    if(!this.isSearchStringEmpty()) {
+      // Process Key
+      switch (this.keyCode) {
+        // CARRIAGE RETURN
+        case KeyCode.CarriageReturn:
+        {
+          if(this.matchingTargets.length) {
+            let target = $(this.matchingTargets[this.matchingTargetIndex]);
+            $(this.searchSelector).val($(target).text());
+            $(target).removeClass('show-hover');
+            target.trigger('click');
+            this.disable();
+          }
+          return;
+        }
+        // UP ARROW
+        case KeyCode.UpArrow:
+        {
+          // Move up the list
+          let targetCount;
+          if((targetCount = this.matchingTargets.length)) {
+            $(this.matchingTargets[this.matchingTargetIndex]).removeClass('show-hover');
+            this.matchingTargetIndex = (this.matchingTargetIndex)
+              ? this.matchingTargetIndex - 1 : targetCount - 1;
+          }
+          break;
+        }
+        // DOWN ARROW
+        case KeyCode.DownArrow:
+        {
+          // Move down the list
+          let targetCount;
+          if((targetCount = this.matchingTargets.length)) {
+            $(this.matchingTargets[this.matchingTargetIndex]).removeClass('show-hover');
+            this.matchingTargetIndex = (this.matchingTargetIndex + 1)
+              % targetCount;
+          }
+          break;
+        }
+        // SHIFT
+        case KeyCode.Shift:
+          return;
+        // ALL OTHER KEYS
+        default:
+        {
+          // Search for string match in list
+          this.matchingTargets = [];
+          const searchString = this.searchString.toLowerCase();
+          $(this.targetSelector).each((index, target) => {
+              const targetString = $(target).text().toLowerCase();
+              if(targetString.indexOf(searchString) === 0) {
+                  this.matchingTargets.push(target);
+                  $(target).parent().removeClass('hide').addClass('show');
+              } else {
+                  $(target).parent().removeClass('show').addClass('hide');
+              }
+              $(target).removeClass('show-hover');
+          });
+          // Reset to top of list
+          if(this.matchingTargets.length) {
+            this.matchingTargetIndex = 0;
+          }
+        }
+      }
+    }
+    // Input Empty, Open Targets
+    else {
+      $(this.targetSelector).each((i, target) => {
+        $(target).parent().removeClass('hide').addClass('show');
+        $(target).removeClass('show-hover');
+      });
+      return;
+    }
+    $(this.matchingTargets[this.matchingTargetIndex]).addClass('show-hover');
+  }
+
+  // Enable search entry
+  enable() {
+    $(this.searchSelector).val('');
+    $(this.searchSelector).attr('disabled', false);
+  }
+  // Disable search entry
+  disable() {
+    $(this.searchSelector).attr('disabled', true);
+  }
+  // Access functions
+  isSearchStringEmpty() { return this.searchString.length === 0; }
+}
+
+/*
+ * Interface Icons
+ */
+class InterfaceIcons extends InterfaceComponent {
   constructor(parent) {
     super(parent);
     this.init();
@@ -44,9 +176,6 @@ class InterfaceToolbar extends InterfaceComponent {
     });
     $('#delete-icon-button').click((e) => {
       this.parent.deleteItemIconClick();
-    });
-    $('#search-control').keydown((e) => {
-      console.log("search change");
     });
   }
 
@@ -213,44 +342,50 @@ class InterfaceButtonList_OneActive extends InterfaceButtonList {
  */
 class ControlInterface {
   constructor() {
-    this.toolbar =null;
+    this.icons =null;
+    this.search =null;
     this.selectButtonList =null;
     this.init();
   }
 
   init() {
-    this.toolbar = new InterfaceToolbar(this);
+    this.icons = new InterfaceIcons(this);
+    this.search = new InterfaceSearch(this, '#search-control', '.select-button');
     this.selectButtonList = new InterfaceButtonList(this, 'select-button');
     $('#back-icon').click((e) => {
       window.location.href = this.getURL('back');
     });
+    this.search.enable();
   }
 
+  // Process selection change
   buttonStateChange(button) {
     switch(this.selectButtonList.getActiveCount()) {
       case 0:
-        this.toolbar.enableAddIcon();
-        this.toolbar.disableOpenIcon();
-        this.toolbar.disableEditIcon();
-        this.toolbar.disableDeleteIcon();
-        this.toolbar.disableViewListIcon();
+        this.icons.enableAddIcon();
+        this.icons.disableOpenIcon();
+        this.icons.disableEditIcon();
+        this.icons.disableDeleteIcon();
+        this.icons.disableViewListIcon();
+        this.search.enable();
         break;
       case 1:
-        this.toolbar.disableAddIcon();
-        this.toolbar.enableOpenIcon();
-        this.toolbar.enableEditIcon();
-        this.toolbar.enableDeleteIcon();
-        this.toolbar.enableViewListIcon();
+        this.icons.disableAddIcon();
+        this.icons.enableOpenIcon();
+        this.icons.enableEditIcon();
+        this.icons.enableDeleteIcon();
+        this.icons.enableViewListIcon();
+        this.search.disable();
         break;
       default:
-        this.toolbar.disableAddIcon();
-        this.toolbar.disableOpenIcon();
-        this.toolbar.disableEditIcon();
-        this.toolbar.enableDeleteIcon();
-        this.toolbar.disableViewListIcon();
+        this.icons.disableAddIcon();
+        this.icons.disableOpenIcon();
+        this.icons.disableEditIcon();
+        this.icons.enableDeleteIcon();
+        this.icons.disableViewListIcon();
+        this.search.disable();
     }
   }
-
   // Toolbar add callback
   addItemIconClick() {
     window.location.href = this.getURL('add');
@@ -349,4 +484,3 @@ class GroceryListitemControlInterface extends ControlInterface {
     }
   }
 }
-

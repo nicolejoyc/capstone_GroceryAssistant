@@ -79,7 +79,7 @@ body {
   display: block;
 }
 
-.button:hover {
+.button:hover, .show-hover {
   background-color: #6F9842;
 }
 
@@ -283,6 +283,19 @@ body {
 .preference-wrapper label {
   margin-left: 1%;
   font-size: 1.5rem;
+}
+
+/* Toolbar Search */
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.show-hover {
+  background-color: #b4ef7a;
 }
 
 /* End preference styles */

@@ -25,6 +25,7 @@ SELECT setval('listitem_listitemid_seq', (SELECT MAX(ListItemId) FROM ListItem))
 
 TRUNCATE TABLE Store;
 INSERT INTO Store (StoreId, UserId, OrdinalId, Name, Website, Phone) VALUES
+  (0, 0, NULL, 'None', '', ''),
   (1, 0, NULL, 'Aldi', 'https://www.aldi.us', '715-235-1111'),
   (2, 0, NULL, 'Walmart', 'https://www.walmart.com/', '715-235-2222'),
   (3, 0, NULL, 'MarketPlace', 'https://www.marketplacefoodswi.com/MFstore2582', '715-235-3333'),

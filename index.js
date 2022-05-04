@@ -1045,11 +1045,11 @@ express()
           `UPDATE listitem SET categoryid = 0 WHERE categoryid = ` + itemId + `;`);
           break;
         case 'store':
-          sql.push(`DELETE FROM productstore WHERE storeid = ` + itemId + `;`,
-          `UPDATE listitem SET storeid = 0 WHERE storeid = ` + itemId + `;`);
+          sql.push(`DELETE FROM productstore WHERE storeid = ` + itemId + `;`/*,
+          `UPDATE listitem SET storeid = 0 WHERE storeid = ` + itemId + `;`*/);
           break;
         case 'brand':
-          sql.push(`DELETE FROM productbrand WHERE categoryid = ` + itemId + `;`,
+          sql.push(`DELETE FROM productbrand WHERE brandid = ` + itemId + `;`,
           `UPDATE listitem SET brandid = 0 WHERE brandid = ` + itemId + `;`);
           break;
         case 'grocery_list':

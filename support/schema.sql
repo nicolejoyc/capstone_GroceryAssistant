@@ -135,7 +135,6 @@ CREATE TABLE Unit (
 );
 
 INSERT INTO Product (ProductId, UserId, Name) VALUES
-  (0, 0, 'None'),
   (2, 0, 'Apple'),
   (3, 0, 'Orange'),
   (4, 0, 'Banana'),

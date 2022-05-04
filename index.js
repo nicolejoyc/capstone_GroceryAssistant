@@ -1024,4 +1024,60 @@ express()
 			res.send("Error: " + err);
 		}
 	})
+  .post('/delete', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const itemId = req.body.item_id;
+			const table = req.body.table_name;
+
+      var sql = [];
+      sql[0] = (`DELETE FROM ` + table + ` WHERE ` + table + `id = ` + itemId + `;`);
+
+      switch (table) {
+        case 'product':
+          sql.push(`DELETE FROM productcategory WHERE productid = ` + itemId + `;`,
+          `DELETE FROM productstore WHERE productid = ` + itemId + `;`,
+          `DELETE FROM productbrand WHERE productid = ` + itemId + `;`,
+          `DELETE FROM listitem WHERE productid = ` + itemId + `;`);
+          break;
+        case 'category':
+          sql.push(`DELETE FROM productcategory WHERE categoryid = ` + itemId + `;`,
+          `UPDATE listitem SET categoryid = 0 WHERE categoryid = ` + itemId + `;`);
+          break;
+        case 'store':
+          sql.push(`DELETE FROM productstore WHERE storeid = ` + itemId + `;`/*,
+          `UPDATE listitem SET storeid = 0 WHERE storeid = ` + itemId + `;`*/);
+          break;
+        case 'brand':
+          sql.push(`DELETE FROM productbrand WHERE brandid = ` + itemId + `;`,
+          `UPDATE listitem SET brandid = 0 WHERE brandid = ` + itemId + `;`);
+          break;
+        case 'grocery_list':
+          sql[0] = `DELETE FROM ` + table + ` WHERE id = ` + itemId + `;`;
+          sql.push(`DELETE FROM listitem WHERE listid = ` + itemId + `;`);
+          break;
+      }
+      
+      sql.forEach(async function(i) {
+        const sqlDelete = await client.query(i);
+
+        // const result = {
+        //   'response': (sqlDelete) ? (sqlDelete.rows[0]) : null
+        // };
+
+      });
+
+      // res.set({
+      //   'Content-Type': 'application/json'
+      // });
+        
+      // res.json({ requestBody: result });
+			
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));

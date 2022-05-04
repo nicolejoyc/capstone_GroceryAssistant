@@ -189,9 +189,10 @@ class InterfaceIcons extends InterfaceComponent {
     $('#edit-icon-button').click((e) => {
       this.parent.editItemIconClick();
     });
-    $('#delete-icon-button').click((e) => {
-      this.parent.deleteItemIconClick();
-    });
+    // Commented out by Nicole -- probably won't need separate page for delete
+    // $('#delete-icon-button').click((e) => {
+    //   this.parent.deleteItemIconClick();
+    // });
   }
 
   // Add icon apperance / behavior
@@ -414,9 +415,10 @@ class ControlInterface {
     window.location.href = this.getURL('edit');
   }
   // Toolbar delete callback
-  deleteItemIconClick() {
-    window.location.href = this.getURL('delete');
-  }
+  // Commented out by Nicole -- probably won't need separate page
+  // deleteItemIconClick() {
+  //   window.location.href = this.getURL('delete');
+  // }
   // Toolbar add callback
   viewListIconClick() {
     window.location.href = this.getURL('list');

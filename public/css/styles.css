@@ -355,10 +355,10 @@ body {
   }
 
   .tool-bar-wrapper-1 .icon-controls-wrapper {
-    grid-template-columns: repeat(6, 70px);
+    grid-template-columns: repeat(6, 62px);
   }
 
   .tool-bar-wrapper-2 .icon-controls-wrapper {
-    grid-template-columns: repeat(5, 88px);
+    grid-template-columns: repeat(5, 75px);
   }
 }

@@ -79,10 +79,6 @@ body {
   display: block;
 }
 
-.button:hover {
-  background-color: #6F9842;
-}
-
 .form-input-wrapper,
 .search-control-wrapper,
 .url-control-wrapper {
@@ -181,6 +177,10 @@ body {
   max-width: fit-content;
 }
 
+.url-button:hover {
+  background-color: #a1c477;
+}
+
 /* List Button Styles */
 .open-button {
   background-color: #719A44;
@@ -208,17 +208,16 @@ body {
 
 .select-button-active {
   font-weight: bold;
-  background-color: #94B86C;
-}
-
-.select-button-active:hover {
   background-color: #6F9842;
 }
 
 .select-button-inactive {
   font-weight: normal;
   text-decoration: none;
-  background-color: #BDD99E;
+}
+
+.select-button-inactive:hover {
+  background-color: #a1c477;
 }
 
 .select-button-disabled {
@@ -283,6 +282,19 @@ body {
 .preference-wrapper label {
   margin-left: 1%;
   font-size: 1.5rem;
+}
+
+/* Toolbar Search */
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.show-hover {
+  background-color: #b4ef7a;
 }
 
 /* End preference styles */

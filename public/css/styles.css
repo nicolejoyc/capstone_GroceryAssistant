@@ -342,10 +342,6 @@ body {
     width: 70%;
   }
 
-  .select-button-active:hover {
-    background-color: #BDD99E;
-  }
-
   .search-control-wrapper {
     margin-top: 10px;
     width: 100%;

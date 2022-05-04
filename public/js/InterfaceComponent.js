@@ -15,7 +15,7 @@ const KeyCode = {
 };
 
 /*
- * Interface Toolbar
+ * Interface Search
  */
 class InterfaceSearch extends InterfaceComponent {
   constructor(parent, searchSelector, targetSelector) {
@@ -32,7 +32,7 @@ class InterfaceSearch extends InterfaceComponent {
     $(this.searchSelector).keyup((e) => {
       this.searchString = e.target.value;
       this.keyCode = e.keyCode;
-      console.log(this.keyCode);
+      //console.log(this.keyCode);
       this.search(e);
     });
   }
@@ -40,10 +40,15 @@ class InterfaceSearch extends InterfaceComponent {
   /*
    * Search For Match
    *
-   *  Function searches a list for matches to the user search string
-   *  (search bar input). Matches include strings in list containing
-   *  the search pattern as a substring positioned at index 0 of the
-   *  target string (list).
+   *  Parameters:
+   *    e: Keyboard keyup event
+   *
+   *  Purpose:
+   *    Process user keyboard input from search toolbar and filter a target
+   *    list to only show matching list items. Arrow keys allow movement in
+   *    the list of matching items highlighting the current position in the
+   *    list. A cariage return selects the highlighted item.
+   * 
    */
   search(e) {
     // Search String Not Empty
@@ -67,7 +72,7 @@ class InterfaceSearch extends InterfaceComponent {
           // Move up the list
           let targetCount;
           if((targetCount = this.matchingTargets.length)) {
-            $(this.matchingTargets[this.matchingTargetIndex]).removeClass('show-hover');
+            $(this.matchingTargets[this.matchingTargetIndex]).removeClass('highlight');
             this.matchingTargetIndex = (this.matchingTargetIndex)
               ? this.matchingTargetIndex - 1 : targetCount - 1;
           }
@@ -79,7 +84,7 @@ class InterfaceSearch extends InterfaceComponent {
           // Move down the list
           let targetCount;
           if((targetCount = this.matchingTargets.length)) {
-            $(this.matchingTargets[this.matchingTargetIndex]).removeClass('show-hover');
+            $(this.matchingTargets[this.matchingTargetIndex]).removeClass('highlight');
             this.matchingTargetIndex = (this.matchingTargetIndex + 1)
               % targetCount;
           }
@@ -102,7 +107,7 @@ class InterfaceSearch extends InterfaceComponent {
               } else {
                   $(target).parent().removeClass('show').addClass('hide');
               }
-              $(target).removeClass('show-hover');
+              $(target).removeClass('highlight');
           });
           // Reset to top of list
           if(this.matchingTargets.length) {
@@ -116,21 +121,21 @@ class InterfaceSearch extends InterfaceComponent {
       this.reset();
       return;
     }
-    $(this.matchingTargets[this.matchingTargetIndex]).addClass('show-hover');
+    $(this.matchingTargets[this.matchingTargetIndex]).addClass('highlight');
   }
 
   // Enable search entry
   enable() {
     $(this.searchSelector).attr('disabled', false);
     if(this.matchingTargets.length) {
-      $(this.matchingTargets[this.matchingTargetIndex]).addClass('show-hover');
+      $(this.matchingTargets[this.matchingTargetIndex]).addClass('highlight');
     }
   }
   // Disable search entry
   disable() {
     $(this.searchSelector).attr('disabled', true);
     if(this.matchingTargets.length) {
-      $(this.matchingTargets[this.matchingTargetIndex]).removeClass('show-hover');
+      $(this.matchingTargets[this.matchingTargetIndex]).removeClass('highlight');
     }
   }
   reset() {
@@ -138,7 +143,7 @@ class InterfaceSearch extends InterfaceComponent {
     $(this.searchSelector).val('');
     $(this.targetSelector).each((i, target) => {
       $(target).parent().removeClass('hide').addClass('show');
-      $(target).removeClass('show-hover');
+      $(target).removeClass('highlight');
     });
     this.enable();
   }

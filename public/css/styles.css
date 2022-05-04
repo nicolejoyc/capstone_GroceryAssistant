@@ -79,8 +79,9 @@ body {
   display: block;
 }
 
-.button:hover, .show-hover {
-  background-color: #6F9842;
+.button:hover {
+  /* background-color: #6F9842;*/
+  background-color: #a5ca7f;
 }
 
 .form-input-wrapper,

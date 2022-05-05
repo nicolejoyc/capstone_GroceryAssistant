@@ -337,7 +337,7 @@ body {
   display: block;
 }
 
-.show-hover {
+.highlight {
   background-color: #b4ef7a;
 }
 
@@ -442,7 +442,7 @@ body {
   }
 
   .tool-bar-wrapper-1 .icon-controls-wrapper {
-    grid-template-columns: repeat(6, 60px);
+    grid-template-columns: repeat(6, 62px);
   }
 
   .tool-bar-wrapper-2 .icon-controls-wrapper {

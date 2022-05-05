@@ -2,53 +2,175 @@ $(function() {
 
   const item = $('#table-name').val();
 
-  let fetch_url;
-  let redirect_url;
-  if(item === 'list') {
-    fetch_url = '/edit';
-    redirect_url = '/';
-  } else {
-    fetch_url = `/${item}/edit`;
-    redirect_url = `/grocery-data-manager/${item}`;
-  }
+  switch (item) {
+    case 'product':
+    case 'category':
+    case 'brand':
+    {
+      $(`#edit-${item}`).click(async function (e) { 
+        e.preventDefault();
 
-  $(`#edit-${item}`).click(async function (e) { 
-    e.preventDefault();
+        let userId = $('#user-id').val();
+        let itemId = $('#item-id').val();
+        let itemName = $('#input-0').val();
 
-    let userId = $('#user-id').val();
-    let itemId = $('#item-id').val();
-    let itemName = $('#input-0').val();
+        if (itemName.replace(/\s/g, '') !== "" && charLessThanTwenty(itemName)) {
 
-    if (itemName.replace(/\s/g, '') !== "" && charLessThanTwenty(itemName)) {
+          // send info to be stored into the database
+          const response = await fetch(`/${item}/edit`, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              user_id: userId,
+              item_id: itemId,
+              item_name: "'" + itemName.replace(/'/g, "''") + "'"
+            })
+          });
 
-      // send info to be stored into the database
-      const response = await fetch(fetch_url, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          item_id: itemId,
-          item_name: "'" + itemName.replace(/'/g, "''") + "'"
-        })
+          const result = await response.json();
+          console.log(result);
+          location.assign(`/grocery-data-manager/${item}`);
+
+        } else {
+          validate = $('#validate-0');
+          if (!charLessThanTwenty(itemName)) {
+            validate.html('Name must be 20 characters or less.');
+          } else {
+            validate.html('Please fill out this field.');
+          }
+          $('#validate-0').css('display', 'block');
+        }
       });
-
-      const result = await response.json();
-      console.log(result);
-      location.assign(redirect_url);
-
-    } else {
-      validate = $('#validate-0');
-      if (!charLessThanTwenty(itemName)) {
-        validate.html('Name must be 20 characters or less.');
-      } else {
-        validate.html('Please fill out this field.');
-      }
-      $('#validate-0').css('display', 'block');
+      break;
     }
-    
-  });
+    case 'list':
+    {
+      $(`#edit-${item}`).click(async function (e) { 
+        e.preventDefault();
+
+        let userId = $('#user-id').val();
+        let itemId = $('#item-id').val();
+        let itemName = $('#input-0').val();
+
+        if (itemName.replace(/\s/g, '') !== "" && charLessThanTwenty(itemName)) {
+
+          // send info to be stored into the database
+          const response = await fetch('/edit', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              user_id: userId,
+              item_id: itemId,
+              item_name: "'" + itemName.replace(/'/g, "''") + "'"
+            })
+          });
+
+          const result = await response.json();
+          console.log(result);
+          location.assign('/');
+
+        } else {
+          validate = $('#validate-0');
+          if (!charLessThanTwenty(itemName)) {
+            validate.html('Name must be 20 characters or less.');
+          } else {
+            validate.html('Please fill out this field.');
+          }
+          $('#validate-0').css('display', 'block');
+        }
+      });
+      break;
+    }
+    case 'store':
+    {
+      $(`#edit-${item}`).click(async function (e) { 
+        e.preventDefault();
+
+        let invalid = [];
+        let valid = [];
+        let message = [];
+
+        for (let i = 0; i < 3; i++) {
+          let currentField = $('#input-' + i);
+
+          if (i === 0) {
+            if (currentField.val().replace(/\s/g, '') === "") {
+              invalid.push(i);
+              message[i] = 'Please fill out this field.';
+            } else {
+              if (!charLessThanTwenty(currentField.val())) {
+                invalid.push(i);
+                message[i] = 'Field must be 20 characters or less.';
+              } else {
+                valid.push(i);
+              }
+            }
+          } else {
+            if (currentField.val() === "") {
+              valid.push(i);
+            } else {
+              if (i === 1) {
+                if (!charLessThanForty(currentField.val())) {
+                  invalid.push(i);
+                  message[i] = 'Field must be 40 characters or less.';
+                } else {
+                  valid.push(i);
+                }
+              } else {
+                if (!charLessThanTwenty(currentField.val())) {
+                  invalid.push(i);
+                  message[i] = 'Field must be 20 characters or less.';
+                } else {
+                  valid.push(i);
+                }
+              }
+            }
+          }
+        }
+
+        invalid.forEach(function(i) {
+          $('#validate-' + i).html(message[i]);
+          $('#validate-' + i).css('display', 'block');
+        });
+
+        valid.forEach(function(i) {
+          $('#validate-' + i).css('display', 'none');
+        });
+
+        if (invalid.length === 0) {
+
+          let userId = $('#user-id').val();
+          let storeId = $('#item-id').val();
+          let storeName = $('#input-0').val();
+          let storeWebsite = $('#input-1').val();
+          let storePhone = $('#input-2').val();
+          // send info to be stored into the database
+          const response = await fetch(`/${item}/edit`, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              user_id: userId,
+              store_id: storeId,
+              store_name: "'" + storeName.replace(/'/g, "''") + "'",
+              store_website: "'" + storeWebsite.replace(/'/g, "''") + "'",
+              store_phone: "'" + storePhone.replace(/'/g, "''") + "'"
+            })
+          });
+          const result = await response.json();
+          location.assign(`/grocery-data-manager/${item}`);
+        }
+      });
+      break;
+    }
+  }
 
 });

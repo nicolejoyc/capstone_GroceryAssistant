@@ -14,6 +14,14 @@ charLessThanThirty = function(name) {
   }
 };
 
+charLessThanForty = function(name) {
+  if (name.length <= 40) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 $("#add-grocery-list").click(async function (e) { 
   e.preventDefault();
 

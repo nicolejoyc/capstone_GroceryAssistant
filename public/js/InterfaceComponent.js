@@ -5,9 +5,156 @@ class InterfaceComponent {
 }
 
 /*
- * Interface Toolbar
+ * Define key code constants
  */
-class InterfaceToolbar extends InterfaceComponent {
+const KeyCode = {
+  Shift: 16,
+  UpArrow: 38,
+  DownArrow: 40,
+  CarriageReturn : 13
+};
+
+/*
+ * Interface Search
+ */
+class InterfaceSearch extends InterfaceComponent {
+  constructor(parent, searchSelector, targetSelector) {
+    super(parent);
+    this.searchSelector = searchSelector;
+    this.targetSelector = targetSelector;
+    this.matchingTargetIndex = 0;
+    this.matchingTargets = [];
+    this.searchString = null;
+    this.keyCode = null;
+    this.init();
+  }
+  init() {
+    $(this.searchSelector).keyup((e) => {
+      this.searchString = e.target.value;
+      this.keyCode = e.keyCode;
+      //console.log(this.keyCode);
+      this.search(e);
+    });
+  }
+
+  /*
+   * Search For Match
+   *
+   *  Parameters:
+   *    e: Keyboard keyup event
+   *
+   *  Purpose:
+   *    Process user keyboard input from search toolbar and filter a target
+   *    list to only show matching list items. Arrow keys allow movement in
+   *    the list of matching items highlighting the current position in the
+   *    list. A cariage return selects the highlighted item.
+   * 
+   */
+  search(e) {
+    // Search String Not Empty
+    if(!this.isSearchStringEmpty()) {
+      // Process Key
+      switch (this.keyCode) {
+        // CARRIAGE RETURN
+        case KeyCode.CarriageReturn:
+        {
+          if(this.matchingTargets.length) {
+            let target = $(this.matchingTargets[this.matchingTargetIndex]);
+            target.trigger('click');
+            $(this.searchSelector).val($(target).text());
+            this.disable();
+          }
+          return;
+        }
+        // UP ARROW
+        case KeyCode.UpArrow:
+        {
+          // Move up the list
+          let targetCount;
+          if((targetCount = this.matchingTargets.length)) {
+            $(this.matchingTargets[this.matchingTargetIndex]).removeClass('highlight');
+            this.matchingTargetIndex = (this.matchingTargetIndex)
+              ? this.matchingTargetIndex - 1 : targetCount - 1;
+          }
+          break;
+        }
+        // DOWN ARROW
+        case KeyCode.DownArrow:
+        {
+          // Move down the list
+          let targetCount;
+          if((targetCount = this.matchingTargets.length)) {
+            $(this.matchingTargets[this.matchingTargetIndex]).removeClass('highlight');
+            this.matchingTargetIndex = (this.matchingTargetIndex + 1)
+              % targetCount;
+          }
+          break;
+        }
+        // SHIFT
+        case KeyCode.Shift:
+          return;
+        // ALL OTHER KEYS
+        default:
+        {
+          // Search for string match in list
+          this.matchingTargets = [];
+          const searchString = this.searchString.toLowerCase();
+          $(this.targetSelector).each((index, target) => {
+              const targetString = $(target).text().toLowerCase();
+              if(targetString.indexOf(searchString) === 0) {
+                  this.matchingTargets.push(target);
+                  $(target).parent().removeClass('hide').addClass('show');
+              } else {
+                  $(target).parent().removeClass('show').addClass('hide');
+              }
+              $(target).removeClass('highlight');
+          });
+          // Reset to top of list
+          if(this.matchingTargets.length) {
+            this.matchingTargetIndex = 0;
+          }
+        }
+      }
+    }
+    // Input empty, reset
+    else {
+      this.reset();
+      return;
+    }
+    $(this.matchingTargets[this.matchingTargetIndex]).addClass('highlight');
+  }
+
+  // Enable search entry
+  enable() {
+    $(this.searchSelector).attr('disabled', false);
+    if(this.matchingTargets.length) {
+      $(this.matchingTargets[this.matchingTargetIndex]).addClass('highlight');
+    }
+  }
+  // Disable search entry
+  disable() {
+    $(this.searchSelector).attr('disabled', true);
+    if(this.matchingTargets.length) {
+      $(this.matchingTargets[this.matchingTargetIndex]).removeClass('highlight');
+    }
+  }
+  reset() {
+    this.matchingTargets = [];
+    $(this.searchSelector).val('');
+    $(this.targetSelector).each((i, target) => {
+      $(target).parent().removeClass('hide').addClass('show');
+      $(target).removeClass('highlight');
+    });
+    this.enable();
+  }
+  // Access functions
+  isSearchStringEmpty() { return this.searchString.length === 0; }
+}
+
+/*
+ * Interface Icons
+ */
+class InterfaceIcons extends InterfaceComponent {
   constructor(parent) {
     super(parent);
     this.init();
@@ -42,12 +189,10 @@ class InterfaceToolbar extends InterfaceComponent {
     $('#edit-icon-button').click((e) => {
       this.parent.editItemIconClick();
     });
-    $('#delete-icon-button').click((e) => {
-      this.parent.deleteItemIconClick();
-    });
-    $('#search-control').keydown((e) => {
-      console.log("search change");
-    });
+    // Commented out by Nicole -- probably won't need separate page for delete
+    // $('#delete-icon-button').click((e) => {
+    //   this.parent.deleteItemIconClick();
+    // });
   }
 
   // Add icon apperance / behavior
@@ -213,44 +358,50 @@ class InterfaceButtonList_OneActive extends InterfaceButtonList {
  */
 class ControlInterface {
   constructor() {
-    this.toolbar =null;
+    this.icons =null;
+    this.search =null;
     this.selectButtonList =null;
     this.init();
   }
 
   init() {
-    this.toolbar = new InterfaceToolbar(this);
+    this.icons = new InterfaceIcons(this);
+    this.search = new InterfaceSearch(this, '#search-control', '.select-button');
     this.selectButtonList = new InterfaceButtonList(this, 'select-button');
     $('#back-icon').click((e) => {
       window.location.href = this.getURL('back');
     });
+    this.search.reset();
   }
 
+  // Process selection change
   buttonStateChange(button) {
     switch(this.selectButtonList.getActiveCount()) {
       case 0:
-        this.toolbar.enableAddIcon();
-        this.toolbar.disableOpenIcon();
-        this.toolbar.disableEditIcon();
-        this.toolbar.disableDeleteIcon();
-        this.toolbar.disableViewListIcon();
+        this.icons.enableAddIcon();
+        this.icons.disableOpenIcon();
+        this.icons.disableEditIcon();
+        this.icons.disableDeleteIcon();
+        this.icons.disableViewListIcon();
+        this.search.enable();
         break;
       case 1:
-        this.toolbar.disableAddIcon();
-        this.toolbar.enableOpenIcon();
-        this.toolbar.enableEditIcon();
-        this.toolbar.enableDeleteIcon();
-        this.toolbar.enableViewListIcon();
+        this.icons.disableAddIcon();
+        this.icons.enableOpenIcon();
+        this.icons.enableEditIcon();
+        this.icons.enableDeleteIcon();
+        this.icons.enableViewListIcon();
+        this.search.disable();
         break;
       default:
-        this.toolbar.disableAddIcon();
-        this.toolbar.disableOpenIcon();
-        this.toolbar.disableEditIcon();
-        this.toolbar.enableDeleteIcon();
-        this.toolbar.disableViewListIcon();
+        this.icons.disableAddIcon();
+        this.icons.disableOpenIcon();
+        this.icons.disableEditIcon();
+        this.icons.enableDeleteIcon();
+        this.icons.disableViewListIcon();
+        this.search.disable();
     }
   }
-
   // Toolbar add callback
   addItemIconClick() {
     window.location.href = this.getURL('add');
@@ -264,9 +415,10 @@ class ControlInterface {
     window.location.href = this.getURL('edit');
   }
   // Toolbar delete callback
-  deleteItemIconClick() {
-    window.location.href = this.getURL('delete');
-  }
+  // Commented out by Nicole -- probably won't need separate page
+  // deleteItemIconClick() {
+  //   window.location.href = this.getURL('delete');
+  // }
   // Toolbar add callback
   viewListIconClick() {
     window.location.href = this.getURL('list');
@@ -349,4 +501,3 @@ class GroceryListitemControlInterface extends ControlInterface {
     }
   }
 }
-

@@ -271,6 +271,7 @@ INSERT INTO Product (ProductId, UserId, Name) VALUES
 SELECT setval('product_productid_seq', (SELECT MAX(ProductId) FROM Product));
 
 INSERT INTO Category (CategoryId, UserId, Name) VALUES
+  (0, 0, 'None'),
   (2, 0, 'Fruit'),
   (3, 0, 'Dairy'),
   (4, 0, 'Canned Goods'),
@@ -305,6 +306,7 @@ INSERT INTO Category (CategoryId, UserId, Name) VALUES
 SELECT setval('category_categoryid_seq', (SELECT MAX(CategoryId) FROM Category));
 
 INSERT INTO Brand (BrandId, UserId, Name) VALUES
+  (0, 0, 'None'),
   (2, 0, 'Johnson & Johnson'),
   (3, 0, 'Dole'),
   (4, 0, 'Famous Daves');
@@ -338,3 +340,9 @@ INSERT INTO Unit (UnitId, UserId, Name) VALUES
   (19, 0, 'lg');
 
 SELECT setval('unit_unitid_seq', (SELECT MAX(UnitId) FROM Unit));
+
+INSERT INTO Store (StoreId, UserId, OrdinalId, Name, Website, Phone) VALUES
+  (0, 0, NULL, 'None', '', ''),
+  (1, 0, NULL, 'Any', '', '');
+
+SELECT setval('store_storeid_seq', (SELECT MAX(StoreId) FROM Store));

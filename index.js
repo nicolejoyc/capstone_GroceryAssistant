@@ -472,6 +472,141 @@ express()
       res.send("Error " + err);
     }
   })
+  // list item delete begin
+  .get('/list/listitem/delete', async (req, res) => {
+    try {
+      const client = await pool.connect();
+      const listId = req.query.listid;
+      const listName = req.query.listname;
+
+      const products = await client.query(
+        `DELETE ProductId AS id, Name FROM product ORDER BY id ASC`
+      );
+
+      const categories = await client.query(
+        `DELETE CategoryId AS id, Name FROM category ORDER BY id ASC`
+      );
+
+      const stores = await client.query(
+        `DELETE StoreId AS id, Name FROM store ORDER BY id ASC`
+      );
+
+      const brands = await client.query(
+        `DELETE BrandId AS id, Name FROM Brand ORDER BY id ASC`
+      );
+
+      const locals = {
+        'title': 'Delete List Item',
+        'list_id' : listId,
+        'list_name' : listName,
+        'products': (products) ? products.rows : null,
+        'categories': (categories) ? categories.rows : null,
+        'stores': (stores) ? stores.rows : null,
+        'brands': (brands) ? brands.rows : null
+      };
+
+      res.render('pages/interface-7', locals);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  
+  // list item delete end
+  // list item edit begin
+  .get('/list/listitem/edit', async (req, res) => {
+    try {
+      const client = await pool.connect();
+      const listId = req.query.listid;
+      const listName = req.query.listname;
+
+      const products = await client.query(
+        `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
+      );
+
+      const categories = await client.query(
+        `SELECT CategoryId AS id, Name FROM category ORDER BY id ASC`
+      );
+
+      const stores = await client.query(
+        `SELECT StoreId AS id, Name FROM store ORDER BY id ASC`
+      );
+
+      const brands = await client.query(
+        `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
+      );
+
+
+      const locals = {
+        'title': 'Edit List Item',
+        'list_id' : listId,
+        'list_name' : listName,
+        'products': (products) ? products.rows : null,
+        'categories': (categories) ? categories.rows : null,
+        'stores': (stores) ? stores.rows : null,
+        'brands': (brands) ? brands.rows : null
+      };
+
+      res.render('pages/interface-7', locals);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  // list item edit end
+  // list item view begin
+  .get('/list/listitem/view', async (req, res) => {
+      try {
+        const client = await pool.connect();
+        const listId = req.query.listid;
+        const listName = req.query.listname;
+        const id = req.query.id;
+        const name = req.query.name;
+  
+        const item = await client.query(
+          `SELECT ProductId AS id, Name FROM product ORDER BY id ASC` 
+        );
+
+        const products = await client.query(
+          `SELECT ProductId FROM listItem`
+        );
+  
+        const categories = await client.query(
+          `SELECT CategoryId FROM listItem`
+        );
+  
+        const brands = await client.query(
+          `SELECT BrandId FROM listItem`
+        );
+        const listItem = await client.query(
+          `SELECT ProductId, ListId, BrandId, CategoryId, ItemCount FROM listitem`
+        );
+        const locals = {
+          'title': name,
+          'list_id' : listId,
+          'list_name' : listName,
+          'item': (item) ? item.rows : null,
+          'products': (listItem) ? products.rows : null,
+          'categories': (listItem) ? categories.rows : null,
+          'brands': (listItem) ? brands.rows : null,
+          'listItem': (listItem) ? listItem.rows : null
+        };
+        res.render('pages/interface-9', locals);
+  console.log(name);
+        client.release();
+      }
+      
+      catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+      }
+      
+    })
+  // list item view end
   .get('/grocery-data-manager/product/view', async (req, res) => {
     try {
       const client = await pool.connect();
@@ -860,6 +995,69 @@ express()
 			res.send("Error: " + err);
 		}
 	})
+  // list item delete
+  .post('/list/listitem/delete', async(req, res) => {
+		try {
+			const client = await pool.connect();
+      const listId = req.body.list_id;
+      const productId = req.body.product_id;
+      const categoryId = req.body.category_id;
+      // const storeId = req.body.store_id;
+      const brandId = req.body.brand_id;
+      const itemCount = req.body.item_count;
+      
+			const sqlInsert = await client.query(
+        `DELETE listitem (listid, productid, categoryid, brandid, itemcount)
+        VALUES (${listId}, ${productId}, ${categoryId}, ${brandId}, ${itemCount});`);
+
+			const result = {
+				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  // list item delete end
+  // list item edit begin
+  .post('/list/listitem/edit', async(req, res) => {
+		try {
+			const client = await pool.connect();
+      const listId = req.body.list_id;
+      const productId = req.body.product_id;
+      const categoryId = req.body.category_id;
+      const storeId = req.body.store_id;
+      const brandId = req.body.brand_id;
+      const itemCount = req.body.item_count;
+      
+			const sqlInsert = await client.query(
+        `UPDATE listitem (listid, productid, categoryid, brandid, itemcount)
+        VALUES (${listId}, ${productId}, ${categoryId}, ${brandId}, ${itemCount})
+        RETURNING listItemId AS new_id;`);
+
+			const result = {
+				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  // list item edit end
   .post('/product/edit', async(req, res) => {
 		try {
 			const client = await pool.connect();

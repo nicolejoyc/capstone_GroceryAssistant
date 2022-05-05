@@ -365,13 +365,14 @@ body {
 }
 
 .sortByH3{
-  margin-left: 10px;
+  margin-left: 14px;
   margin-top: 1px;
 }
 
 .grid-container-1 {
   display: grid;
   grid-template-columns: repeat(3, 133px);
+  margin-left: 14px;
 }
 .grid-item-1 {
   margin-top: .5px;
@@ -380,8 +381,9 @@ body {
 .grid-container-2 {
   display: grid;
   grid-template-columns: repeat(2, 133px);
-
+  margin-left: 14px;
 }
+
 .grid-item-2 {
   margin-top: .5px;
 }
@@ -442,10 +444,15 @@ body {
   }
 
   .tool-bar-wrapper-1 .icon-controls-wrapper {
-    grid-template-columns: repeat(6, 62px);
+    grid-template-columns: repeat(6, 60px);
   }
 
   .tool-bar-wrapper-2 .icon-controls-wrapper {
     grid-template-columns: repeat(5, 75px);
+  }
+
+  .grid-container-1,
+  .grid-container-2 {
+    grid-template-columns: repeat(3, 120px);
   }
 }

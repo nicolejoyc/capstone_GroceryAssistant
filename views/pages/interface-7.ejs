@@ -27,13 +27,6 @@
                 <% }); %>
                 </select>
 
-                <label for="dropdown-store"> Store:</label>
-                <select class="form-input" name="dropdown-store" id="dropdown-store" placeholder="select store name" required>
-                  <% stores.forEach(function(r) {%>
-                    <option value="store-<%= r.id %>"><%= r.name %></option>
-                  <% }); %>
-                  </select>
-
                 <label for="dropdown-brand"> Brand:</label>
                 <select class="form-input" name="dropdown-store" id="dropdown-brand" placeholder="select brand name" required>
                   <% brands.forEach(function(r) {%>

@@ -49,6 +49,33 @@ body {
   scrollbar-color: gray rgb(216 105 65);
 }
 
+.button-list-wrapper-6{ /* Used in interface 3.ejs*/
+  border: 2px solid rgb(95 78 78);
+  border-radius: 20px;
+  margin: 1%;
+  height: 41rem;
+  overflow: auto;
+  scrollbar-color: gray rgb(216 105 65);
+}
+
+.button-list-wrapper-7 { /* Used in index.ejs and interfaces 1&5*/
+  border: 2px solid rgb(95 78 78);
+  border-radius: 20px;
+  margin: 1%;
+  height: 37rem;
+  overflow: auto;
+  scrollbar-color: #177820 white;
+}
+
+.button-list-wrapper-8 { /* Used in interface-8.ejs*/
+  border: 2px solid rgb(95 78 78);
+  border-radius: 20px;
+  margin: 1%;
+  height: 27.5rem;
+  overflow: auto;
+  scrollbar-color: #177820 white;
+}
+
 .validate {
   color: white;
   display: none;
@@ -108,10 +135,27 @@ body {
 .tool-bar-wrapper {
   position: relative;
   border: 2px solid rgb(95 78 78);
-  height: 3rem;
+  height: auto;
   border-radius: 10px;
   margin: 1%;
   padding: 0.25%;
+}
+
+.tool-bar-wrapper-3 {
+  padding-bottom: 10px;
+}
+
+#onView {
+  float: right;
+  padding-bottom:auto;
+}
+
+.hideToolBar{
+  display: none;
+}
+
+.showToolBar{
+  display: block;
 }
 
 .icon-controls-wrapper {
@@ -311,6 +355,45 @@ body {
   background-color: transparent;
 }
 
+/* Sort By Styles*/
+.sortByH2{
+  margin-left: 10px;
+  margin-top: 1px;
+  margin-bottom:5px;
+  font-style:italic;
+  font-size: 22px;
+}
+
+.sortByH3{
+  margin-left: 10px;
+  margin-top: 1px;
+}
+
+.grid-container-1 {
+  display: grid;
+  grid-template-columns: repeat(3, 133px);
+}
+.grid-item-1 {
+  margin-top: .5px;
+}
+
+.grid-container-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 133px);
+
+}
+.grid-item-2 {
+  margin-top: .5px;
+}
+
+#sortByProduct1 {
+  margin-left: 10px;
+}
+
+#sortByPurchased {
+  margin-left: 10px;
+}
+
 /*Only Tablet*/
 @media only screen and (max-width: 64em) {
   body {
@@ -346,8 +429,12 @@ body {
     width: 100%;
   }
 
-  .tool-bar-wrapper, .button-list-wrapper-1 {
+  .button-list-wrapper-1 {
     padding-bottom: 60px;
+  }
+
+  .tool-bar-wrapper{
+    padding-bottom: 15px;
   }
 
   .icon-controls-wrapper {

@@ -1,0 +1,42 @@
+<%#
+  Creates a toolbar containing sort controls and icons
+%>
+
+<div class="tool-bar-wrapper tool-bar-wrapper-2 tool-bar-wrapper-3">
+  
+  <img src="image/hdpi/ic_arrow.png" alt="arrow"id="onView">
+  <h2 class="sortByH2">Filter Options</h2>
+
+  <div id="outOfSight" class="hideToolBar">
+  <div class="sortByH3"><h3>Sort By:</h3></div>
+  <div class="grid-container-1">
+  
+  <div class="grid-item-1"><div id="sortByProduct1">
+  <input type="radio" id="sortByProduct"
+  name="sortBy" value="product">
+  <label for="product" id="sortByPor">Product</label>
+  </div></div>
+
+  <div class="grid-item-1"><div id="sortByCategory1">
+  <input type="radio" id="sortByCategory"
+  name="sortBy" value="category">
+  <label for="category">Category</label>
+  </div></div>
+
+  <div class="grid-item-1"><div id="sortByUrgency1">
+  <input type="radio" id="sortByUrgency"
+  name="sortBy" value="urgency">
+  <label for="urgency">Urgency</label>
+  </div></div></div>
+
+  <div class="sortByH3" style="margin-top: 10px;"><h3>Show:</h3></div>
+  <div class="grid-container-2">
+
+  <div class="grid-item-2"><input type="checkbox" id="sortByPurchased" name="purchased" value="purchased">
+  <label for="purchased">Purchased</label></div>
+
+  <div class="grid-item-2"><input type="checkbox" id="sortByHidden" name="hidden" value="hidden">
+  <label for="hidden">Hidden</label></div>
+</div>
+</div>
+</div>

@@ -11,7 +11,7 @@
 
       <div class="form-container">
         <div class="form-wrapper">
-          <form action="">
+          <form action="javascript:void(0)">
               <div class="form-input-wrapper">
                 <label for="dropdown-product"> Product:</label>
                 <select class="form-input" name="dropdown-product" id="dropdown-product" placeholder="select product" required>
@@ -51,39 +51,36 @@
                 <label for="quantity"> Quantity:</label><br>
                 <input class="form-input" type="numeric" name="quantity" id="quantity" placeholder="Enter quantity" value="<%= itemcount %>" required>
 
-    </select>
               </div>
-            <input type="text" id="user-id" value="1" hidden>
-            <input type="text" id="list-id" value="<%= list_id %>" hidden>
-            <input type="text" id="list-name" value="<%= list_name %>" hidden>
-            <input type="text" id="listitem-id" value="<%= listitem_id %>" hidden>
-            <input type="text" id="table-name" value="listitem" hidden>
+              <input type="text" id="user-id" value="1" hidden>
+              <input type="text" id="list-id" value="<%= list_id %>" hidden>
+              <input type="text" id="list-name" value="<%= list_name %>" hidden>
+              <input type="text" id="listitem-id" value="<%= listitem_id %>" hidden>
+              <input type="text" id="table-name" value="listitem" hidden>
 
-            <% if (operation === 'add') { %>
-              <input type="submit" id="<%= operation %>-listitem" class="submit" value="Save">
-            <% } else if (operation === 'view' ) { %>
-              <input type="text" id="listitem-id" value="<%= listitem_id %>" hidden>
-              <input type="submit" id="<%= operation %>-listitem-done" class="submit" value="Done">
-            <% } else if (operation === 'edit' ) { %>
-              <input type="text" id="listitem-id" value="<%= listitem_id %>" hidden>
-              <input type="submit" id="<%= operation %>-listitem" class="submit" value="Update">
-            <% } else { %>
-              <input type="text" id="listitem-id" value="<%= listitem_id %>" hidden>
-              <input type="submit" id="<%= operation %>-listitem-cancel" class="submit" value="Cancel">
-              <input type="submit" id="<%= operation %>-listitem-confirm" class="submit" value="Confirm">
-            <% } %>
-
+              <% if (operation === 'add') { %>
+                <input type="submit" id="<%= operation %>-listitem" class="submit" value="Save">
+              <% } else if (operation === 'view' ) { %>
+                <input type="text" id="listitem-id" value="<%= listitem_id %>" hidden>
+                <input type="submit" id="<%= operation %>-listitem-done" class="submit" value="Done">
+              <% } else if (operation === 'edit' ) { %>
+                <input type="text" id="listitem-id" value="<%= listitem_id %>" hidden>
+                <input type="submit" id="<%= operation %>-listitem" class="submit" value="Update">
+              <% } else { %>
+                <input type="text" id="listitem-id" value="<%= listitem_id %>" hidden>
+                <input type="submit" id="<%= operation %>-listitem-cancel" class="submit" value="Cancel">
+                <input type="submit" id="<%= operation %>-listitem-confirm" class="submit" value="Confirm">
+              <% } %>
 
           </form>
         </div>
       </div>
-       
     </div>
     <!-- Common javascript includes -->
     <%- include('../partials/common-js.ejs') %>
     <script src="/js/add.js"></script>
-    <script src="/js/view.js"></script>
     <script src="/js/edit.js"></script>
+    <script src="/js/view.js"></script>
     
     <!-- Implement click handler for back button -->
     <script>

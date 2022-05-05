@@ -698,6 +698,40 @@ express()
       res.send("Error " + err);
     }
   })
+  .get('/grocery-data-manager/store/edit', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const id = req.query.id;
+			const name = req.query.name;
+
+      const item = await client.query(
+        `SELECT StoreId AS id, Name, Website, Phone FROM store WHERE StoreId = ${id}`
+      );
+
+      const inputForm = [
+        { "label" : "Store Name", "hint": "", "value": item.rows[0].name },
+        { "label" : "Website", "hint": "", "value": item.rows[0].website },
+        { "label" : "Phone", "hint": "", "value": item.rows[0].phone }
+      ];
+
+      const parms = {
+        'operation': 'edit',
+        'title': 'Edit Store',
+        'name': 'store',
+        'item_id': id,
+        'message': '',
+        'inputform': inputForm
+      };
+
+      res.render('pages/interface-2', parms);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
   .post('/add', async(req, res) => {
 		try {
       const client = await pool.connect();
@@ -925,6 +959,35 @@ express()
 			const sqlUpdate = await client.query(
         `UPDATE Brand SET Name = ${brandName}
           WHERE BrandId = ${brandId};`);
+			
+			const result = {
+				'response': (sqlUpdate) ? (sqlUpdate.rows[0]) : null
+			};
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/store/edit', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const storeId = req.body.store_id;
+			const storeName = req.body.store_name;
+			const storeWebsite = req.body.store_website;
+			const storePhone = req.body.store_phone;
+			const userId = req.body.user_id;
+      	
+      // TODO: add user id to where clause
+			const sqlUpdate = await client.query(
+        `UPDATE Store SET Name = ${storeName}, Website = ${storeWebsite}, Phone = ${storePhone}
+          WHERE storeId = ${storeId};`);
 			
 			const result = {
 				'response': (sqlUpdate) ? (sqlUpdate.rows[0]) : null

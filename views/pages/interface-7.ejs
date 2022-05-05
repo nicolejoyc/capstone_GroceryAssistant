@@ -16,34 +16,64 @@
                 <label for="dropdown-product"> Product:</label>
                 <select class="form-input" name="dropdown-product" id="dropdown-product" placeholder="select product" required>
                   <% products.forEach(function(r) {%>
-                    <option value="product-<%= r.id %>"><%= r.name %></option>
+                    <% if (r.id === product_id) {%>
+                      <option value="product-<%= r.id %>" selected ><%= r.name %></option>
+                    <% } else {%>
+                      <option value="product-<%= r.id %>"><%= r.name %></option>
+                    <% } %>
+                   
                   <% }); %>
                   </select>
 
                 <label for="dropdown-cat"> Category:</label>
                 <select class="form-input"  name="dropdown-cat" id="dropdown-cat" placeholder="select category name" required>
                 <% categories.forEach(function(r) {%>
-                  <option value="category-<%= r.id %>"><%= r.name %></option>
+                  <% if (r.id === category_id) {%>
+                    <option value="category-<%= r.id %>" selected ><%= r.name %></option>
+                  <% } else {%>
+                    <option value="category-<%= r.id %>"><%= r.name %></option>
+                  <% } %>
                 <% }); %>
                 </select>
 
                 <label for="dropdown-brand"> Brand:</label>
                 <select class="form-input" name="dropdown-store" id="dropdown-brand" placeholder="select brand name" required>
                   <% brands.forEach(function(r) {%>
-                    <option value="brand-<%= r.id %>"><%= r.name %></option>
+                    <% if (r.id === brand_id) {%>
+                      <option value="brand-<%= r.id %>" selected ><%= r.name %></option>
+                    <% } else {%>
+                      <option value="brand-<%= r.id %>"><%= r.name %></option>
+                    <% } %>
                   <% }); %>
                   </select>
 
                 <br>
                 <label for="quantity"> Quantity:</label><br>
-                <input class="form-input" type="numeric" name="quantity" id="quantity" placeholder="Enter quantity" value="1" required>
+                <input class="form-input" type="numeric" name="quantity" id="quantity" placeholder="Enter quantity" value="<%= itemcount %>" required>
 
     </select>
               </div>
             <input type="text" id="user-id" value="1" hidden>
             <input type="text" id="list-id" value="<%= list_id %>" hidden>
             <input type="text" id="list-name" value="<%= list_name %>" hidden>
-            <input type="submit" id="add-listitem" class="submit" value="Save">
+            <input type="text" id="listitem-id" value="<%= listitem_id %>" hidden>
+            <input type="text" id="table-name" value="listitem" hidden>
+
+            <% if (operation === 'add') { %>
+              <input type="submit" id="<%= operation %>-listitem" class="submit" value="Save">
+            <% } else if (operation === 'view' ) { %>
+              <input type="text" id="listitem-id" value="<%= listitem_id %>" hidden>
+              <input type="submit" id="<%= operation %>-listitem-done" class="submit" value="Done">
+            <% } else if (operation === 'edit' ) { %>
+              <input type="text" id="listitem-id" value="<%= listitem_id %>" hidden>
+              <input type="submit" id="<%= operation %>-listitem" class="submit" value="Update">
+            <% } else { %>
+              <input type="text" id="listitem-id" value="<%= listitem_id %>" hidden>
+              <input type="submit" id="<%= operation %>-listitem-cancel" class="submit" value="Cancel">
+              <input type="submit" id="<%= operation %>-listitem-confirm" class="submit" value="Confirm">
+            <% } %>
+
+
           </form>
         </div>
       </div>
@@ -52,7 +82,9 @@
     <!-- Common javascript includes -->
     <%- include('../partials/common-js.ejs') %>
     <script src="/js/add.js"></script>
-
+    <script src="/js/view.js"></script>
+    <script src="/js/edit.js"></script>
+    
     <!-- Implement click handler for back button -->
     <script>
       $('#back-icon').click(() => {

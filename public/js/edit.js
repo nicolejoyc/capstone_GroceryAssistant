@@ -171,6 +171,42 @@ $(function() {
       });
       break;
     }
+
+    case 'listitem':
+      {
+        $("#edit-listitem").click(async function (e) { 
+          e.preventDefault();
+          let listItemId =$('#listitem-id').val();
+          let productID = $('#dropdown-product').val().split('-')[1];
+          let categoryID = $('#dropdown-cat').val().split('-')[1]; 
+          let brandID = $('#dropdown-brand').val().split('-')[1];
+          let itemCount =$('#quantity').val();  
+          let listName =$('#list-name').val();
+          let listId =$('#list-id').val();
+      
+          // send info to be stored into the database
+          const response = await fetch('/list/listitem/edit', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              list_id: listId,
+              listitem_id: listItemId,
+              product_id: "'" + productID + "'",
+              category_id: "'" + categoryID + "'",
+              brand_id: "'" + brandID + "'",
+              item_count: "'" + itemCount + "'",
+            })
+          });
+      
+          const result = await response.json();
+          console.log(result);
+          location.assign('/list?id=' + listId + '&name=' + listName);
+      });
+      break;
+    }
   }
 
 });

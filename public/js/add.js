@@ -252,7 +252,6 @@ $("#add-listitem").click(async function (e) {
   e.preventDefault();
   let productID = $('#dropdown-product').val().split('-')[1];
   let categoryID = $('#dropdown-cat').val().split('-')[1]; 
- // let storeID = $('#dropdown-store').val().split('-')[1];
   let brandID = $('#dropdown-brand').val().split('-')[1];
   let itemCount =$('#quantity').val();  
   let listName =$('#list-name').val();
@@ -269,7 +268,6 @@ $("#add-listitem").click(async function (e) {
         list_id: listId,
         product_id: "'" + productID + "'",
         category_id: "'" + categoryID + "'",
-       // store_id: "'" + storeID + "'",
         brand_id: "'" + brandID + "'",
         item_count: "'" + itemCount + "'",
       })

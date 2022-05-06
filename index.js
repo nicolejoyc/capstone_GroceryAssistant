@@ -1231,21 +1231,24 @@ express()
           sql.push(`DELETE FROM listitem WHERE listid = ` + itemId + `;`);
           break;
       }
+      let result;
       
       sql.forEach(async function(i) {
         const sqlDelete = await client.query(i);
 
-        // const result = {
-        //   'response': (sqlDelete) ? (sqlDelete.rows[0]) : null
-        // };
+        if(!i) {
+          result = {
+            'response': (sqlDelete) ? (sqlDelete.rows[0]) : null
+          };
+        }
 
       });
 
-      // res.set({
-      //   'Content-Type': 'application/json'
-      // });
+      res.set({
+        'Content-Type': 'application/json'
+      });
         
-      // res.json({ requestBody: result });
+      res.json({ requestBody: result });
 			
 			client.release();
 		}

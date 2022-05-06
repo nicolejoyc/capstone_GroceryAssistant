@@ -1,26 +1,3 @@
-charLessThanTwenty = function(name) {
-  if (name.length <= 20) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-charLessThanThirty = function(name) {
-  if (name.length <= 30) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-charLessThanForty = function(name) {
-  if (name.length <= 40) {
-    return true;
-  } else {
-    return false;
-  }
-};
 
 $("#add-grocery-list").click(async function (e) { 
   e.preventDefault();

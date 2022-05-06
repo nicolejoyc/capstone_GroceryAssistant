@@ -13,3 +13,27 @@ const gotoParentURL = () => {
 const openItem = function(table, id, name, preference) {
     window.location.href = ('/grocery-data-manager/product-preferences/view?id=' + id + '&name=' + name);
 };
+
+charLessThanTwenty = function(name) {
+  if (name.length <= 20) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+charLessThanThirty = function(name) {
+  if (name.length <= 30) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+charLessThanForty = function(name) {
+  if (name.length <= 40) {
+    return true;
+  } else {
+    return false;
+  }
+};

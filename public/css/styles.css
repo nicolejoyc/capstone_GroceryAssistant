@@ -9,11 +9,11 @@
 }
 
 body {
-  background-color: #D5F6E5;
+  background-color: #d5f6e5;
 }
 
 .interface-wrapper {
-  background-color: #01A66F;
+  background-color: #01a66f;
   border: 4px solid black;
   border-radius: 25px;
   margin: 0.2rem auto;
@@ -23,7 +23,7 @@ body {
 }
 
 .header-wrapper {
-  background-color: #75CE9F;
+  background-color: #75ce9f;
   border: 2px solid rgb(95 78 78);
   border-radius: 10px;
   margin: 1%;
@@ -49,7 +49,7 @@ body {
   scrollbar-color: gray rgb(216 105 65);
 }
 
-.button-list-wrapper-6{ /* Used in interface 3.ejs*/
+.button-list-wrapper-6 { /* Used in interface 3.ejs */
   border: 2px solid rgb(95 78 78);
   border-radius: 20px;
   margin: 1%;
@@ -58,7 +58,7 @@ body {
   scrollbar-color: gray rgb(216 105 65);
 }
 
-.button-list-wrapper-7 { /* Used in index.ejs and interfaces 1&5*/
+.button-list-wrapper-7 { /* Used in index.ejs and interfaces 1&5 */
   border: 2px solid rgb(95 78 78);
   border-radius: 20px;
   margin: 1%;
@@ -67,7 +67,7 @@ body {
   scrollbar-color: #177820 white;
 }
 
-.button-list-wrapper-8 { /* Used in interface-8.ejs*/
+.button-list-wrapper-8 { /* Used in interface-8.ejs */
   border: 2px solid rgb(95 78 78);
   border-radius: 20px;
   margin: 1%;
@@ -93,7 +93,7 @@ body {
 }
 
 .button {
-  background-color: #BDD99E;
+  background-color: #bdd99e;
   border: 1.25px solid black;
   border-radius: 20px;
   color: black;
@@ -145,16 +145,16 @@ body {
   padding-bottom: 10px;
 }
 
-#onView {
+#on-view {
   float: right;
-  padding-bottom:auto;
+  padding-bottom: auto;
 }
 
-.hideToolBar{
+.hide-toolbar {
   display: none;
 }
 
-.showToolBar{
+.show-toolbar {
   display: block;
 }
 
@@ -179,7 +179,7 @@ body {
 }
 
 .submit {
-  background-color: #BDD99E;
+  background-color: #bdd99e;
   border: 2px solid rgb(95 78 78);
   border-radius: 10px;
   font-size: 1rem;
@@ -216,7 +216,7 @@ body {
 .url-control-wrapper .control {
   border-radius: 5px;
   margin-left: 0.5rem;
-  background-color: #BDD99E;
+  background-color: #bdd99e;
   font-size: 1.25rem;
   max-width: fit-content;
 }
@@ -227,7 +227,7 @@ body {
 
 /* List Button Styles */
 .open-button {
-  background-color: #719A44;
+  background-color: #719a44;
   position: absolute;
   border-top: none;
   border-right: none;
@@ -252,7 +252,7 @@ body {
 
 .select-button-active {
   font-weight: bold;
-  background-color: #6F9842;
+  background-color: #6f9842;
 }
 
 .select-button-inactive {
@@ -267,7 +267,7 @@ body {
 .select-button-disabled {
   font-weight: normal;
   text-decoration: none;
-  background-color: #BDD99E;
+  background-color: #bdd99e;
 }
 
 /* Icon control Styles */
@@ -292,7 +292,7 @@ body {
 }
 
 .preference-wrapper h2 {
-  background-color: #BDD99E;
+  background-color: #bdd99e;
   border: 1.25px solid black;
   border-radius: 20px;
   color: black;
@@ -355,16 +355,16 @@ body {
   background-color: transparent;
 }
 
-/* Sort By Styles*/
-.sortByH2{
+/* Sort By Styles */
+.sort-by-h2 {
   margin-left: 10px;
   margin-top: 1px;
-  margin-bottom:5px;
-  font-style:italic;
+  margin-bottom: 5px;
+  font-style: italic;
   font-size: 22px;
 }
 
-.sortByH3{
+.sort-by-h3 {
   margin-left: 14px;
   margin-top: 1px;
 }
@@ -374,8 +374,9 @@ body {
   grid-template-columns: repeat(3, 133px);
   margin-left: 14px;
 }
+
 .grid-item-1 {
-  margin-top: .5px;
+  margin-top: 0.5px;
 }
 
 .grid-container-2 {
@@ -385,26 +386,26 @@ body {
 }
 
 .grid-item-2 {
-  margin-top: .5px;
+  margin-top: 0.5px;
 }
 
-#sortByProduct1 {
+#sort-by-product-1 {
   margin-left: 10px;
 }
 
-#sortByPurchased {
+#sort-by-purchased {
   margin-left: 10px;
 }
 
-/*Only Tablet*/
+/* Only Tablet */
 @media only screen and (max-width: 64em) {
   body {
-    background-color: #01A66F;
-    margin: 0px;
+    background-color: #01a66f;
+    margin: 0;
   }
 
-  .interface-wrapper { 
-    min-width: 0px;
+  .interface-wrapper {
+    min-width: 0;
     width: auto;
     border-left: none;
     border-right: none;
@@ -413,7 +414,7 @@ body {
   }
 }
 
-/*Only Mobile*/
+/* Only Mobile */
 @media only screen and (max-width: 37.5em) {
   .interface-wrapper {
     border-left: none;
@@ -435,7 +436,7 @@ body {
     padding-bottom: 60px;
   }
 
-  .tool-bar-wrapper{
+  .tool-bar-wrapper {
     padding-bottom: 15px;
   }
 

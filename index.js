@@ -471,7 +471,6 @@ express()
       res.send("Error " + err);
     }
   })
-  // list item edit begin
   .get('/list/listitem/edit', async (req, res) => {
     try {
       const client = await pool.connect();
@@ -514,8 +513,6 @@ express()
       res.send("Error " + err);
     }
   })
-  // list item edit end
-  // list item view begin
   .get('/list/listitem/view', async (req, res) => {
     try {
       const client = await pool.connect();
@@ -550,7 +547,7 @@ express()
         'brands': (brands) ? brands.rows : null,
         'itemcount':(listItem) ? listItem.rows[0].itemcount: null
       };
-      res.render('pages/interface-7', locals);
+      res.render('pages/interface-9', locals);
       client.release();
     }
     catch (err) {
@@ -558,7 +555,6 @@ express()
       res.send("Error " + err);
     }
   })
-  // list item view end
   .get('/grocery-data-manager/product/view', async (req, res) => {
     try {
       const client = await pool.connect();

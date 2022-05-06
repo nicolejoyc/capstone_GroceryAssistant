@@ -1135,7 +1135,6 @@ express()
       // });
         
       // res.json({ requestBody: result });
-      res.send("ok");
 			
 			client.release();
 		}

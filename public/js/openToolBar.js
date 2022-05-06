@@ -1,5 +1,5 @@
 $(function() {
-    $("#onView").click(function() {
-        $("#outOfSight").toggleClass("showToolBar");
+    $("#on-view").click(function() {
+        $("#out-of-sight").toggleClass("show-toolbar");
     });
 });

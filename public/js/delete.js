@@ -26,8 +26,11 @@ $(function() {
   
         const result = await response.json();
         console.log(result);
+
+        if(i === (selectedItems.length - 1)) {
+          location.reload();
+        }
       });
-      location.reload();
     }
 
   });

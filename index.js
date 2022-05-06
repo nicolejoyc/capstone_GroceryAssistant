@@ -441,26 +441,27 @@ express()
       const products = await client.query(
         `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
       );
+
       const categories = await client.query(
         `SELECT CategoryId AS id, Name FROM category ORDER BY id ASC`
       );
+
+      const stores = await client.query(
+        `SELECT StoreId AS id, Name FROM store ORDER BY id ASC`
+      );
+
       const brands = await client.query(
         `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
       );
 
       const locals = {
-        'operation': 'add',
         'title': 'Add List Item',
         'list_id' : listId,
         'list_name' : listName,
-        'listitem_id': 0,
-        'product_id': 2, 
         'products': (products) ? products.rows : null,
-        'category_id': 0, 
         'categories': (categories) ? categories.rows : null,
-        'brand_id': 0, 
-        'brands': (brands) ? brands.rows : null,
-        'itemcount': 1
+        'stores': (stores) ? stores.rows : null,
+        'brands': (brands) ? brands.rows : null
       };
 
       res.render('pages/interface-7', locals);
@@ -471,94 +472,6 @@ express()
       res.send("Error " + err);
     }
   })
-  // list item edit begin
-  .get('/list/listitem/edit', async (req, res) => {
-    try {
-      const client = await pool.connect();
-      const listId = req.query.listid;
-      const listName = req.query.listname;
-      const listItemId = req.query.id;
-
-      const listItem = await client.query(
-        `SELECT * FROM listitem WHERE ListItemId = ` + listItemId
-      );
-      const products = await client.query(
-        `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
-      );
-      const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM category ORDER BY id ASC`
-      );
-      const brands = await client.query(
-        `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
-      );
-      
-      const locals = {
-        'operation': 'edit',
-        'title': listName,
-        'list_id' : listId,
-        'list_name' : listName,
-        'listitem_id': listItemId,
-        'product_id': (listItem) ? listItem.rows[0].productid :null, 
-        'products': (products) ? products.rows : null,
-        'category_id': (listItem) ? listItem.rows[0].categoryid :null, 
-        'categories': (categories) ? categories.rows : null,
-        'brand_id': (listItem) ? listItem.rows[0].brandid :null, 
-        'brands': (brands) ? brands.rows : null,
-        'itemcount':(listItem) ? listItem.rows[0].itemcount: null
-      };
-      res.render('pages/interface-7', locals);
-      client.release();
-    }
-    catch (err) {
-      console.error(err);
-      res.send("Error " + err);
-    }
-  })
-  // list item edit end
-  // list item view begin
-  .get('/list/listitem/view', async (req, res) => {
-    try {
-      const client = await pool.connect();
-      const listId = req.query.listid;
-      const listName = req.query.listname;
-      const listItemId = req.query.id;
-
-      const listItem = await client.query(
-        `SELECT * FROM listitem WHERE ListItemId = ` + listItemId
-      );
-      const products = await client.query(
-        `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
-      );
-      const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM category ORDER BY id ASC`
-      );
-      const brands = await client.query(
-        `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
-      );
-      
-      const locals = {
-        'operation': 'view',
-        'title': listName,
-        'list_id' : listId,
-        'list_name' : listName,
-        'listitem_id': listItemId,
-        'product_id': (listItem) ? listItem.rows[0].productid :null, 
-        'products': (products) ? products.rows : null,
-        'category_id': (listItem) ? listItem.rows[0].categoryid :null, 
-        'categories': (categories) ? categories.rows : null,
-        'brand_id': (listItem) ? listItem.rows[0].brandid :null, 
-        'brands': (brands) ? brands.rows : null,
-        'itemcount':(listItem) ? listItem.rows[0].itemcount: null
-      };
-      res.render('pages/interface-7', locals);
-      client.release();
-    }
-    catch (err) {
-      console.error(err);
-      res.send("Error " + err);
-    }
-  })
-  // list item view end
   .get('/grocery-data-manager/product/view', async (req, res) => {
     try {
       const client = await pool.connect();
@@ -957,6 +870,7 @@ express()
       const listId = req.body.list_id;
       const productId = req.body.product_id;
       const categoryId = req.body.category_id;
+      const storeId = req.body.store_id;
       const brandId = req.body.brand_id;
       const itemCount = req.body.item_count;
       
@@ -967,35 +881,6 @@ express()
 
 			const result = {
 				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
-			};
-			res.set({
-				'Content-Type': 'application/json'
-			});
-				
-			res.json({ requestBody: result });
-			client.release();
-		}
-		catch (err) {
-			console.error(err);
-			res.send("Error: " + err);
-		}
-	})
-  .post('/list/listitem/edit', async(req, res) => {
-		try {
-			const client = await pool.connect();
-      const listId = req.body.list_id;
-      const listItemId = req.body.listitem_id;
-      const productId = req.body.product_id;
-      const categoryId = req.body.category_id;
-      const brandId = req.body.brand_id;
-      const itemCount = req.body.item_count;
-              // TODO: add user id to where clause
-			const sqlUpdate = await client.query(
-        `UPDATE listitem SET listid = ${listId}, productid = ${productId}, categoryid = ${categoryId}, brandid = ${brandId}, itemcount = ${itemCount}
-          WHERE listitemid = ${listItemId};`);
-
-			const result = {
-				'response': (sqlUpdate) ? (sqlUpdate.rows[0]) : null
 			};
 			res.set({
 				'Content-Type': 'application/json'
@@ -1250,6 +1135,7 @@ express()
       // });
         
       // res.json({ requestBody: result });
+      res.send("ok");
 			
 			client.release();
 		}

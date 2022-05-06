@@ -14,19 +14,26 @@
           <form action="javascript:void(0)">
               <div class="form-input-wrapper">
                 <label for="dropdown-product"> Product:</label>
-                <select class="form-input" name="dropdown-product" id="dropdown-product" placeholder="select product" required>
+                <% if (operation === 'view' ) {%>
+                  <select class="form-input" name="dropdown-product" id="dropdown-product" placeholder="select product name" disabled>
+                <% } else { %>
+                  <select class="form-input" name="dropdown-product" id="dropdown-product" placeholder="select product name" required>
+                <% } %>
                   <% products.forEach(function(r) {%>
                     <% if (r.id === product_id) {%>
                       <option value="product-<%= r.id %>" selected ><%= r.name %></option>
                     <% } else {%>
                       <option value="product-<%= r.id %>"><%= r.name %></option>
-                    <% } %>
-                   
+                    <% } %>                   
                   <% }); %>
                   </select>
 
                 <label for="dropdown-cat"> Category:</label>
-                <select class="form-input"  name="dropdown-cat" id="dropdown-cat" placeholder="select category name" required>
+                <% if (operation === 'view' ) {%>
+                  <select class="form-input" name="dropdown-cat" id="dropdown-cat" placeholder="select category name" disabled>
+                <% } else { %>
+                  <select class="form-input" name="dropdown-cat" id="dropdown-cat" placeholder="select category name" required>
+                <% } %>
                 <% categories.forEach(function(r) {%>
                   <% if (r.id === category_id) {%>
                     <option value="category-<%= r.id %>" selected ><%= r.name %></option>
@@ -37,7 +44,11 @@
                 </select>
 
                 <label for="dropdown-brand"> Brand:</label>
-                <select class="form-input" name="dropdown-store" id="dropdown-brand" placeholder="select brand name" required>
+                <% if (operation === 'view' ) {%>
+                  <select class="form-input" name="dropdown-brand" id="dropdown-brand" placeholder="select brand name" disabled>
+                <% } else { %>
+                  <select class="form-input" name="dropdown-brand" id="dropdown-brand" placeholder="select brand name" required>
+                <% } %>
                   <% brands.forEach(function(r) {%>
                     <% if (r.id === brand_id) {%>
                       <option value="brand-<%= r.id %>" selected ><%= r.name %></option>
@@ -49,7 +60,11 @@
 
                 <br>
                 <label for="quantity"> Quantity:</label><br>
-                <input class="form-input" type="numeric" name="quantity" id="quantity" placeholder="Enter quantity" value="<%= itemcount %>" required>
+                <% if (operation === 'view' ) {%>
+                  <input class="form-input" type="numeric" name="quantity" id="quantity" placeholder="Enter quantity" value="<%= itemcount %>" disabled>
+                <% } else { %>
+                  <input class="form-input" type="numeric" name="quantity" id="quantity" placeholder="Enter quantity" value="<%= itemcount %>" required>
+                <% } %>
 
               </div>
               <input type="text" id="user-id" value="1" hidden>

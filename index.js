@@ -547,7 +547,7 @@ express()
         'brands': (brands) ? brands.rows : null,
         'itemcount':(listItem) ? listItem.rows[0].itemcount: null
       };
-      res.render('pages/interface-9', locals);
+      res.render('pages/interface-7', locals);
       client.release();
     }
     catch (err) {

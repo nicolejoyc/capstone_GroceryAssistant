@@ -4,60 +4,61 @@
   of 'close' which causes the checkboxes not to show right away until 
   the user presses the arrow dropdown.
 %>
-
-<div class="preference-wrapper">
-  <h2>Preferred Categories for <%= item[0].name %></h2>
-  <a id="category-dropdown" href="#" onclick="slideOpen('categories');">&#9660;</a>
-
-  <div id="preferred-categories" class="checkbox-wrapper close">
-    <% categories.forEach(function(r) {%>
-        <input type="checkbox" name="preferred_categories" id="category-<%= r.id %>" value="<%= r.id %>" 
-        onchange='javascript:editPreferred("<%= item[0].id %>", "category", "<%= r.id %>")'
-        <% prefCat.forEach(function(c) {
-          if (c.categoryid === r.id && c.productid === item[0].id) {%>
-            checked
-          <% }
-        }); %>
-        >
-        <label for="category-<%= r.id %>"><%= r.name %></label><br>
-    <% }); %>
+<div class="form-container">
+  <div class="preference-wrapper">
+    <h2>Preferred Categories for <%= item[0].name %></h2>
+    <a id="category-dropdown" href="#" onclick="slideOpen('categories');">&#9660;</a>
+  
+    <div id="preferred-categories" class="checkbox-wrapper close">
+      <% categories.forEach(function(r) {%>
+          <input type="checkbox" name="preferred_categories" id="category-<%= r.id %>" value="<%= r.id %>" 
+          onchange='javascript:editPreferred("<%= item[0].id %>", "category", "<%= r.id %>")'
+          <% prefCat.forEach(function(c) {
+            if (c.categoryid === r.id && c.productid === item[0].id) {%>
+              checked
+            <% }
+          }); %>
+          >
+          <label for="category-<%= r.id %>"><%= r.name %></label><br>
+      <% }); %>
+    </div>
   </div>
-</div>
-
-<div class="preference-wrapper">
-  <h2>Preferred Stores for <%= item[0].name %></h2>
-  <a id="store-dropdown" href="#" onclick="slideOpen('stores');">&#9660;</a>
-
-  <div id="preferred-stores" class="checkbox-wrapper close">
-    <% stores.forEach(function(r) {%>
-        <input type="checkbox" name="preferred_stores" id="store-<%= r.id %>" value="<%= r.id %>"
-        onchange='javascript:editPreferred("<%= item[0].id %>", "store", "<%= r.id %>")'
-        <% prefStore.forEach(function(s) {
-          if (s.storeid === r.id && s.productid === item[0].id) {%>
-            checked
-          <% }
-        }); %>
-        >
-        <label for="store-<%= r.id %>"><%= r.name %></label><br>
-    <% }); %>
+  
+  <div class="preference-wrapper">
+    <h2>Preferred Stores for <%= item[0].name %></h2>
+    <a id="store-dropdown" href="#" onclick="slideOpen('stores');">&#9660;</a>
+  
+    <div id="preferred-stores" class="checkbox-wrapper close">
+      <% stores.forEach(function(r) {%>
+          <input type="checkbox" name="preferred_stores" id="store-<%= r.id %>" value="<%= r.id %>"
+          onchange='javascript:editPreferred("<%= item[0].id %>", "store", "<%= r.id %>")'
+          <% prefStore.forEach(function(s) {
+            if (s.storeid === r.id && s.productid === item[0].id) {%>
+              checked
+            <% }
+          }); %>
+          >
+          <label for="store-<%= r.id %>"><%= r.name %></label><br>
+      <% }); %>
+    </div>
   </div>
-</div>
-
-<div class="preference-wrapper">
-  <h2>Preferred Brands for <%= item[0].name %></h2>
-  <a id="brand-dropdown" href="#" onclick="slideOpen('brands');">&#9660;</a>
-
-  <div id="preferred-brands" class="checkbox-wrapper close">
-    <% brands.forEach(function(r) {%>
-        <input type="checkbox" name="preferred_categories" id="brand-<%= r.id %>" value="<%= r.id %>"
-        onchange='javascript:editPreferred("<%= item[0].id %>", "brand", "<%= r.id %>")'
-        <% prefBrand.forEach(function(b) {
-          if (b.brandid === r.id && b.productid === item[0].id) {%>
-            checked
-          <% }
-        }); %>
-        >
-        <label for="brand-<%= r.id %>"><%= r.name %></label><br>
-    <% }); %>
+  
+  <div class="preference-wrapper">
+    <h2>Preferred Brands for <%= item[0].name %></h2>
+    <a id="brand-dropdown" href="#" onclick="slideOpen('brands');">&#9660;</a>
+  
+    <div id="preferred-brands" class="checkbox-wrapper close">
+      <% brands.forEach(function(r) {%>
+          <input type="checkbox" name="preferred_categories" id="brand-<%= r.id %>" value="<%= r.id %>"
+          onchange='javascript:editPreferred("<%= item[0].id %>", "brand", "<%= r.id %>")'
+          <% prefBrand.forEach(function(b) {
+            if (b.brandid === r.id && b.productid === item[0].id) {%>
+              checked
+            <% }
+          }); %>
+          >
+          <label for="brand-<%= r.id %>"><%= r.name %></label><br>
+      <% }); %>
+    </div>
   </div>
 </div>

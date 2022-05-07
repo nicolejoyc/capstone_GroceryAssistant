@@ -132,16 +132,32 @@ express()
 
       const id = req.query.id;
 			const name = req.query.name;
+      const orderBy = req.query.orderBy;
 
       const items = await client.query(
-        `SELECT ListItemId as id, name FROM ListItem INNER JOIN Product USING (ProductId)
-          WHERE Listid = ${id} ORDER BY name ASC`
+        `SELECT ListItemId AS id, Product.name AS name, Category.name AS category, Frequency AS urgency FROM ListItem INNER JOIN Product USING (ProductId) INNER JOIN Category USING (CategoryId) LEFT JOIN Urgency USING (UrgencyId)
+          WHERE Listid = ${id} ORDER BY ` + orderBy
       );
 
+      let ordering = '';
+      switch (orderBy) {
+        case 'name':
+          ordering = 'product';
+          break;
+        case 'category, name':
+          ordering = 'category';
+          break;
+        case 'urgency, name':
+          ordering = 'urgency';
+          break;
+      }
+
       const locals = {
+        'orderBy': ordering,
         'preference': false,
         'table': 'listitem',
         'title': name,
+        'id': id,
         'items': (items) ? items.rows : null
       };
 

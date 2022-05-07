@@ -16,19 +16,31 @@
     <div class="grid-container-1">
       <div class="grid-item-1" id="sort-by-product-1">
         <input type="radio" id="sort-by-product"
-        name="sortBy" value="product">
+        name="sortBy" value="product"
+        <% if (orderBy === 'product') {%>
+          checked
+        <%}%>
+        >
         <label for="sort-by-product">Product</label>
       </div>
 
       <div class="grid-item-1" id="sort-by-category-1">
         <input type="radio" id="sort-by-category"
-        name="sortBy" value="category">
+        name="sortBy" value="category"
+        <% if (orderBy === 'category') {%>
+          checked
+        <%}%>
+        >
         <label for="sort-by-category">Category</label>
       </div>
 
       <div class="grid-item-1" id="sort-by-urgency-1">
         <input type="radio" id="sort-by-urgency"
-        name="sortBy" value="urgency">
+        name="sortBy" value="urgency"
+        <% if (orderBy === 'urgency') {%>
+          checked
+        <%}%>
+        >
         <label for="sort-by-urgency">Urgency</label>
       </div>
     </div>

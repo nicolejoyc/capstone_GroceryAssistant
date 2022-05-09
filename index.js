@@ -161,7 +161,7 @@ express()
         'items': (items) ? items.rows : null
       };
 
-      res.render('pages/interface-1', locals);
+      res.render('pages/interface-8', locals);
       client.release();
     }
     catch (err) {

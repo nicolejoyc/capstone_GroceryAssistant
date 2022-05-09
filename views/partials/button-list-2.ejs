@@ -12,9 +12,24 @@
 %>
 <div class="button-list-wrapper-8">
   <% items.forEach(function(r, i) {%>
-    <div class="button-wrapper">
-      <button type="button" class="button list-button select-button" id=select-button-<%= r.id %>><%= r.name %></button>
+    <div class="button-wrapper-1">
+      <label id="product-label">Pr</label>
+      
+      <div class="checkbox-sorting">
+        <input type="checkbox" id="sort-by-purchased" name="purchased" value="purchased">
+        <label for="sort-by-purchased">Purchased</label>
+
+        <input type="checkbox" id="sort-by-hidden" name="hidden" value="hidden">
+        <label for="sort-by-hidden">Hidden</label>
+
+        <input type="checkbox" id="sort-by-urgency" name="urgency" value="urgency">
+        <label for="sort-by-urgency">Urgent</label>
+      </div>
+      
+      <button type="button" class="button-1 list-button select-button" id=select-button-<%= r.id %>><%= r.name %></button>
     </div>
+
+
   <% }); %>
 <%# Tag identifies the database table to enable JS code to handle interface icon clicks %>
 <span id="interface-identifier" hidden><%= table %></span>

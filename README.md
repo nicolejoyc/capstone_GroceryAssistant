@@ -54,6 +54,7 @@
 >
 > heroku open 
 >
+# Releases
 ## Version 0.1.0 Release Notes
 >
 > With this release the user can add products, lists, brands, categories, and stores to the database.
@@ -84,5 +85,20 @@
 >Editing capabilities are being implemented, currently available for everything except stores and list items.
 >
 >New data entry validation added.
+>
+>
+## Version 0.3.0 Release Notes
+>
+> Multiple bugs were resolved: user interaction, interface inconsistency, not yet implemented features.
+>
+> Users can delete lists, categories, products, brands, or stores.
+>
+> Ability to use the search bar: allows a user to search through long lists of items to ease user experience.
+>
+> Addition of sorting options in a grocery list: user can open the sort toolbar, and choose to sort by product name or category name, so that items in the same category can be closer together on the list, making it easier when shopping.
+>
+> New ability to view/edit/delete grocery list items.
+>
+> Users can edit all other items such as list names, categories, products, stores, or brands.
 >
 >

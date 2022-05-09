@@ -132,7 +132,7 @@ express()
 
       const id = req.query.id;
 			const name = req.query.name;
-      const orderBy = req.query.orderBy;
+      const orderBy = (req.query.orderBy) ? req.query.orderBy : 'product';
 
       const items = await client.query(
         `SELECT ListItemId AS id, Product.name AS name, Category.name AS category, Frequency AS urgency FROM ListItem INNER JOIN Product USING (ProductId) INNER JOIN Category USING (CategoryId) LEFT JOIN Urgency USING (UrgencyId)

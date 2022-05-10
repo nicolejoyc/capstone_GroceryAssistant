@@ -16,7 +16,11 @@ DROP TABLE grocery_list;
 CREATE TABLE grocery_list (
   id SERIAL PRIMARY KEY,
   UserId INT NOT NULL,
-  Name TEXT NOT NULL
+  Name TEXT NOT NULL,
+  Filtered BOOLEAN DEFAULT FALSE,
+  SourceListId INT,
+  StoreId INT,
+  CategoryId INT
 );
 
 DROP TABLE ListItem;
@@ -26,20 +30,18 @@ CREATE TABLE ListItem (
   ProductId INT NOT NULL,
   CategoryId INT NOT NULL,
   BrandId INT NOT NULL,
-  SizeId INT,
-  UrgencyId INT,
-  UrgencyAlert DATE,
+  UnitId INT,
+  UrgencyId Int,
+  UnitCount SMALLINT DEFAULT 0,
   ItemCount SMALLINT DEFAULT 1,
-  SaverAlertId INT,
   Purchased BOOLEAN DEFAULT FALSE,
-  Hide BOOLEAN DEFAULT FALSE
+  Hidden BOOLEAN DEFAULT FALSE
 );
 
 DROP TABLE Urgency;
 CREATE TABLE Urgency (
   UrgencyId SERIAL PRIMARY KEY,
-  Frequency SMALLINT NOT NULL,
-  Snooze SMALLINT NOT NULL
+  Name TEXT NOT NULL
 );
 
 DROP TABLE Product;
@@ -133,6 +135,13 @@ CREATE TABLE Unit (
   UserId INT NOT NULL,
   Name TEXT NOT NULL
 );
+
+INSERT INTO Urgency (UrgencyId, Name) VALUES
+  (1, 'Very'),
+  (2, 'Somewhat'),
+  (3, 'Not');
+
+SELECT setval('urgency_urgencyid_seq', (SELECT MAX(UrgencyId) FROM Urgency));
 
 INSERT INTO Product (ProductId, UserId, Name) VALUES
   (2, 0, 'Apple'),
@@ -278,8 +287,7 @@ INSERT INTO Category (CategoryId, UserId, Name) VALUES
   (5, 0, 'Frozen'),
   (6, 0, 'Produce'),
   (7, 0, 'Bakery'),
-  (8, 0, 'Deli');
-  /*
+  (8, 0, 'Deli'),
   (9, 0, 'Condiment'),
   (10, 0, 'Meat'),
   (11, 0, 'Organic'),
@@ -291,7 +299,7 @@ INSERT INTO Category (CategoryId, UserId, Name) VALUES
   (17, 0, 'Snacks'),
   (18, 0, 'Nuts'),
   (19, 0, 'Cleaning'),
-  (20, 0, 'Lundry'),
+  (20, 0, 'Laundry'),
   (21, 0, 'Beverage'),
   (22, 0, 'Juice'),
   (23, 0, 'Health Beauty'),
@@ -301,7 +309,6 @@ INSERT INTO Category (CategoryId, UserId, Name) VALUES
   (27, 0, 'Spices'),
   (28, 0, 'Desserts'),
   (29, 0, 'Household');
-  */
 
 SELECT setval('category_categoryid_seq', (SELECT MAX(CategoryId) FROM Category));
 
@@ -309,7 +316,22 @@ INSERT INTO Brand (BrandId, UserId, Name) VALUES
   (0, 0, 'None'),
   (2, 0, 'Johnson & Johnson'),
   (3, 0, 'Dole'),
-  (4, 0, 'Famous Daves');
+  (4, 0, 'Heinz'),
+  (5, 0, 'Cambell'),
+  (6, 0, 'Great Value'),
+  (7, 0, 'Archer Farms'),
+  (8, 0, 'Food Club'),
+  (9, 0, 'Tombstone'),
+  (10, 0, 'Del Monte'),
+  (11, 0, 'Green Giant'),
+  (12, 0, 'Libby''s'),
+  (13, 0, 'Tyson'),
+  (14, 0, 'Hormel'),
+  (15, 0, 'Jennie-O'),
+  (16, 0, 'Daisy'),
+  (17, 0, 'Kemps'),
+  (18, 0, 'Land O''Lakes'),
+  (19, 0, 'Famous Daves');
 
 SELECT setval('brand_brandid_seq', (SELECT MAX(BrandId) FROM Brand));
 

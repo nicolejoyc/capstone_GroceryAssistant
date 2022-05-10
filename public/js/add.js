@@ -3,8 +3,12 @@ $("#add-grocery-list").click(async function (e) {
   e.preventDefault();
 
   let groceryListName = $('#input-0').val();
+  let filtered = $('#filtered').prop('checked');
+  let sourceListID = $('#dropdown-source-list').val().split('-')[2]; 
+  let categoryID = $('#dropdown-cat').val().split('-')[1]; 
+  let storeID = $('#dropdown-store').val().split('-')[1];
 
-  if (groceryListName.replace(/\s/g, '') !== "" && charLessThanTwenty(groceryListName)) {
+  if (groceryListName.replace(/\s/g, '') !== "" && charLessThanThirty(groceryListName)) {
 
     // send info to be stored into the database
     const response = await fetch('/add', {
@@ -15,7 +19,11 @@ $("#add-grocery-list").click(async function (e) {
       },
       body: JSON.stringify({
         user_id: 1,
-        grocery_list_name: "'" + groceryListName.replace(/'/g, "''") + "'"
+        grocery_list_name: "'" + groceryListName.replace(/'/g, "''") + "'",
+        filtered: "'" + filtered + "'",
+        source_list_id: "'" + sourceListID + "'",
+        category_id: "'" + categoryID + "'",
+        store_id: "'" + storeID + "'"
       })
     });
 
@@ -26,7 +34,7 @@ $("#add-grocery-list").click(async function (e) {
   } else {
     validate = $('#validate-0');
     if (!charLessThanTwenty(groceryListName)) {
-      validate.html('Name must be 20 characters or less.');
+      validate.html('Name must be 30 characters or less.');
     } else {
       validate.html('Please fill out this field.');
     }
@@ -40,7 +48,7 @@ $("#add-product").click(async function (e) {
 
   let productName = $('#input-0').val();
 
-  if (productName.replace(/\s/g, '') !== "" && charLessThanTwenty(productName)) {
+  if (productName.replace(/\s/g, '') !== "" && charLessThanThirty(productName)) {
 
     // send info to be stored into the database
 	  const response = await fetch('/product/add', {
@@ -62,7 +70,7 @@ $("#add-product").click(async function (e) {
   } else {
     validate = $('#validate-0');
     if (!charLessThanTwenty(productName)) {
-      validate.html('Name must be 20 characters or less.');
+      validate.html('Name must be 30 characters or less.');
     } else {
       validate.html('Please fill out this field.');
     }
@@ -76,7 +84,7 @@ $("#add-category").click(async function (e) {
 
   let categoryName = $('#input-0').val();
 
-  if (categoryName.replace(/\s/g, '') !== "" && charLessThanTwenty(categoryName)) {
+  if (categoryName.replace(/\s/g, '') !== "" && charLessThanThirty(categoryName)) {
 
     // send info to be stored into the database
 	  const response = await fetch('/category/add', {
@@ -98,7 +106,7 @@ $("#add-category").click(async function (e) {
   } else {
     validate = $('#validate-0');
     if (!charLessThanTwenty(categoryName)) {
-      validate.html('Name must be 20 characters or less.');
+      validate.html('Name must be 30 characters or less.');
     } else {
       validate.html('Please fill out this field.');
     }
@@ -112,7 +120,7 @@ $("#add-brand").click(async function (e) {
 
   let brandName = $('#input-0').val();
 
-  if (brandName.replace(/\s/g, '') !== "" && charLessThanTwenty(brandName)) {
+  if (brandName.replace(/\s/g, '') !== "" && charLessThanThirty(brandName)) {
 
     // send info to be stored into the database
 	  const response = await fetch('/brand/add', {
@@ -134,7 +142,7 @@ $("#add-brand").click(async function (e) {
   } else {
     validate = $('#validate-0');
     if (!charLessThanTwenty(brandName)) {
-      validate.html('Name must be 20 characters or less.');
+      validate.html('Name must be 30 characters or less.');
     } else {
       validate.html('Please fill out this field.');
     }
@@ -158,9 +166,9 @@ $("#add-store").click(async function (e) {
         invalid.push(i);
         message[i] = 'Please fill out this field.';
       } else {
-        if (!charLessThanTwenty(currentField.val())) {
+        if (!charLessThanThirty(currentField.val())) {
           invalid.push(i);
-          message[i] = 'Field must be 20 characters or less.';
+          message[i] = 'Field must be 30 characters or less.';
         } else {
           valid.push(i);
         }
@@ -170,9 +178,9 @@ $("#add-store").click(async function (e) {
         valid.push(i);
       } else {
         if (i === 1) {
-          if (!charLessThanThirty(currentField.val())) {
+          if (!charLessThanForty(currentField.val())) {
             invalid.push(i);
-            message[i] = 'Field must be 30 characters or less.';
+            message[i] = 'Field must be 40 characters or less.';
           } else {
             valid.push(i);
           }

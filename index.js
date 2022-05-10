@@ -45,16 +45,32 @@ express()
       const inputForm = [
         { "label" : "Grocery List Name", "hint": "My List", "value": "" }
       ];
+      const groceryLists = await client.query(
+        `SELECT * FROM grocery_list WHERE Filtered = false ORDER BY Name ASC`
+      );
+      const categories = await client.query(
+        `SELECT CategoryId AS id, Name FROM category ORDER BY Name ASC`
+      );
+      const stores = await client.query(
+        `SELECT StoreId AS id, Name FROM Store ORDER BY Name ASC`
+      );
 
       const parms = {
         'operation': 'add',
         'title': 'Add Grocery List',
         'name': 'grocery-list',
+        'filtered': false,
+        'source_list_id': 0, 
+        'source_lists': (groceryLists) ? groceryLists.rows : null,
+        'category_id': 0, 
+        'categories': (categories) ? categories.rows : null,
+        'store_id': 0, 
+        'stores': (stores) ? stores.rows : null,
         'message': '',
         'inputform': inputForm
       };
 
-      res.render('pages/interface-2', parms);
+      res.render('pages/interface-9', parms);
       client.release();
     }
     catch (err) {
@@ -70,7 +86,16 @@ express()
 			const name = req.query.name;
 
       const item = await client.query(
-        `SELECT id, Name FROM grocery_list WHERE id = ` + id
+        `SELECT id, * FROM grocery_list WHERE id = ` + id
+      );
+      const groceryLists = await client.query(
+        `SELECT * FROM grocery_list WHERE Filtered = false ORDER BY Name ASC`
+      );
+      const categories = await client.query(
+        `SELECT CategoryId AS id, Name FROM category ORDER BY Name ASC`
+      );
+      const stores = await client.query(
+        `SELECT StoreId AS id, Name FROM Store ORDER BY Name ASC`
       );
 
       const inputForm = [
@@ -79,14 +104,21 @@ express()
 
       const parms = {
         'operation': 'view',
-        'title': 'View List',
+        'title': 'View Grocery List',
         'name': 'list',
         'item_id': id,
+        'filtered': (item) ? item.rows[0].filtered :  null, 
+        'source_list_id': (item) ? item.rows[0].sourcelistid : null, 
+        'source_lists': (groceryLists) ? groceryLists.rows : null,
+        'category_id': (item) ? item.rows[0].categoryid : null, 
+        'categories': (categories) ? categories.rows : null,
+        'store_id': (item) ? item.rows[0].storeid : null, 
+        'stores': (stores) ? stores.rows : null,
         'message': '',
         'inputform': inputForm
       };
 
-      res.render('pages/interface-2', parms);
+      res.render('pages/interface-9', parms);
       client.release();
     }
     catch (err) {
@@ -102,7 +134,16 @@ express()
 			const name = req.query.name;
 
       const item = await client.query(
-        `SELECT id, Name FROM grocery_list WHERE id = ${id}`
+        `SELECT id, * FROM grocery_list WHERE id = ${id}`
+      );
+      const groceryLists = await client.query(
+        `SELECT * FROM grocery_list WHERE Filtered = false ORDER BY Name ASC`
+      );
+      const categories = await client.query(
+        `SELECT CategoryId AS id, Name FROM category ORDER BY Name ASC`
+      );
+      const stores = await client.query(
+        `SELECT StoreId AS id, Name FROM Store ORDER BY Name ASC`
       );
 
       const inputForm = [
@@ -111,14 +152,21 @@ express()
 
       const parms = {
         'operation': 'edit',
-        'title': 'Edit List',
+        'title': 'Edit Grocery List',
         'name': 'list',
         'item_id': id,
+        'filtered': (item) ? item.rows[0].filtered : null, 
+        'source_list_id': (item) ? item.rows[0].sourcelistid : null, 
+        'source_lists': (groceryLists) ? groceryLists.rows : null,
+        'category_id': (item) ? item.rows[0].categoryid : null, 
+        'categories': (categories) ? categories.rows : null,
+        'store_id': (item) ? item.rows[0].storeid : null, 
+        'stores': (stores) ? stores.rows : null,
         'message': '',
         'inputform': inputForm
       };
 
-      res.render('pages/interface-2', parms);
+      res.render('pages/interface-9', parms);
       client.release();
     }
     catch (err) {
@@ -132,12 +180,59 @@ express()
 
       const id = req.query.id;
 			const name = req.query.name;
-      const orderBy = req.query.orderBy;
+      const orderBy = (req.query.orderBy) ? req.query.orderBy : 'name';
 
-      const items = await client.query(
-        `SELECT ListItemId AS id, Product.name AS name, Category.name AS category, Frequency AS urgency FROM ListItem INNER JOIN Product USING (ProductId) INNER JOIN Category USING (CategoryId) LEFT JOIN Urgency USING (UrgencyId)
-          WHERE Listid = ${id} ORDER BY ` + orderBy
+      const groceryList = await client.query(
+        `SELECT * FROM grocery_list WHERE id = ${id}`
       );
+
+      // Preload query parameters
+      let storeSubquery = "";
+      let categorySubquery = "INNER JOIN Category AS c USING (CategoryId)";
+      let storeCondition = "";
+      let categoryCondition = "";
+      let listId = id;
+
+      // Process filtered list
+      if(groceryList && groceryList.rowCount) {
+        let rowItem = groceryList.rows[0];
+        if(rowItem.filtered) {
+          listId = rowItem.sourcelistid;
+          if(rowItem.storeid !== 0) {
+            storeSubquery = ` LEFT JOIN (SELECT * FROM ProductStore) AS ps USING(ProductId) `;
+            storeCondition = `AND StoreId = ${rowItem.storeid}`;
+          }
+          if(rowItem.categoryid !== 0) {
+            categorySubquery = ` LEFT JOIN (SELECT * FROM Category LEFT JOIN
+              ProductCategory USING (CategoryId)) AS c USING(ProductId) `;
+            categoryCondition += `AND c.CategoryId = ${rowItem.categoryid}`;
+          }
+        }
+      }
+
+      // Query database for listitem info
+      const items = await client.query(
+        `SELECT
+            listid,
+            listitemid as id,
+            Product.name AS name,
+            c.name AS category,
+            c.CategoryId AS Categoryid,
+            Brand.name AS barand,
+            UrgencyId AS urgency,
+            purchased,
+            hidden
+          FROM ListItem AS li
+            ${storeSubquery}
+            ${categorySubquery}
+            INNER JOIN Product USING (ProductId)
+            INNER JOIN Brand USING (BrandId)
+            LEFT JOIN Urgency USING (UrgencyId)
+          WHERE (listid = ${listId} ${storeCondition} ${categoryCondition})
+            OR (listid = ${id} ${categoryCondition})
+          ORDER BY ` + orderBy
+      );
+      // console.log(items);
 
       let ordering = '';
       switch (orderBy) {
@@ -161,7 +256,7 @@ express()
         'items': (items) ? items.rows : null
       };
 
-      res.render('pages/interface-1', locals);
+      res.render('pages/interface-8', locals);
       client.release();
     }
     catch (err) {
@@ -836,12 +931,16 @@ express()
       const client = await pool.connect();
 			const groceryListName = req.body.grocery_list_name;
 			const userId = req.body.user_id;
-      	
+      const filtered = req.body.filtered;
+      const sourceListId = req.body.source_list_id;
+      const categoryId = req.body.category_id;
+      const storeId = req.body.store_id;
+
 			const sqlInsert = await client.query(
-        `INSERT INTO grocery_list (Name, UserId)
-        VALUES (${groceryListName}, ${userId})
+        `INSERT INTO grocery_list (Name, UserId, filtered, sourcelistid, categoryid, storeid)
+        VALUES (${groceryListName}, ${userId}, ${filtered}, ${sourceListId},  ${categoryId}, ${storeId})
         RETURNING id AS new_id;`);
-			
+      
 			const result = {
 				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
 			};
@@ -1003,7 +1102,7 @@ express()
       const itemCount = req.body.item_count;
               // TODO: add user id to where clause
 			const sqlUpdate = await client.query(
-        `UPDATE listitem SET listid = ${listId}, productid = ${productId}, categoryid = ${categoryId}, brandid = ${brandId}, itemcount = ${itemCount}
+        `UPDATE listitem SET productid = ${productId}, categoryid = ${categoryId}, brandid = ${brandId}, itemcount = ${itemCount}
           WHERE listitemid = ${listItemId};`);
 
 			const result = {
@@ -1137,10 +1236,14 @@ express()
 			const listId = req.body.item_id;
 			const listName = req.body.item_name;
 			const userId = req.body.user_id;
-      	
+      const filtered = req.body.filtered;
+      const sourceListId = req.body.source_list_id;
+      const categoryId = req.body.category_id;
+      const storeId = req.body.store_id;
+
       // TODO: add user id to where clause
 			const sqlUpdate = await client.query(
-        `UPDATE grocery_list SET Name = ${listName}
+        `UPDATE grocery_list SET Name = ${listName}, Filtered = ${filtered}, SourceListId = ${sourceListId}, CategoryId = ${categoryId}, StoreId = ${storeId}
           WHERE id = ${listId};`);
 			
 			const result = {

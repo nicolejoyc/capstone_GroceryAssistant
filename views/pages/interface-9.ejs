@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Interface HTML head statements -->
+    <%- include('../partials/head-1.ejs') %>
+  </head>
+  <body>
+    <div class="interface-wrapper">
+      <!-- Interface header -->
+      <%- include('../partials/header-2.ejs') %>
+
+      <div class="form-container">
+        <div class="form-wrapper">
+          <form action="javascript:void(0)">
+              <div class="form-input-wrapper">
+
+                <% inputform.forEach(function(i, index) {%>
+                  <label for="input-<%= index %>"><%= i.label %>:</label><br>
+                  <% if (operation === 'view' ) { %>
+                    <input class="form-input" type="text" name="input-<%= index %>" id="input-<%= index %>" placeholder="<%= i.hint %>" value="<%= i.value %>" disabled>
+                  <% } else { %>
+                    <input class="form-input" type="text" name="input-<%= index %>" id="input-<%= index %>" placeholder="<%= i.hint %>" value="<%= i.value %>" required>
+                  <% } %>
+                  <p id="validate-<%= index %>" class="validate">* Please fill out this field.</p>
+                <% }); %>
+
+                <div class="filtered-list-wrapper">
+
+                  <br>
+                  <div class="preference-wrapper checkbox-wrapper">
+                    <% if (operation === 'view' ) {%>
+                      <% if (filtered === true ) {%>
+                        <input type="checkbox" name="filtered" id="filtered" value="" checked disabled>
+                      <% } else { %>
+                        <input type="checkbox" name="filtered" id="filtered" value="" disabled>
+                      <% } %>
+                    <% } else { %>
+                      <% if (filtered === true ) {%>
+                        <input type="checkbox" name="filtered" id="filtered" value="" checked>
+                      <% } else { %>
+                        <input type="checkbox" name="filtered" id="filtered" value="">
+                      <% } %>
+                    <% } %>
+                    <label for="filtered">Filtered</label><br>
+                  </div>
+
+                  <label for="dropdown-source-list"> Source Grocery List:</label>
+                  <% if (operation === 'view' || filtered !== true) {%>
+                    <select class="form-input" name="dropdown-source-list" id="dropdown-source-list" disabled>
+                  <% } else { %>
+                    <select class="form-input" name="dropdown-source-list" id="dropdown-source-list" required>
+                  <% } %>
+                      <% source_lists.forEach(function(r) {%>
+                        <% if (r.id === source_list_id) {%>
+                          <option value="source-list-<%= r.id %>" selected ><%= r.name %></option>
+                        <% } else {%>
+                          <option value="source-list-<%= r.id %>"><%= r.name %></option>
+                        <% } %>
+                      <% }); %>
+                    </select>
+
+                  <label for="dropdown-store"> Filter By Store:</label>
+                  <% if (operation === 'view' || filtered !== true) {%>
+                    <select class="form-input" name="dropdown-store" id="dropdown-store" disabled >
+                  <% } else { %>
+                    <select class="form-input" name="dropdown-store" id="dropdown-store" >
+                  <% } %>
+                      <% stores.forEach(function(r) {%>
+                        <% if (r.id === store_id) {%>
+                          <option value="store-<%= r.id %>" selected ><%= r.name %></option>
+                        <% } else {%>
+                          <option value="store-<%= r.id %>"><%= r.name %></option>
+                        <% } %>
+                      <% }); %>
+                    </select>
+
+                  <br>
+                  <label for="dropdown-cat"> Filter By Category:</label>
+                  <% if (operation === 'view' || filtered !== true) {%>
+                    <select class="form-input" name="dropdown-cat" id="dropdown-cat" disabled >
+                  <% } else { %>
+                    <select class="form-input" name="dropdown-cat" id="dropdown-cat" >
+                  <% } %>
+                      <% categories.forEach(function(r) {%>
+                        <% if (r.id === category_id) {%>
+                          <option value="category-<%= r.id %>" selected ><%= r.name %></option>
+                        <% } else {%>
+                          <option value="category-<%= r.id %>"><%= r.name %></option>
+                        <% } %>
+                      <% }); %>
+                    </select>
+                  <br>
+                </div>
+
+              </div>
+              <input type="text" id="user-id" value="1" hidden>
+              <input type="text" id="table-name" value="<%= name %>" hidden>
+              <% if (operation === 'add') { %>
+                <input type="submit" id="<%= operation %>-<%= name %>" class="submit" value="Save">
+              <% } else if (operation === 'view' ) { %>
+                <input type="text" id="item-id" value="<%= item_id %>" hidden>
+                <input type="submit" id="<%= operation %>-<%= name %>" class="submit" value="Done">
+              <% } else if (operation === 'edit' ) { %>
+                <input type="text" id="item-id" value="<%= item_id %>" hidden>
+                <input type="submit" id="<%= operation %>-<%= name %>" class="submit" value="Update">
+              <% } else { %>
+                <input type="text" id="item-id" value="<%= item_id %>" hidden>
+                <input type="submit" id="<%= operation %>-<%= name %>-cancel" class="submit" value="Cancel">
+                <input type="submit" id="<%= operation %>-<%= name %>-confirm" class="submit" value="Confirm">
+              <% } %>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Common javascript includes -->
+    <%- include('../partials/common-js.ejs') %>
+    <!-- Javascript event handlers -->
+    <script src="/js/add.js"></script>
+    <script src="/js/edit.js"></script>
+    <script src="/js/view.js"></script>
+
+    <!-- Javascript to handle "filtered" checkbox behavior -->
+    <script>
+      $(function() {
+          $('#filtered').change(function() {
+            if($('#filtered').prop('checked')) {
+              $('#dropdown-source-list').attr('disabled', false);
+              $('#dropdown-store').attr('disabled', false);
+              $('#dropdown-cat').attr('disabled', false);
+            } else {
+              $('#dropdown-source-list').attr('disabled', true);
+              $('#dropdown-store').attr('disabled', true);
+              $('#dropdown-cat').attr('disabled', true);
+            }
+          });
+      });
+    </script>
+  </body>
+</html>

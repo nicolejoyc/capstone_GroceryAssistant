@@ -5,21 +5,22 @@
  */
 
 TRUNCATE TABLE grocery_list;
-INSERT INTO grocery_list (id, UserId, Name) VALUES
-  ( 1, 1, 'Tom''s Grocery List'),
-  ( 2, 1, 'Jerry''s Grocery List');
+INSERT INTO grocery_list (id, UserId, Name, Filtered, SourceListId, StoreId, CategoryId) VALUES
+  ( 1, 1, 'Tom''s Grocery List', FALSE, NULL, NULL, NULL),
+  ( 2, 1, 'Jerry''s Grocery List', FALSE, NULL, NULL, NULL),
+  ( 3, 1, 'My Aldi List', TRUE, 2, 1, 0);
 
 SELECT setval('grocery_list_id_seq', (SELECT MAX(id) FROM grocery_list));
 
 TRUNCATE TABLE ListItem;
-INSERT INTO ListItem (ListItemId, ListId, ProductId, CategoryId, BrandId, SizeId, UrgencyId, UrgencyAlert, ItemCount, SaverAlertId, Purchased, Hide) VALUES
-  ( 1, 1, 2, 2, 0, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE),
-  ( 2, 1, 5, 3, 1, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE),
-  ( 3, 1, 6, 3, 1, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE),
-  ( 4, 1, 7, 6, 1, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE),
-  ( 5, 2, 3, 2, 1, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE),
-  ( 6, 2, 8, 6, 1, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE),
-  ( 7, 2, 5, 3, 0, 0, NULL, NULL, 1.0, NULL, FALSE, FALSE);
+INSERT INTO ListItem (ListItemId, ListId, ProductId, CategoryId, BrandId, UrgencyId, UnitId, UnitCount, ItemCount, Purchased, Hidden) VALUES
+  ( 1, 1, 2, 2, 0, 1, NULL, 1.0, 1.0, FALSE, FALSE),
+  ( 2, 1, 5, 3, 2, 3, NULL, 1.0, 1.0, FALSE, FALSE),
+  ( 3, 1, 6, 3, 2, 3, NULL, 1.0, 1.0, FALSE, FALSE),
+  ( 4, 1, 7, 6, 3, 2, NULL, 1.0, 1.0, FALSE, FALSE),
+  ( 5, 2, 3, 2, 3, 2, NULL, 1.0, 1.0, FALSE, FALSE),
+  ( 6, 2, 8, 6, 4, 1, NULL, 1.0, 1.0, FALSE, FALSE),
+  ( 7, 2, 5, 3, 4, 1, NULL, 1.0, 1.0, FALSE, FALSE);
   
 SELECT setval('listitem_listitemid_seq', (SELECT MAX(ListItemId) FROM ListItem));
 
@@ -36,7 +37,7 @@ SELECT setval('store_storeid_seq', (SELECT MAX(StoreId) FROM Store));
 
 TRUNCATE TABLE ProductStore;
 INSERT INTO ProductStore (ProductId, StoreId, UserId) VALUES
-  (2, 1, 1),
+  (5, 1, 1),
+  (8, 1, 1),
   (3, 2, 1),
-  (4, 3, 1),
-  (4, 3, 2);
+  (4, 3, 1);

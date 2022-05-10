@@ -14,7 +14,7 @@ $(function() {
         let itemId = $('#item-id').val();
         let itemName = $('#input-0').val();
 
-        if (itemName.replace(/\s/g, '') !== "" && charLessThanTwenty(itemName)) {
+        if (itemName.replace(/\s/g, '') !== "" && charLessThanThirty(itemName)) {
 
           // send info to be stored into the database
           const response = await fetch(`/${item}/edit`, {
@@ -37,7 +37,7 @@ $(function() {
         } else {
           validate = $('#validate-0');
           if (!charLessThanTwenty(itemName)) {
-            validate.html('Name must be 20 characters or less.');
+            validate.html('Name must be 30 characters or less.');
           } else {
             validate.html('Please fill out this field.');
           }
@@ -54,8 +54,12 @@ $(function() {
         let userId = $('#user-id').val();
         let itemId = $('#item-id').val();
         let itemName = $('#input-0').val();
+        let filtered = $('#filtered').prop('checked'); 
+        let sourceListID = $('#dropdown-source-list').val().split('-')[2]; 
+        let categoryID = $('#dropdown-cat').val().split('-')[1]; 
+        let storeID = $('#dropdown-store').val().split('-')[1];
 
-        if (itemName.replace(/\s/g, '') !== "" && charLessThanTwenty(itemName)) {
+        if (itemName.replace(/\s/g, '') !== "" && charLessThanThirty(itemName)) {
 
           // send info to be stored into the database
           const response = await fetch('/edit', {
@@ -67,7 +71,11 @@ $(function() {
             body: JSON.stringify({
               user_id: userId,
               item_id: itemId,
-              item_name: "'" + itemName.replace(/'/g, "''") + "'"
+              item_name: "'" + itemName.replace(/'/g, "''") + "'",
+              filtered: "'" + filtered + "'",
+              source_list_id: "'" + sourceListID + "'",
+              category_id: "'" + categoryID + "'",
+              store_id: "'" + storeID + "'"
             })
           });
 
@@ -78,7 +86,7 @@ $(function() {
         } else {
           validate = $('#validate-0');
           if (!charLessThanTwenty(itemName)) {
-            validate.html('Name must be 20 characters or less.');
+            validate.html('Name must be 30 characters or less.');
           } else {
             validate.html('Please fill out this field.');
           }
@@ -104,9 +112,9 @@ $(function() {
               invalid.push(i);
               message[i] = 'Please fill out this field.';
             } else {
-              if (!charLessThanTwenty(currentField.val())) {
+              if (!charLessThanThirty(currentField.val())) {
                 invalid.push(i);
-                message[i] = 'Field must be 20 characters or less.';
+                message[i] = 'Field must be 30 characters or less.';
               } else {
                 valid.push(i);
               }

@@ -166,6 +166,7 @@ body {
 }
 
 .tool-bar-wrapper-3 {
+  background-color: rgb(199 185 185);
   padding-bottom: 10px;
 }
 
@@ -219,7 +220,8 @@ body {
 #delete-icon,
 #home-icon,
 #view-list-icon,
-#settings-icon {
+#settings-icon,
+#on-view {
   border-radius: 30%;
   background-color: #177820;
 }

@@ -4,11 +4,13 @@ $("#add-grocery-list").click(async function (e) {
 
   let groceryListName = $('#input-0').val();
   let filtered = $('#filtered').prop('checked');
+  let colorID = $('#dropdown-color').val().split('-')[1]; 
   let sourceListID = $('#dropdown-source-list').val().split('-')[2]; 
   let categoryID = $('#dropdown-cat').val().split('-')[1]; 
   let storeID = $('#dropdown-store').val().split('-')[1];
 
-  if (groceryListName.replace(/\s/g, '') !== "" && charLessThanThirty(groceryListName)) {
+  if (groceryListName.replace(/\s/g, '') !== "" && charLessThanThirty(groceryListName)
+    && (!filtered || (sourceListID !== '0'))) {
 
     // send info to be stored into the database
     const response = await fetch('/add', {
@@ -20,6 +22,7 @@ $("#add-grocery-list").click(async function (e) {
       body: JSON.stringify({
         user_id: 1,
         grocery_list_name: "'" + groceryListName.replace(/'/g, "''") + "'",
+        color_id: "'" + colorID + "'",
         filtered: "'" + filtered + "'",
         source_list_id: "'" + sourceListID + "'",
         category_id: "'" + categoryID + "'",
@@ -35,10 +38,14 @@ $("#add-grocery-list").click(async function (e) {
     validate = $('#validate-0');
     if (!charLessThanTwenty(groceryListName)) {
       validate.html('Name must be 30 characters or less.');
-    } else {
+      validate.css('display', 'block');
+    } else if (!groceryListName.length) {
       validate.html('Please fill out this field.');
+      validate.css('display', 'block');
+    } else {
+      validate = $('#validate-source-list');
+      validate.css('display', 'block');
     }
-    validate.css('display', 'block');
   }
   
 });

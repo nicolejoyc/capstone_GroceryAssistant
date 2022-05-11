@@ -54,12 +54,14 @@ $(function() {
         let userId = $('#user-id').val();
         let itemId = $('#item-id').val();
         let itemName = $('#input-0').val();
+        let colorID = $('#dropdown-color').val().split('-')[1]; 
         let filtered = $('#filtered').prop('checked'); 
         let sourceListID = $('#dropdown-source-list').val().split('-')[2]; 
         let categoryID = $('#dropdown-cat').val().split('-')[1]; 
         let storeID = $('#dropdown-store').val().split('-')[1];
 
-        if (itemName.replace(/\s/g, '') !== "" && charLessThanThirty(itemName)) {
+        if (itemName.replace(/\s/g, '') !== "" && charLessThanThirty(itemName)
+          && (!filtered || (sourceListID !== '0'))) {
 
           // send info to be stored into the database
           const response = await fetch('/edit', {
@@ -72,6 +74,7 @@ $(function() {
               user_id: userId,
               item_id: itemId,
               item_name: "'" + itemName.replace(/'/g, "''") + "'",
+              color_id: "'" + colorID + "'",
               filtered: "'" + filtered + "'",
               source_list_id: "'" + sourceListID + "'",
               category_id: "'" + categoryID + "'",
@@ -87,10 +90,14 @@ $(function() {
           validate = $('#validate-0');
           if (!charLessThanTwenty(itemName)) {
             validate.html('Name must be 30 characters or less.');
-          } else {
+            validate.css('display', 'block');
+          } else if (!itemName.length) {
             validate.html('Please fill out this field.');
+            validate.css('display', 'block');
+          } else {
+            validate = $('#validate-source-list');
+            validate.css('display', 'block');
           }
-          $('#validate-0').css('display', 'block');
         }
       });
       break;

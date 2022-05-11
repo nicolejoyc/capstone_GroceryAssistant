@@ -18,6 +18,7 @@ CREATE TABLE grocery_list (
   UserId INT NOT NULL,
   Name TEXT NOT NULL,
   Filtered BOOLEAN DEFAULT FALSE,
+  ColorId INT,
   SourceListId INT,
   StoreId INT,
   CategoryId INT
@@ -118,6 +119,13 @@ CREATE TABLE ProductStore (
   UserId INT NOT NULL
 );
 
+DROP TABLE FilterLock;
+CREATE TABLE FilterLock (
+  FilteredListId INT NOT NULL,
+  FilterSourceId INT NOT NULL,
+  UserId INT NOT NULL
+);
+
 DROP TABLE History;
 CREATE TABLE History (
   HistoryId INT NOT NULL,
@@ -134,6 +142,14 @@ CREATE TABLE Unit (
   UnitId SERIAL PRIMARY KEY,
   UserId INT NOT NULL,
   Name TEXT NOT NULL
+);
+
+DROP TABLE Color;
+CREATE TABLE Color (
+  ColorId SERIAL PRIMARY KEY,
+  UserId INT NOT NULL,
+  ColorName TEXT NOT NULL,
+  RGBValue Text
 );
 
 INSERT INTO Urgency (UrgencyId, Name) VALUES
@@ -362,6 +378,44 @@ INSERT INTO Unit (UnitId, UserId, Name) VALUES
   (19, 0, 'lg');
 
 SELECT setval('unit_unitid_seq', (SELECT MAX(UnitId) FROM Unit));
+
+INSERT INTO Color (ColorId, UserId, ColorName, RGBValue) VALUES
+  (0, 0, 'default', ''),
+  (1, 0, 'black', '#000000'),
+  (2, 0, 'white', '#FFFFFF'),
+  (3, 0, 'red',   '#FF0000'),
+  (4, 0, 'lime',   '#00FF00'),
+  (5, 0, 'dark orange',	'#FF8C00'),
+  (6, 0, 'orange',	'#FFA500'),
+  (7, 0, 'yellow',  '#FFFF00'),
+  (8, 0, 'cyan', 	  '#00FFFF'),
+  (9, 0, 'magenta', '#FF00FF'),
+  (10, 0, 'silver', 	'#C0C0C0'),
+  (11, 0, 'gray', 	  '#808080'),
+  (12, 0, 'maroon', 	'#800000'),
+  (13, 0, 'olive', 	'#808000'),
+  (14, 0, 'medium green', '#006400'),
+  (15, 0, 'office green','#008000'),
+  (16, 0, 'purple', 	'#800080'),
+  (17, 0, 'teal', 	  '#008080'),
+  (18, 0, 'blue', 	  '#0000FF'),
+  (19, 0, 'navy', 	  '#000080'),
+  (20, 0, 'medium blue', '#0000CD'),
+  (21, 0, 'royal blue',  '#4169E1'),
+  (22, 0, 'saddle brown', '#8B4513'),
+  (23, 0, 'sienna', 	   '#A0522D'),
+  (24, 0, 'chocolate', 	 '#D2691E'),
+  (25, 0, 'peru', 	     '#CD853F'),
+  (26, 0, 'sandy brown', '#F4A460'),
+  (27, 0, 'burly wood',  '#DEB887'),
+  (28, 0, 'tan', 	       '#D2B48C'),
+  (29, 0, 'rosy brown',  '#BC8F8F'),
+  (30, 0, 'pecan',  '#4A2511'),
+  (31, 0, 'caramel',  '#65350F'),
+  (32, 0, 'tawny',  '#80471C'),
+  (33, 0, 'brunette',  '#3B1E08'),
+  (34, 0, 'cinnamon',  '#652A0E'),
+  (35, 0, 'peanut',  '#795C34');
 
 INSERT INTO Store (StoreId, UserId, OrdinalId, Name, Website, Phone) VALUES
   (0, 0, NULL, 'None', '', '');

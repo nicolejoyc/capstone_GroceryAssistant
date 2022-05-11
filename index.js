@@ -21,7 +21,12 @@ express()
       const client = await pool.connect();
 
       const grocery_list = await client.query(
-        `SELECT * FROM grocery_list ORDER BY id ASC`
+        `SELECT id, g.name AS name, c.rgbvalue
+         FROM grocery_list AS g
+            INNER JOIN
+         Color AS c USING(ColorId)
+            WHERE id != 0
+            ORDER BY id ASC`
       );
       const locals = {
         'preference': false,
@@ -48,6 +53,9 @@ express()
       const groceryLists = await client.query(
         `SELECT * FROM grocery_list WHERE Filtered = false ORDER BY Name ASC`
       );
+      const colors = await client.query(
+        `SELECT ColorId AS id, ColorName AS name FROM Color ORDER BY Name ASC`
+      );
       const categories = await client.query(
         `SELECT CategoryId AS id, Name FROM category ORDER BY Name ASC`
       );
@@ -59,14 +67,16 @@ express()
         'operation': 'add',
         'title': 'Add Grocery List',
         'name': 'grocery-list',
+        'filter_lock': (groceryLists.rowCount <= 1) ? true : false,
         'filtered': false,
-        'source_list_id': 0, 
+        'source_list_id': 0,
         'source_lists': (groceryLists) ? groceryLists.rows : null,
-        'category_id': 0, 
+        'color_id': 0,
+        'colors': (colors) ? colors.rows : null,
+        'category_id': 0,
         'categories': (categories) ? categories.rows : null,
-        'store_id': 0, 
+        'store_id': 0,
         'stores': (stores) ? stores.rows : null,
-        'message': '',
         'inputform': inputForm
       };
 
@@ -89,7 +99,13 @@ express()
         `SELECT id, * FROM grocery_list WHERE id = ` + id
       );
       const groceryLists = await client.query(
-        `SELECT * FROM grocery_list WHERE Filtered = false ORDER BY Name ASC`
+        `SELECT * FROM grocery_list WHERE Filtered = false AND id != ${id} ORDER BY Name ASC`
+      );
+      const filterLock = await client.query(
+        `SELECT FilterSourceId FROM FilterLock WHERE FilterSourceId = ${id}`
+      );
+      const colors = await client.query(
+        `SELECT ColorId AS id, ColorName AS name FROM Color ORDER BY Name ASC`
       );
       const categories = await client.query(
         `SELECT CategoryId AS id, Name FROM category ORDER BY Name ASC`
@@ -107,14 +123,16 @@ express()
         'title': 'View Grocery List',
         'name': 'list',
         'item_id': id,
-        'filtered': (item) ? item.rows[0].filtered :  null, 
-        'source_list_id': (item) ? item.rows[0].sourcelistid : null, 
+        'filter_lock': (filterLock.rowCount  || (groceryLists.rowCount <= 1)) ? true : false,
+        'filtered': (item) ? item.rows[0].filtered :  null,
+        'color_id': (item) ? item.rows[0].colorid : null,
+        'colors': (colors) ? colors.rows : null,
+        'source_list_id': (item) ? item.rows[0].sourcelistid : null,
         'source_lists': (groceryLists) ? groceryLists.rows : null,
-        'category_id': (item) ? item.rows[0].categoryid : null, 
+        'category_id': (item) ? item.rows[0].categoryid : null,
         'categories': (categories) ? categories.rows : null,
-        'store_id': (item) ? item.rows[0].storeid : null, 
+        'store_id': (item) ? item.rows[0].storeid : null,
         'stores': (stores) ? stores.rows : null,
-        'message': '',
         'inputform': inputForm
       };
 
@@ -137,7 +155,13 @@ express()
         `SELECT id, * FROM grocery_list WHERE id = ${id}`
       );
       const groceryLists = await client.query(
-        `SELECT * FROM grocery_list WHERE Filtered = false ORDER BY Name ASC`
+        `SELECT * FROM grocery_list WHERE Filtered = false AND id != ${id} ORDER BY Name ASC`
+      );
+      const filterLock = await client.query(
+        `SELECT FilterSourceId FROM FilterLock WHERE FilterSourceId = ${id}`
+      );
+      const colors = await client.query(
+        `SELECT ColorId AS id, ColorName AS name FROM Color ORDER BY Name ASC`
       );
       const categories = await client.query(
         `SELECT CategoryId AS id, Name FROM category ORDER BY Name ASC`
@@ -155,14 +179,16 @@ express()
         'title': 'Edit Grocery List',
         'name': 'list',
         'item_id': id,
+        'filter_lock': (filterLock.rowCount  || (groceryLists.rowCount <= 1)) ? true : false,
         'filtered': (item) ? item.rows[0].filtered : null, 
+        'color_id': (item) ? item.rows[0].colorid : null, 
+        'colors': (colors) ? colors.rows : null,
         'source_list_id': (item) ? item.rows[0].sourcelistid : null, 
         'source_lists': (groceryLists) ? groceryLists.rows : null,
         'category_id': (item) ? item.rows[0].categoryid : null, 
         'categories': (categories) ? categories.rows : null,
         'store_id': (item) ? item.rows[0].storeid : null, 
         'stores': (stores) ? stores.rows : null,
-        'message': '',
         'inputform': inputForm
       };
 
@@ -183,7 +209,7 @@ express()
       const orderBy = (req.query.orderBy) ? req.query.orderBy : 'name';
 
       const groceryList = await client.query(
-        `SELECT * FROM grocery_list WHERE id = ${id}`
+        `SELECT * FROM grocery_list INNER JOIN color USING (colorid) WHERE id = ${id}`
       );
 
       // Preload query parameters
@@ -191,13 +217,13 @@ express()
       let categorySubquery = "INNER JOIN Category AS c USING (CategoryId)";
       let storeCondition = "";
       let categoryCondition = "";
-      let listId = id;
+      let sourceListId = id;
 
       // Process filtered list
       if(groceryList && groceryList.rowCount) {
         let rowItem = groceryList.rows[0];
         if(rowItem.filtered) {
-          listId = rowItem.sourcelistid;
+          sourceListId = rowItem.sourcelistid;
           if(rowItem.storeid !== 0) {
             storeSubquery = ` LEFT JOIN (SELECT * FROM ProductStore) AS ps USING(ProductId) `;
             storeCondition = `AND StoreId = ${rowItem.storeid}`;
@@ -218,7 +244,8 @@ express()
             Product.name AS name,
             c.name AS category,
             c.CategoryId AS Categoryid,
-            Brand.name AS barand,
+            Brand.name AS brand,
+            color.RGBValue,
             UrgencyId AS urgency,
             purchased,
             hidden
@@ -227,12 +254,16 @@ express()
             ${categorySubquery}
             INNER JOIN Product USING (ProductId)
             INNER JOIN Brand USING (BrandId)
+            INNER JOIN
+              (SELECT id AS ListId, RGBValue FROM grocery_list
+                INNER JOIN
+               color USING (colorid)) AS color USING (listid)
             LEFT JOIN Urgency USING (UrgencyId)
-          WHERE (listid = ${listId} ${storeCondition} ${categoryCondition})
-            OR (listid = ${id} ${categoryCondition})
+          WHERE (listid = ${sourceListId} ${storeCondition} ${categoryCondition})
+            OR (listid = ${id})
           ORDER BY ` + orderBy
       );
-      // console.log(items);
+      //console.log(items);
 
       let ordering = '';
       switch (orderBy) {
@@ -253,7 +284,8 @@ express()
         'table': 'listitem',
         'title': name,
         'id': id,
-        'items': (items) ? items.rows : null
+        'items': (items) ? items.rows : null,
+        'border_color': groceryList.rows[0].rgbvalue
       };
 
       res.render('pages/interface-8', locals);
@@ -931,15 +963,24 @@ express()
       const client = await pool.connect();
 			const groceryListName = req.body.grocery_list_name;
 			const userId = req.body.user_id;
+      const colorId = req.body.color_id;
       const filtered = req.body.filtered;
       const sourceListId = req.body.source_list_id;
       const categoryId = req.body.category_id;
       const storeId = req.body.store_id;
 
 			const sqlInsert = await client.query(
-        `INSERT INTO grocery_list (Name, UserId, filtered, sourcelistid, categoryid, storeid)
-        VALUES (${groceryListName}, ${userId}, ${filtered}, ${sourceListId},  ${categoryId}, ${storeId})
+        `INSERT INTO grocery_list (Name, UserId, Filtered, ColorId, SourceListId, Categoryid, Storeid)
+        VALUES (${groceryListName}, ${userId}, ${filtered}, ${colorId}, ${sourceListId},  ${categoryId}, ${storeId})
         RETURNING id AS new_id;`);
+
+      // Add filter lock
+      if((filtered === "'true'") && sqlInsert.rowCount) {
+        const sqlInsertLock = await client.query(
+            `INSERT INTO FilterLock (FilteredListId, FilterSourceId, UserId)
+            VALUES (${sqlInsert.rows[0].new_id}, ${sourceListId}, ${userId})`
+        );
+      }
       
 			const result = {
 				'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
@@ -1236,15 +1277,33 @@ express()
 			const listId = req.body.item_id;
 			const listName = req.body.item_name;
 			const userId = req.body.user_id;
+      const colorId = req.body.color_id;
       const filtered = req.body.filtered;
-      const sourceListId = req.body.source_list_id;
-      const categoryId = req.body.category_id;
-      const storeId = req.body.store_id;
+      let sourceListId = req.body.source_list_id;
+      let categoryId = req.body.category_id;
+      let storeId = req.body.store_id;
+
+      // Remove filter lock
+      const sqlDelete = await client.query(
+        `DELETE FROM FilterLock WHERE FilteredListId = ${listId}`
+      );
+      // Reset any old state
+      if(filtered === "'false'") {
+        sourceListId = categoryId = storeId = 0;
+      }
 
       // TODO: add user id to where clause
 			const sqlUpdate = await client.query(
-        `UPDATE grocery_list SET Name = ${listName}, Filtered = ${filtered}, SourceListId = ${sourceListId}, CategoryId = ${categoryId}, StoreId = ${storeId}
+        `UPDATE grocery_list SET Name = ${listName}, Filtered = ${filtered}, ColorId = ${colorId}, SourceListId = ${sourceListId}, CategoryId = ${categoryId}, StoreId = ${storeId}
           WHERE id = ${listId};`);
+
+      // Add filter lock
+      if(filtered === "'true'") {
+        const sqlInsert = await client.query(
+          `INSERT INTO FilterLock (FilteredListId, FilterSourceId, UserId)
+            VALUES (${listId}, ${sourceListId}, ${userId})`
+        );
+      }
 			
 			const result = {
 				'response': (sqlUpdate) ? (sqlUpdate.rows[0]) : null
@@ -1338,8 +1397,7 @@ express()
           `UPDATE listitem SET categoryid = 0 WHERE categoryid = ` + itemId + `;`);
           break;
         case 'store':
-          sql.push(`DELETE FROM productstore WHERE storeid = ` + itemId + `;`/*,
-          `UPDATE listitem SET storeid = 0 WHERE storeid = ` + itemId + `;`*/);
+          sql.push(`DELETE FROM productstore WHERE storeid = ` + itemId + `;`);
           break;
         case 'brand':
           sql.push(`DELETE FROM productbrand WHERE brandid = ` + itemId + `;`,
@@ -1348,6 +1406,11 @@ express()
         case 'grocery_list':
           sql[0] = `DELETE FROM ` + table + ` WHERE id = ` + itemId + `;`;
           sql.push(`DELETE FROM listitem WHERE listid = ` + itemId + `;`);
+          sql.push(`DELETE FROM filterlock
+            WHERE filteredlistid = ` + itemId + ` OR filterSourceId = ` + itemId + `;`);
+          sql.push(`UPDATE grocery_list
+            SET filtered = 'false', colorid = 0, sourcelistid = 0, storeid = 0, categoryid = 0
+              WHERE sourcelistid = ` + itemId + `;`);
           break;
       }
       let result;

@@ -33,9 +33,14 @@
           <label for="sort-by-urgency">Urgent</label>
         </div>
         
-        <button type="button" class="button-1 list-button select-button" id=select-button-<%= r.id %>><%= r.name %></button>
+        <% if (r.rgbvalue) { %>
+          <button type="button" class="button-1 list-button select-button" id=select-button-<%= r.id %> style="border: .15rem solid <%= r.rgbvalue %>"><%= r.name %></button>
+        <% } else { %>
+          <button type="button" class="button-1 list-button select-button" id=select-button-<%= r.id %> style="border: 1px solid <%= r.rgbvalue %>"><%= r.name %></button>
+        <% } %>
       </div>
     <% }); %>
   <%}%>
+</div>
 <%# Tag identifies the database table to enable JS code to handle interface icon clicks %>
 <span id="interface-identifier" hidden><%= table %></span>

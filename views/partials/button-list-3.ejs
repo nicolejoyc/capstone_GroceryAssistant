@@ -17,9 +17,14 @@
   <%} else {%>
     <% items.forEach(function(r, i) {%>
       <div class="button-wrapper">
-        <button type="button" class="button list-button select-button" id=select-button-<%= r.id %>><%= r.name %></button>
+        <% if (r.rgbvalue) { %>
+          <button type="button" class="button list-button select-button" id=select-button-<%= r.id %> style="border: .15rem solid <%= r.rgbvalue %>"><%= r.name %></button>
+        <% } else { %>
+          <button type="button" class="button list-button select-button" id=select-button-<%= r.id %>><%= r.name %></button>
+        <% } %>
       </div>
     <% }); %>
   <%}%>
+</div>
 <%# Tag identifies the database table to enable JS code to handle interface icon clicks %>
 <span id="interface-identifier" hidden><%= table %></span>

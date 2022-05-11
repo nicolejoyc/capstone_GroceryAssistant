@@ -11,10 +11,18 @@
     NOTE: id integer value must be unique, used to create HTML button id.
 %>
 <div class="button-list-wrapper-7">
+  <% if(!items.length) {%>
+    <h2>No Items Found In <%= table %></h2>
+  <% } %>
   <% items.forEach(function(r, i) {%>
     <div class="button-wrapper">
-      <button type="button" class="button list-button select-button" id=select-button-<%= r.id %>><%= r.name %></button>
+      <% if (r.rgbvalue) { %>
+        <button type="button" class="button list-button select-button" id=select-button-<%= r.id %> style="border: .15rem solid <%= r.rgbvalue %>"><%= r.name %></button>
+      <% } else { %>
+        <button type="button" class="button list-button select-button" id=select-button-<%= r.id %>><%= r.name %></button>
+      <% } %>
     </div>
   <% }); %>
+</div>
 <%# Tag identifies the database table to enable JS code to handle interface icon clicks %>
 <span id="interface-identifier" hidden><%= table %></span>

@@ -251,6 +251,12 @@ body {
   background-color: #a1c477;
 }
 
+#no-items {
+  font-size: 1.7rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
 /* List Button Styles */
 .open-button {
   background-color: #719a44;

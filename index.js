@@ -387,7 +387,7 @@ express()
       const locals = {
         'preference': false,
         'table': 'brand',
-        'title': 'Brand',
+        'title': 'Brands',
         'items': (brands) ? brands.rows : null
       };
       res.render('pages/interface-1', locals);

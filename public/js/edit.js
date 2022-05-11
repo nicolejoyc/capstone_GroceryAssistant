@@ -188,6 +188,7 @@ $(function() {
           let productID = $('#dropdown-product').val().split('-')[1];
           let categoryID = $('#dropdown-cat').val().split('-')[1]; 
           let brandID = $('#dropdown-brand').val().split('-')[1];
+          let urgencyID = $('#dropdown-urgency').val().split('-')[1];
           let itemCount =$('#quantity').val();  
           let listName =$('#list-name').val();
           let listId =$('#list-id').val();
@@ -205,7 +206,8 @@ $(function() {
               product_id: "'" + productID + "'",
               category_id: "'" + categoryID + "'",
               brand_id: "'" + brandID + "'",
-              item_count: "'" + itemCount + "'",
+              urgency_id: "'" + urgencyID + "'",
+              item_count: "'" + itemCount + "'"
             })
           });
       

@@ -66,6 +66,21 @@
                   <input class="form-input" type="numeric" name="quantity" id="quantity" placeholder="Enter quantity" value="<%= itemcount %>" required>
                 <% } %>
 
+                <label for="dropdown-urgency"> Urgency:</label>
+                <% if (operation === 'view' ) {%>
+                  <select class="form-input" name="dropdown-urgency" id="dropdown-urgency" placeholder="select urgency" disabled>
+                <% } else { %>
+                  <select class="form-input" name="dropdown-urgency" id="dropdown-urgency" placeholder="select urgency" required>
+                <% } %>
+                  <% urgencies.forEach(function(r) {%>
+                    <% if (r.id === urgency_id) {%>
+                      <option value="urgency-<%= r.id %>" selected ><%= r.name %></option>
+                    <% } else {%>
+                      <option value="urgency-<%= r.id %>"><%= r.name %></option>
+                    <% } %>                   
+                  <% }); %>
+                  </select>
+
               </div>
               <input type="text" id="user-id" value="1" hidden>
               <input type="text" id="list-id" value="<%= list_id %>" hidden>

@@ -16,13 +16,17 @@
       <label id="product-label">Pr</label>
       
       <div class="checkbox-sorting">
-        <input type="checkbox" id="sort-by-purchased" name="purchased" value="purchased">
+        <input type="checkbox" class="sort-by-purchased" id="purchased-<%= r.id %>" name="purchased" value="purchased">
         <label for="sort-by-purchased">Purchased</label>
 
-        <input type="checkbox" id="sort-by-hidden" name="hidden" value="hidden">
+        <input type="checkbox" class="sort-by-hidden" id="hidden-<%= r.id %>" name="hidden" value="hidden">
         <label for="sort-by-hidden">Hidden</label>
 
-        <input type="checkbox" id="sort-by-urgency" name="urgency" value="urgency">
+        <input type="checkbox" class="sort-by-urgency" id="urgency-<%= r.id %>" name="urgency" value="urgency"
+          <% if (r.urgency == '1') {%>
+            checked
+          <%}%>
+        >
         <label for="sort-by-urgency">Urgent</label>
       </div>
       

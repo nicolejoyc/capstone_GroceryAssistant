@@ -11,29 +11,31 @@
     NOTE: id integer value must be unique, used to create HTML button id.
 %>
 <div class="button-list-wrapper-8">
-  <% items.forEach(function(r, i) {%>
-    <div class="button-wrapper-1">
-      <label id="product-label">Pr</label>
-      
-      <div class="checkbox-sorting">
-        <input type="checkbox" class="sort-by-purchased" id="purchased-<%= r.id %>" name="purchased" value="purchased">
-        <label for="sort-by-purchased">Purchased</label>
+  <% if (items.length == '0') {%>
+    <h2 id="no-items">Sorry, this list is empty :( <br>Add items using the (+) icon</h2>
+  <%} else {%>
+    <% items.forEach(function(r, i) {%>
+      <div class="button-wrapper-1">
+        <label id="product-label">Pr</label>
+        
+        <div class="checkbox-sorting">
+          <input type="checkbox" class="sort-by-purchased" id="purchased-<%= r.id %>" name="purchased" value="purchased">
+          <label for="sort-by-purchased">Purchased</label>
 
-        <input type="checkbox" class="sort-by-hidden" id="hidden-<%= r.id %>" name="hidden" value="hidden">
-        <label for="sort-by-hidden">Hidden</label>
+          <input type="checkbox" class="sort-by-hidden" id="hidden-<%= r.id %>" name="hidden" value="hidden">
+          <label for="sort-by-hidden">Hidden</label>
 
-        <input type="checkbox" class="sort-by-urgency" id="urgency-<%= r.id %>" name="urgency" value="urgency"
-          <% if (r.urgency == '1') {%>
-            checked
-          <%}%>
-        >
-        <label for="sort-by-urgency">Urgent</label>
+          <input type="checkbox" class="sort-by-urgency" id="urgency-<%= r.id %>" name="urgency" value="urgency"
+            <% if (r.urgency == '1') {%>
+              checked
+            <%}%>
+          >
+          <label for="sort-by-urgency">Urgent</label>
+        </div>
+        
+        <button type="button" class="button-1 list-button select-button" id=select-button-<%= r.id %>><%= r.name %></button>
       </div>
-      
-      <button type="button" class="button-1 list-button select-button" id=select-button-<%= r.id %>><%= r.name %></button>
-    </div>
-
-
-  <% }); %>
+    <% }); %>
+  <%}%>
 <%# Tag identifies the database table to enable JS code to handle interface icon clicks %>
 <span id="interface-identifier" hidden><%= table %></span>

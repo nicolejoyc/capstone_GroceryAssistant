@@ -315,7 +315,7 @@ express()
       const client = await pool.connect();
 
       const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM category ORDER BY name ASC`
+        `SELECT CategoryId AS id, Name FROM category WHERE CategoryId != 0 ORDER BY name ASC`
       );
 
       const locals = {
@@ -338,7 +338,7 @@ express()
       const client = await pool.connect();
 
       const stores = await client.query(
-        `SELECT StoreId AS id, Name FROM store ORDER BY name ASC`
+        `SELECT StoreId AS id, Name FROM store WHERE StoreId != 0 ORDER BY name ASC`
       );
       const locals = {
         'preference': false,
@@ -382,7 +382,7 @@ express()
       const client = await pool.connect();
 
       const brands = await client.query(
-        `SELECT BrandId AS id, Name FROM Brand ORDER BY name ASC`
+        `SELECT BrandId AS id, Name FROM Brand WHERE BrandId != 0 ORDER BY name ASC`
       );
       const locals = {
         'preference': false,
@@ -590,6 +590,9 @@ express()
       const brands = await client.query(
         `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
       );
+      const urgencies = await client.query(
+        `SELECT UrgencyId AS id, Name FROM Urgency ORDER BY id DESC`
+      );
 
       const locals = {
         'operation': 'add',
@@ -603,6 +606,8 @@ express()
         'categories': (categories) ? categories.rows : null,
         'brand_id': 0, 
         'brands': (brands) ? brands.rows : null,
+        'urgency_id': 0,
+        'urgencies': (urgencies) ? urgencies.rows : null,
         'itemcount': 1
       };
 
@@ -633,6 +638,9 @@ express()
       const brands = await client.query(
         `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
       );
+      const urgencies = await client.query(
+        `SELECT UrgencyId AS id, Name FROM Urgency ORDER BY id DESC`
+      );
       
       const locals = {
         'operation': 'edit',
@@ -646,6 +654,8 @@ express()
         'categories': (categories) ? categories.rows : null,
         'brand_id': (listItem) ? listItem.rows[0].brandid :null, 
         'brands': (brands) ? brands.rows : null,
+        'urgency_id': (listItem) ? listItem.rows[0].urgencyid :null,
+        'urgencies': (urgencies) ? urgencies.rows : null,
         'itemcount':(listItem) ? listItem.rows[0].itemcount: null
       };
       res.render('pages/interface-7', locals);
@@ -675,6 +685,9 @@ express()
       const brands = await client.query(
         `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
       );
+      const urgencies = await client.query(
+        `SELECT UrgencyId AS id, Name FROM Urgency ORDER BY id DESC`
+      );
       
       const locals = {
         'operation': 'view',
@@ -688,6 +701,8 @@ express()
         'categories': (categories) ? categories.rows : null,
         'brand_id': (listItem) ? listItem.rows[0].brandid :null, 
         'brands': (brands) ? brands.rows : null,
+        'urgency_id': (listItem) ? listItem.rows[0].urgencyid :null,
+        'urgencies': (urgencies) ? urgencies.rows : null,
         'itemcount':(listItem) ? listItem.rows[0].itemcount: null
       };
       res.render('pages/interface-7', locals);
@@ -1110,11 +1125,12 @@ express()
       const productId = req.body.product_id;
       const categoryId = req.body.category_id;
       const brandId = req.body.brand_id;
+      const urgencyId = req.body.urgency_id;
       const itemCount = req.body.item_count;
       
 			const sqlInsert = await client.query(
-        `INSERT INTO listitem (listid, productid, categoryid, brandid, itemcount)
-        VALUES (${listId}, ${productId}, ${categoryId}, ${brandId}, ${itemCount})
+        `INSERT INTO listitem (listid, productid, categoryid, brandid, urgencyid, itemcount)
+        VALUES (${listId}, ${productId}, ${categoryId}, ${brandId}, ${urgencyId}, ${itemCount})
         RETURNING listItemId AS new_id;`);
 
 			const result = {
@@ -1140,10 +1156,11 @@ express()
       const productId = req.body.product_id;
       const categoryId = req.body.category_id;
       const brandId = req.body.brand_id;
+      const urgencyId = req.body.urgency_id;
       const itemCount = req.body.item_count;
               // TODO: add user id to where clause
 			const sqlUpdate = await client.query(
-        `UPDATE listitem SET productid = ${productId}, categoryid = ${categoryId}, brandid = ${brandId}, itemcount = ${itemCount}
+        `UPDATE listitem SET productid = ${productId}, categoryid = ${categoryId}, brandid = ${brandId}, urgencyid = ${urgencyId}, itemcount = ${itemCount}
           WHERE listitemid = ${listItemId};`);
 
 			const result = {
@@ -1432,6 +1449,32 @@ express()
         
       res.json({ requestBody: result });
 			
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/urgency-checkbox-change', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const itemId = req.body.listitem_id;
+			const urgencyId = req.body.urgency_id;
+      
+			const sqlUpdate = await client.query(
+        `UPDATE listitem SET urgencyid = ` + urgencyId + ` WHERE listitemid = ` + itemId + `;`
+      );
+
+			const result = {
+				'response': (sqlUpdate) ? (sqlUpdate.rows[0]) : null
+			};
+
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
 			client.release();
 		}
 		catch (err) {

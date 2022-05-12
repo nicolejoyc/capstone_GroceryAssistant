@@ -231,7 +231,8 @@ body {
 
 .form-wrapper {
   margin: 2%;
-  height: 25rem;
+  min-height: 25rem;
+  height: auto;
 }
 
 .submit {

@@ -207,6 +207,10 @@ express()
       const id = req.query.id;
 			const name = req.query.name;
       const orderBy = (req.query.orderBy) ? req.query.orderBy : 'name';
+      const showPurchased = (req.query.showPurchased) ? req.query.showPurchased : 'true';
+      const showHidden = (req.query.showHidden) ? req.query.showHidden : 'true';
+      const boolShowPurchased = (showPurchased === 'true') ? true : false;
+      const boolShowHidden = (showHidden === 'true') ? true : false;
 
       const groceryList = await client.query(
         `SELECT * FROM grocery_list INNER JOIN color USING (colorid) WHERE id = ${id}`
@@ -261,6 +265,8 @@ express()
             LEFT JOIN Urgency USING (UrgencyId)
           WHERE (listid = ${sourceListId} ${storeCondition} ${categoryCondition})
             OR (listid = ${id})
+            AND purchased = ${boolShowPurchased}
+            AND hidden = ${boolShowHidden}
           ORDER BY ` + orderBy
       );
       //console.log(items);
@@ -280,6 +286,8 @@ express()
 
       const locals = {
         'orderBy': ordering,
+        'show_purchased': showPurchased,
+        'show_hidden': showHidden,
         'preference': false,
         'table': 'listitem',
         'title': name,
@@ -608,6 +616,8 @@ express()
         'brands': (brands) ? brands.rows : null,
         'urgency_id': 0,
         'urgencies': (urgencies) ? urgencies.rows : null,
+        'purchased': false,
+        'hidden': false,
         'itemcount': 1
       };
 
@@ -656,6 +666,8 @@ express()
         'brands': (brands) ? brands.rows : null,
         'urgency_id': (listItem) ? listItem.rows[0].urgencyid :null,
         'urgencies': (urgencies) ? urgencies.rows : null,
+        'purchased':(listItem) ? listItem.rows[0].purchased: null,
+        'hidden':(listItem) ? listItem.rows[0].hidden: null,
         'itemcount':(listItem) ? listItem.rows[0].itemcount: null
       };
       res.render('pages/interface-7', locals);
@@ -703,6 +715,8 @@ express()
         'brands': (brands) ? brands.rows : null,
         'urgency_id': (listItem) ? listItem.rows[0].urgencyid :null,
         'urgencies': (urgencies) ? urgencies.rows : null,
+        'purchased':(listItem) ? listItem.rows[0].purchased: null,
+        'hidden':(listItem) ? listItem.rows[0].hidden: null,
         'itemcount':(listItem) ? listItem.rows[0].itemcount: null
       };
       res.render('pages/interface-7', locals);
@@ -1127,6 +1141,7 @@ express()
       const brandId = req.body.brand_id;
       const urgencyId = req.body.urgency_id;
       const itemCount = req.body.item_count;
+
       
 			const sqlInsert = await client.query(
         `INSERT INTO listitem (listid, productid, categoryid, brandid, urgencyid, itemcount)
@@ -1158,7 +1173,7 @@ express()
       const brandId = req.body.brand_id;
       const urgencyId = req.body.urgency_id;
       const itemCount = req.body.item_count;
-              // TODO: add user id to where clause
+
 			const sqlUpdate = await client.query(
         `UPDATE listitem SET productid = ${productId}, categoryid = ${categoryId}, brandid = ${brandId}, urgencyid = ${urgencyId}, itemcount = ${itemCount}
           WHERE listitemid = ${listItemId};`);
@@ -1185,7 +1200,6 @@ express()
 			const productName = req.body.item_name;
 			const userId = req.body.user_id;
       	
-      // TODO: add user id to where clause
 			const sqlUpdate = await client.query(
         `UPDATE Product SET Name = ${productName}
           WHERE ProductId = ${productId};`);
@@ -1464,6 +1478,58 @@ express()
       
 			const sqlUpdate = await client.query(
         `UPDATE listitem SET urgencyid = ` + urgencyId + ` WHERE listitemid = ` + itemId + `;`
+      );
+
+			const result = {
+				'response': (sqlUpdate) ? (sqlUpdate.rows[0]) : null
+			};
+
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/purchased-checkbox-change', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const itemId = req.body.listitem_id;
+			const purchased = req.body.purchased;
+      
+			const sqlUpdate = await client.query(
+        `UPDATE listitem SET purchased = ` + purchased + ` WHERE listitemid = ` + itemId + `;`
+      );
+
+			const result = {
+				'response': (sqlUpdate) ? (sqlUpdate.rows[0]) : null
+			};
+
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/hidden-checkbox-change', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const itemId = req.body.listitem_id;
+			const hidden = req.body.hidden;
+      
+			const sqlUpdate = await client.query(
+        `UPDATE listitem SET hidden = ` + hidden + ` WHERE listitemid = ` + itemId + `;`
       );
 
 			const result = {

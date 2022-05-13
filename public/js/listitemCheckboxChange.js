@@ -30,5 +30,63 @@ $(function() {
       location.reload();
     }
   });
+  $(".sort-by-purchased").click(async function() {
+    let purchased = false;
+    let listitemID = this.id.split('-').pop();
+
+    if($(this).is(':checked')){
+        purchased = true;
+    } 
+
+    // update DB
+    const response = await fetch('/purchased-checkbox-change', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            listitem_id: listitemID,
+            purchased: purchased
+        })
+    });
+
+    const result = await response.json();
+    console.log(result);
+
+    if (purchased) {
+      location.reload();
+    }
+  });
+  $(".sort-by-hidden").click(async function() {
+    let hidden = false;
+    let listitemID = this.id.split('-').pop();
+    console.log(listitemID);
+
+    if($(this).is(':checked')){
+        hidden = true;
+    } 
+
+    // update DB
+    const response = await fetch('/hidden-checkbox-change', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            listitem_id: listitemID,
+            hidden: hidden
+        })
+
+    });
+
+    const result = await response.json();
+    console.log(result);
+
+    if (hidden) {
+      location.reload();
+    }
+  });
 
 });

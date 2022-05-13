@@ -11,6 +11,11 @@
 
       <div class="form-container">
         <div class="form-wrapper">
+          <% if (products.length == '0') {%>
+            <h2 id="no-items">Sorry, you have no products saved :( <br> Click <a href="/grocery-data-manager/product">here</a> to add products</h2>
+            <input type="text" id="list-id" value="<%= list_id %>" hidden>
+            <input type="text" id="list-name" value="<%= list_name %>" hidden>
+          <%} else {%>
           <form action="javascript:void(0)">
               <div class="form-input-wrapper">
                 <label for="dropdown-product"> Product:</label>
@@ -103,6 +108,7 @@
               <% } %>
 
           </form>
+          <%}%>
         </div>
       </div>
       <footer>

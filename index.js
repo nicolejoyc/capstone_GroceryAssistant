@@ -1,7 +1,9 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const PORT = process.env.PORT || 5000;
 const { Pool } = require('pg');
+const { fileURLToPath } = require('url');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -582,13 +584,13 @@ express()
       const listName = req.query.listname;
 
       const products = await client.query(
-        `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
+        `SELECT ProductId AS id, Name FROM product ORDER BY name ASC`
       );
       const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM category ORDER BY id ASC`
+        `SELECT CategoryId AS id, Name FROM category ORDER BY name ASC`
       );
       const brands = await client.query(
-        `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
+        `SELECT BrandId AS id, Name FROM Brand ORDER BY name ASC`
       );
       const urgencies = await client.query(
         `SELECT UrgencyId AS id, Name FROM Urgency ORDER BY id DESC`
@@ -966,6 +968,79 @@ express()
       };
 
       res.render('pages/interface-2', parms);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+  .get('/db', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      let qstr = ''; // Database initialization query string
+      const params = { 'title' : 'Database Backup File: support/dbsnapshot.sql'};
+      const fpath = './support/dbsnapshot.sql';
+      // Database tables (name: requires set id)
+      const tablenames = {
+        'grocery_list': true,
+        'filterlock': false,
+        'listitem': true,
+        'product': true,
+        'category': true,
+        'brand': true,
+        'store': true,
+        'productcategory': false,
+        'productbrand': false,
+        'productstore': false,
+        'urgency': true,
+        'color': true
+      };
+      // Generate query insert strings
+      const genInsertString = (r) => {
+        qstr += `  (`;
+        for (let key in r) {
+          if(typeof r[key] === 'string') {
+            let str = r[key].replace(/'/g, "''");
+            qstr += '\'' + str + '\'';
+          } else {
+            qstr += r[key];
+          }
+          qstr += ',';
+        }
+        qstr = qstr.slice(0, -1);
+        qstr += `),\n`;
+      };
+      for(let table in tablenames) {
+        const dbTable = await client.query(
+          `SELECT * FROM ${table};`
+        );
+        if(dbTable.rowCount) {
+          let r0 = dbTable.rows[0];
+          qstr += `TRUNCATE TABLE ${table};`;
+          qstr += `INSERT INTO ${table} (`;
+          for (let key in r0) {
+            qstr += key + ',';
+          }
+          qstr = qstr.slice(0, -1);
+          qstr += `) VALUES \n`;
+          dbTable.rows.forEach((r) => genInsertString(r));
+          qstr = qstr.slice(0, -3);
+          qstr += `);\n`;
+          if(tablenames[table]) {
+            qstr += `SELECT setval('${table}_${Object.keys(r0)[0]}_seq', (SELECT MAX(${Object.keys(r0)[0]}) FROM ${table}));\n`;
+          }
+        }
+      }
+      //console.log(qstr);
+      fs.writeFile(fpath, qstr, (err) => {
+        if(err) {
+          console.log("File Write Failed");
+        }
+      });
+      
+      res.render('pages/interface-4', params);
       client.release();
     }
     catch (err) {

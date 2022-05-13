@@ -265,10 +265,11 @@ express()
                 INNER JOIN
                color USING (colorid)) AS color USING (listid)
             LEFT JOIN Urgency USING (UrgencyId)
-          WHERE (listid = ${sourceListId} ${storeCondition} ${categoryCondition})
-            OR (listid = ${id})
-            AND purchased = ${boolShowPurchased}
-            AND hidden = ${boolShowHidden}
+          WHERE ((listid = ${sourceListId} ${storeCondition} ${categoryCondition})
+            OR (listid = ${id}))
+            AND ((((purchased = false) OR (${boolShowPurchased} = true)) 
+            AND ((hidden = false) OR (${boolShowHidden} = true)))
+            OR ((purchased = true) AND (hidden = true) AND (${boolShowHidden} = true)))
           ORDER BY ` + orderBy
       );
       //console.log(items);

@@ -47,7 +47,7 @@ body {
 }
 
 #footer-h3 {
-  text-decoration:underline;
+  text-decoration: underline;
   padding-bottom: 10px;
 }
 
@@ -157,7 +157,7 @@ body {
   height: 100%;
   display: block;
   text-align: left;
-  padding-left: 50px;
+  padding-left: 30px;
 }
 
 .form-input-wrapper,
@@ -459,16 +459,6 @@ body {
 
 .sort-by-purchased {
   margin-left: 10px;
-}
-
-#product-label {
-  position: relative;
-  left: -285px;
-  top: 38px;
-  border: 2px solid #75ce9f;
-  background-color: #75ce9f;
-  border-radius: 12px;
-  padding: 5px;
 }
 
 .checkbox-sorting {

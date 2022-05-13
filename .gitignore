@@ -108,3 +108,6 @@ dist
 
 #package
 package-lock.json
+
+# database snapshot file
+support/dbsnapshot.sql

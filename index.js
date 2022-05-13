@@ -975,7 +975,7 @@ express()
       res.send("Error " + err);
     }
   })
-  .get('/db', async (req, res) => {
+  .get('/dbsnapshot', async (req, res) => {
     try {
       const client = await pool.connect();
 

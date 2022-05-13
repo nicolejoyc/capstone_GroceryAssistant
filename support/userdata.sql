@@ -1,16 +1,8 @@
 TRUNCATE TABLE grocery_list;INSERT INTO grocery_list (id,userid,name,filtered,colorid,sourcelistid,storeid,categoryid) VALUES 
   (0,0,'None',false,0,0,0,0),
-  (2,1,'My List',false,0,0,0,0),
-  (4,1,'My Walmart List',true,5,2,2,0),
-  (5,1,'My Marketplace List',true,19,2,3,0),
-  (3,1,'My Aldi List',true,12,2,1,0);
+  (2,1,'My List',false,0,0,0,0);
 SELECT setval('grocery_list_id_seq', (SELECT MAX(id) FROM grocery_list));
-TRUNCATE TABLE filterlock;INSERT INTO filterlock (filteredlistid,filtersourceid,userid) VALUES 
-  (4,2,1),
-  (5,2,1),
-  (3,2,1);
 TRUNCATE TABLE listitem;INSERT INTO listitem (listitemid,listid,productid,categoryid,brandid,unitid,urgencyid,unitcount,itemcount,purchased,hidden) VALUES 
-  (1,2,85,13,77,null,3,0,1,false,false),
   (2,2,17,2,0,null,3,0,4,false,false);
 SELECT setval('listitem_listitemid_seq', (SELECT MAX(listitemid) FROM listitem));
 TRUNCATE TABLE product;INSERT INTO product (productid,userid,name) VALUES 

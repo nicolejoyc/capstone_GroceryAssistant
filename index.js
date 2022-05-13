@@ -435,7 +435,7 @@ express()
       );
 
       const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM category ORDER BY name ASC`
+        `SELECT CategoryId AS id, Name FROM category WHERE CategoryId != 0 ORDER BY name ASC`
       );
 
       const preferredCategories = await client.query(
@@ -443,7 +443,7 @@ express()
       );
 
       const stores = await client.query(
-        `SELECT StoreId AS id, Name FROM store ORDER BY name ASC`
+        `SELECT StoreId AS id, Name FROM store WHERE StoreId != 0 ORDER BY name ASC`
       );
 
       const preferredStores = await client.query(
@@ -451,7 +451,7 @@ express()
       );
 
       const brands = await client.query(
-        `SELECT BrandId AS id, Name FROM Brand ORDER BY name ASC`
+        `SELECT BrandId AS id, Name FROM Brand WHERE BrandId != 0 ORDER BY name ASC`
       );
 
       const preferredBrands = await client.query(

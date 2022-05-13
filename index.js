@@ -602,7 +602,7 @@ express()
         'list_id' : listId,
         'list_name' : listName,
         'listitem_id': 0,
-        'product_id': 2, 
+        'product_id': 0, 
         'products': (products) ? products.rows : null,
         'category_id': 0, 
         'categories': (categories) ? categories.rows : null,

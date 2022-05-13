@@ -101,7 +101,7 @@ class InterfaceSearch extends InterfaceComponent {
           const searchString = this.searchString.toLowerCase();
           $(this.targetSelector).each((index, target) => {
               const targetString = $(target).text().toLowerCase();
-              if(targetString.indexOf(searchString) === 0) {
+              if(targetString.indexOf(searchString) !== -1) {
                   this.matchingTargets.push(target);
                   $(target).parent().removeClass('hide').addClass('show');
               } else {

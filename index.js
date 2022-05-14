@@ -1048,6 +1048,20 @@ express()
       res.send("Error " + err);
     }
   })
+  .get('/about-us', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const params = { 'title' : 'About Us'};
+      
+      res.render('pages/aboutUs', params);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
   .post('/add', async(req, res) => {
 		try {
       const client = await pool.connect();

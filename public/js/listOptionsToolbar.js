@@ -54,6 +54,5 @@ $(function() {
         show += `&showHidden=${hidden}`;
 
         window.location.href = ('list?id=' + listId + '&name=' + name + orderBy + show);
-        //console.log(('list?id=' + listId + '&name=' + name + orderBy + show));
     });
 });

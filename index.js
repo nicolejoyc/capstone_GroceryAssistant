@@ -591,31 +591,50 @@ express()
       const client = await pool.connect();
       const listId = req.query.listid;
       const listName = req.query.listname;
-
+    
       const products = await client.query(
         `SELECT ProductId AS id, Name FROM product ORDER BY name ASC`
+      );     
+      const product_id = req.query.productid ? req.query.productid : products.rows[0].id;
+      const productID = parseInt(product_id);
+
+      const productcategory = await client.query(
+        `SELECT CategoryId AS id, Name FROM productcategory INNER JOIN category USING (categoryid) WHERE ProductId = ${productID} ORDER BY name ASC`
       );
-      const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM category ORDER BY name ASC`
+      let categories;
+      if (productcategory.rowCount) {
+        categories = productcategory;
+      } else {
+        categories = await client.query(
+          `SELECT CategoryId AS id, Name FROM category WHERE CategoryId = 0 ORDER BY id ASC`
+        );
+      }
+      const productbrand = await client.query(
+        `SELECT BrandId AS id, Name FROM productbrand INNER JOIN brand USING (brandid) WHERE ProductId = ${productID} ORDER BY name ASC`
       );
-      const brands = await client.query(
-        `SELECT BrandId AS id, Name FROM Brand ORDER BY name ASC`
-      );
+      let brands;
+      if (productbrand.rowCount) {
+        brands = productbrand;
+      } else {
+        brands = await client.query(
+          `SELECT BrandId AS id, Name FROM Brand WHERE BrandId = 0 ORDER BY id ASC`
+        );
+      }
       const urgencies = await client.query(
         `SELECT UrgencyId AS id, Name FROM Urgency ORDER BY id DESC`
       );
 
       const locals = {
         'operation': 'add',
-        'title': 'Add List Item',
+        'title': listName,
         'list_id' : listId,
         'list_name' : listName,
         'listitem_id': 0,
-        'product_id': 0, 
+        'product_id': productID, 
         'products': (products) ? products.rows : null,
-        'category_id': 0, 
+        'category_id': (categories.rowCount) ? categories.rows[0].categoryid : 0, 
         'categories': (categories) ? categories.rows : null,
-        'brand_id': 0, 
+        'brand_id':  (brands.rowCount) ? brands.rows[0].brandid : 0,  
         'brands': (brands) ? brands.rows : null,
         'urgency_id': 0,
         'urgencies': (urgencies) ? urgencies.rows : null,
@@ -642,15 +661,33 @@ express()
       const listItem = await client.query(
         `SELECT * FROM listitem WHERE ListItemId = ` + listItemId
       );
+      const productID = listItem.rows[0].productid;
+
       const products = await client.query(
-        `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
+        `SELECT ProductId AS id, Name FROM product WHERE ProductId = ${productID}`
       );
-      const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM category ORDER BY id ASC`
+      const productcategory = await client.query(
+        `SELECT CategoryId  As id, Name FROM productcategory INNER JOIN category USING (categoryid) WHERE ProductId = ${productID} ORDER BY name ASC`
       );
-      const brands = await client.query(
-        `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
+      let categories;
+      if (productcategory.rowCount) {
+        categories = productcategory;
+      } else {
+        categories = await client.query(
+          `SELECT CategoryId AS id, Name FROM category WHERE CategoryId = 0 ORDER BY id ASC`
+        );
+      }
+      const productbrand = await client.query(
+        `SELECT BrandId AS id,  Name FROM productbrand INNER JOIN brand USING (brandid) WHERE ProductId = ${productID} ORDER BY name ASC`
       );
+      let brands;
+      if (productbrand.rowCount) {
+        brands = productbrand;
+      } else {
+        brands = await client.query(
+          `SELECT BrandId AS id, Name FROM Brand WHERE BrandId = 0 ORDER BY id ASC`
+        );
+      }
       const urgencies = await client.query(
         `SELECT UrgencyId AS id, Name FROM Urgency ORDER BY id DESC`
       );
@@ -691,15 +728,33 @@ express()
       const listItem = await client.query(
         `SELECT * FROM listitem WHERE ListItemId = ` + listItemId
       );
+      const productID = listItem.rows[0].productid;
+
       const products = await client.query(
-        `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
+        `SELECT ProductId AS id, Name FROM product WHERE ProductId = ${productID}`
       );
-      const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM category ORDER BY id ASC`
+      const productcategory = await client.query(
+        `SELECT CategoryId  As id, Name FROM productcategory INNER JOIN category USING (categoryid) WHERE ProductId = ${productID} ORDER BY name ASC`
       );
-      const brands = await client.query(
-        `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
+      let categories;
+      if (productcategory.rowCount) {
+        categories = productcategory;
+      } else {
+        categories = await client.query(
+          `SELECT CategoryId AS id, Name FROM category WHERE CategoryId = 0 ORDER BY id ASC`
+        );
+      }
+      const productbrand = await client.query(
+        `SELECT BrandId AS id,  Name FROM productbrand INNER JOIN brand USING (brandid) WHERE ProductId = ${productID} ORDER BY name ASC`
       );
+      let brands;
+      if (productbrand.rowCount) {
+        brands = productbrand;
+      } else {
+        brands = await client.query(
+          `SELECT BrandId AS id, Name FROM Brand WHERE BrandId = 0 ORDER BY id ASC`
+        );
+      }
       const urgencies = await client.query(
         `SELECT UrgencyId AS id, Name FROM Urgency ORDER BY id DESC`
       );

@@ -245,9 +245,9 @@ $("#add-listitem").click(async function (e) {
   let categoryID = $('#dropdown-cat').val().split('-')[1]; 
   let brandID = $('#dropdown-brand').val().split('-')[1];
   let urgencyID = $('#dropdown-urgency').val().split('-')[1];
-  let itemCount =$('#quantity').val();  
-  let listName =$('#list-name').val();
-  let listId =$('#list-id').val();
+  let itemCount = $('#quantity').val();  
+  let listName = $('#list-name').val();
+  let listId = $('#list-id').val();
 
     // send info to be stored into the database
 	  const response = await fetch('/list/listitem/add', {
@@ -270,4 +270,13 @@ $("#add-listitem").click(async function (e) {
     console.log(result);
     location.assign('/list?id=' + listId + '&name=' + listName);
 
+});
+
+$('#dropdown-product').change(async function (e) {
+  e.preventDefault();
+  let productID = $('#dropdown-product').val().split('-')[1];
+  let listName = $('#list-name').val();
+  let listId = $('#list-id').val();
+
+location.assign('/list/listitem/add?listid=' + listId + '&name=' + listName + '&productid=' + productID);
 });

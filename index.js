@@ -209,6 +209,10 @@ express()
       const id = req.query.id;
 			const name = req.query.name;
       const orderBy = (req.query.orderBy) ? req.query.orderBy : 'name';
+      const showPurchased = (req.query.showPurchased) ? req.query.showPurchased : 'true';
+      const showHidden = (req.query.showHidden) ? req.query.showHidden : 'true';
+      const boolShowPurchased = (showPurchased === 'true') ? true : false;
+      const boolShowHidden = (showHidden === 'true') ? true : false;
 
       const groceryList = await client.query(
         `SELECT * FROM grocery_list INNER JOIN color USING (colorid) WHERE id = ${id}`
@@ -261,8 +265,11 @@ express()
                 INNER JOIN
                color USING (colorid)) AS color USING (listid)
             LEFT JOIN Urgency USING (UrgencyId)
-          WHERE (listid = ${sourceListId} ${storeCondition} ${categoryCondition})
-            OR (listid = ${id})
+          WHERE ((listid = ${sourceListId} ${storeCondition} ${categoryCondition})
+            OR (listid = ${id}))
+            AND ((((purchased = false) OR (${boolShowPurchased} = true)) 
+            AND ((hidden = false) OR (${boolShowHidden} = true)))
+            OR ((purchased = true) AND (hidden = true) AND (${boolShowHidden} = true)))
           ORDER BY ` + orderBy
       );
       //console.log(items);
@@ -282,6 +289,8 @@ express()
 
       const locals = {
         'orderBy': ordering,
+        'show_purchased': showPurchased,
+        'show_hidden': showHidden,
         'preference': false,
         'table': 'listitem',
         'title': name,
@@ -435,7 +444,7 @@ express()
       );
 
       const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM category ORDER BY name ASC`
+        `SELECT CategoryId AS id, Name FROM category WHERE CategoryId != 0 ORDER BY name ASC`
       );
 
       const preferredCategories = await client.query(
@@ -443,7 +452,7 @@ express()
       );
 
       const stores = await client.query(
-        `SELECT StoreId AS id, Name FROM store ORDER BY name ASC`
+        `SELECT StoreId AS id, Name FROM store WHERE StoreId != 0 ORDER BY name ASC`
       );
 
       const preferredStores = await client.query(
@@ -451,7 +460,7 @@ express()
       );
 
       const brands = await client.query(
-        `SELECT BrandId AS id, Name FROM Brand ORDER BY name ASC`
+        `SELECT BrandId AS id, Name FROM Brand WHERE BrandId != 0 ORDER BY name ASC`
       );
 
       const preferredBrands = await client.query(
@@ -610,6 +619,8 @@ express()
         'brands': (brands) ? brands.rows : null,
         'urgency_id': 0,
         'urgencies': (urgencies) ? urgencies.rows : null,
+        'purchased': false,
+        'hidden': false,
         'itemcount': 1
       };
 
@@ -658,6 +669,8 @@ express()
         'brands': (brands) ? brands.rows : null,
         'urgency_id': (listItem) ? listItem.rows[0].urgencyid :null,
         'urgencies': (urgencies) ? urgencies.rows : null,
+        'purchased':(listItem) ? listItem.rows[0].purchased: null,
+        'hidden':(listItem) ? listItem.rows[0].hidden: null,
         'itemcount':(listItem) ? listItem.rows[0].itemcount: null
       };
       res.render('pages/interface-7', locals);
@@ -705,6 +718,8 @@ express()
         'brands': (brands) ? brands.rows : null,
         'urgency_id': (listItem) ? listItem.rows[0].urgencyid :null,
         'urgencies': (urgencies) ? urgencies.rows : null,
+        'purchased':(listItem) ? listItem.rows[0].purchased: null,
+        'hidden':(listItem) ? listItem.rows[0].hidden: null,
         'itemcount':(listItem) ? listItem.rows[0].itemcount: null
       };
       res.render('pages/interface-7', locals);
@@ -1216,6 +1231,7 @@ express()
       const brandId = req.body.brand_id;
       const urgencyId = req.body.urgency_id;
       const itemCount = req.body.item_count;
+
       
 			const sqlInsert = await client.query(
         `INSERT INTO listitem (listid, productid, categoryid, brandid, urgencyid, itemcount)
@@ -1247,7 +1263,7 @@ express()
       const brandId = req.body.brand_id;
       const urgencyId = req.body.urgency_id;
       const itemCount = req.body.item_count;
-              // TODO: add user id to where clause
+
 			const sqlUpdate = await client.query(
         `UPDATE listitem SET productid = ${productId}, categoryid = ${categoryId}, brandid = ${brandId}, urgencyid = ${urgencyId}, itemcount = ${itemCount}
           WHERE listitemid = ${listItemId};`);
@@ -1274,7 +1290,6 @@ express()
 			const productName = req.body.item_name;
 			const userId = req.body.user_id;
       	
-      // TODO: add user id to where clause
 			const sqlUpdate = await client.query(
         `UPDATE Product SET Name = ${productName}
           WHERE ProductId = ${productId};`);
@@ -1553,6 +1568,58 @@ express()
       
 			const sqlUpdate = await client.query(
         `UPDATE listitem SET urgencyid = ` + urgencyId + ` WHERE listitemid = ` + itemId + `;`
+      );
+
+			const result = {
+				'response': (sqlUpdate) ? (sqlUpdate.rows[0]) : null
+			};
+
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/purchased-checkbox-change', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const itemId = req.body.listitem_id;
+			const purchased = req.body.purchased;
+      
+			const sqlUpdate = await client.query(
+        `UPDATE listitem SET purchased = ` + purchased + ` WHERE listitemid = ` + itemId + `;`
+      );
+
+			const result = {
+				'response': (sqlUpdate) ? (sqlUpdate.rows[0]) : null
+			};
+
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/hidden-checkbox-change', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const itemId = req.body.listitem_id;
+			const hidden = req.body.hidden;
+      
+			const sqlUpdate = await client.query(
+        `UPDATE listitem SET hidden = ` + hidden + ` WHERE listitemid = ` + itemId + `;`
       );
 
 			const result = {

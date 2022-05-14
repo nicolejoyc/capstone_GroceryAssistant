@@ -51,13 +51,21 @@
   
     <div class="grid-container-2">
       <div class="grid-item-2">
-        <input type="checkbox" id="sort-by-purchased" name="purchased" value="purchased">
-        <label for="sort-by-purchased">Purchased</label>
+        <input type="checkbox" id="show-purchased" name="show" value="purchased"
+        <% if (show_purchased === 'true') {%>
+          checked
+        <%}%>
+        >
+        <label for="show-purchased">Purchased</label>
       </div>
 
       <div class="grid-item-2">
-        <input type="checkbox" id="sort-by-hidden" name="hidden" value="hidden">
-        <label for="sort-by-hidden">Hidden</label>
+        <input type="checkbox" id="show-hidden" name="show" value="hidden"
+        <% if (show_hidden === 'true') {%>
+          checked
+        <%}%>
+        >
+        <label for="show-hidden">Hidden</label>
       </div>
     </div>
   </div>

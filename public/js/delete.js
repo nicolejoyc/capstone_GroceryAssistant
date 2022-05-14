@@ -5,9 +5,9 @@ $(function() {
     
     let selectedItems = document.querySelectorAll('.select-button-active');
     const table = document.querySelector('#interface-identifier').innerHTML;
-    const itemString = selectedItems.length > 1 ? ' items.' : ' item.';
+    //const itemString = selectedItems.length > 1 ? ' items.' : ' item.';
 
-    if (confirm('You are about to delete ' + selectedItems.length + itemString)) {
+    //if (confirm('You are about to delete ' + selectedItems.length + itemString)) {
       selectedItems.forEach(async function(item, i) {
         const itemId = item.id.split('-').pop();
   
@@ -31,7 +31,7 @@ $(function() {
           location.reload();
         }
       });
-    }
+    //}
 
   });
 

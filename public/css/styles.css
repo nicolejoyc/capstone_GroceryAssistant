@@ -180,6 +180,10 @@ body {
   padding-left: 30px;
 }
 
+.url-button {
+  line-height: 45px;
+}
+
 .form-input-wrapper,
 .search-control-wrapper,
 .url-control-wrapper {

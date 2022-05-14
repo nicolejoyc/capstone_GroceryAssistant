@@ -277,6 +277,5 @@ $('#dropdown-product').change(async function (e) {
   let productID = $('#dropdown-product').val().split('-')[1];
   let listName = $('#list-name').val();
   let listId = $('#list-id').val();
-
-location.assign('/list/listitem/add?listid=' + listId + '&name=' + listName + '&productid=' + productID);
+  location.assign('/list/listitem/add?listid=' + listId + '&listname=' + listName + '&productid=' + productID);
 });

@@ -209,8 +209,8 @@ express()
       const id = req.query.id;
 			const name = req.query.name;
       const orderBy = (req.query.orderBy) ? req.query.orderBy : 'name';
-      const showPurchased = (req.query.showPurchased) ? req.query.showPurchased : 'true';
-      const showHidden = (req.query.showHidden) ? req.query.showHidden : 'true';
+      const showPurchased = (req.query.showPurchased) ? req.query.showPurchased : 'false';
+      const showHidden = (req.query.showHidden) ? req.query.showHidden : 'false';
       const boolShowPurchased = (showPurchased === 'true') ? true : false;
       const boolShowHidden = (showHidden === 'true') ? true : false;
 

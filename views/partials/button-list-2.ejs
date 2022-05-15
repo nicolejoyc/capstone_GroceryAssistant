@@ -26,6 +26,19 @@
               <p>Category: <%= r.category %></p>
               <p>Brand: <%= r.brand %></p>
               <p>Quantity: <%= r.quantity %></p>
+              <p>Urgency:
+                <% switch (r.urgency) {
+                  case 1: %>
+                  Very
+                  <% break;
+                  case 2: %>
+                  Somewhat
+                  <% break;
+                  case 3: %>
+                  Not
+                  <% break;
+                } %>
+              </p>
             </div>
           </div>
         <% } else { %>
@@ -36,6 +49,19 @@
               <p>Category: <%= r.category %></p>
               <p>Brand: <%= r.brand %></p>
               <p>Quantity: <%= r.quantity %></p>
+              <p>Urgency:
+                <% switch (r.urgency) {
+                  case 1: %>
+                  Very
+                  <% break;
+                  case 2: %>
+                  Somewhat
+                  <% break;
+                  case 3: %>
+                  Not
+                  <% break;
+                } %>
+              </p>
             </div>
           </div>
         <% } %>

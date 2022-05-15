@@ -9,7 +9,7 @@ $(function() {
       this.parentNode.style.height = '4rem';
     } else {
       info.classList.add('open');
-      this.parentNode.style.height = '10rem';
+      this.parentNode.style.height = '11.5rem';
     }
 
   });

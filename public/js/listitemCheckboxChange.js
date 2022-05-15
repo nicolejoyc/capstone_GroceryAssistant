@@ -26,9 +26,9 @@ $(function() {
     const result = await response.json();
     console.log(result);
 
-    if (document.querySelector('input[name="sortBy"]:checked').value === "urgency") {
+    //if (document.querySelector('input[name="sortBy"]:checked').value === "urgency") {
       location.reload();
-    }
+    //}
   });
   $(".sort-by-purchased").click(async function() {
     let purchased = false;

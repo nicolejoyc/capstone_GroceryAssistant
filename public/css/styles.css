@@ -273,11 +273,11 @@ body {
 }
 
 .tool-bar-wrapper-1 .icon-controls-wrapper {
-  grid-template-columns: repeat(6, 45px);
+  grid-template-columns: repeat(5, 45px);
 }
 
 .tool-bar-wrapper-2 .icon-controls-wrapper {
-  grid-template-columns: repeat(5, 45px);
+  grid-template-columns: repeat(4, 45px);
 }
 
 .form-wrapper {
@@ -584,6 +584,10 @@ body {
     padding-bottom: 60px;
   }
 
+  .list-button {
+    font-size: 1.2rem;
+  }
+
   .tool-bar-wrapper {
     padding-bottom: 15px;
   }
@@ -593,21 +597,19 @@ body {
   }
 
   .tool-bar-wrapper-1 .icon-controls-wrapper {
-    grid-template-columns: repeat(6, 60px);
+    grid-template-columns: repeat(5, 20%);
+    text-align: center;
   }
 
   .tool-bar-wrapper-2 .icon-controls-wrapper {
-    grid-template-columns: repeat(5, 75px);
+    grid-template-columns: repeat(4, 25%);
+    text-align: center;
   }
 
   .grid-container-1,
   .grid-container-2 {
     grid-template-columns: repeat(3, 120px);
   }
-
-  /* .list-button {
-    padding-bottom: 20px;
-  } */
 
   #product-label {
     left: -125px;
@@ -619,7 +621,7 @@ body {
   }
 
   .button-wrapper-1 h3 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     left: 10%;
     top: 20px;
   }

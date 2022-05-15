@@ -1065,8 +1065,8 @@ express()
         'productcategory': false,
         'productbrand': false,
         'productstore': false,
-        'urgency': true,
-        'color': true
+        //'urgency': true,
+        //'color': true
       };
       // Generate query insert strings
       const genInsertString = (r) => {

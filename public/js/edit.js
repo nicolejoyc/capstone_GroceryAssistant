@@ -220,7 +220,7 @@ $(function() {
       
           const result = await response.json();
           console.log(result);
-          location.assign('/list?id=' + listId + '&name=' + listName);
+          location.assign('/list?id=' + listId + '&name=' + listName + getListURLParams());
       });
       break;
     }

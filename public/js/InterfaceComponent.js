@@ -414,12 +414,6 @@ class ControlInterface {
   editItemIconClick() {
     window.location.href = this.getURL('edit');
   }
-  // Toolbar delete callback
-  // Commented out by Nicole -- probably won't need separate page
-  // deleteItemIconClick() {
-  //   window.location.href = this.getURL('delete');
-  // }
-  // Toolbar add callback
   viewListIconClick() {
     window.location.href = this.getURL('list');
   }
@@ -466,9 +460,9 @@ class GroceryListControlInterface extends ControlInterface {
         const id = activeButton.id.split('-').pop();
         const name = activeButton.name;
         if(operation === 'list') {
-          return window.location.href + 'list?id=' + id + '&name=' + name + '&orderBy=name';
+          return window.location.href + 'list?id=' + id + '&name=' + name + getListURLParams();
         } else {
-          return window.location.href + '/' + operation + '?id=' + id + '&name=' + name + '&orderBy=name';
+          return window.location.href + '/' + operation + '?id=' + id + '&name=' + getListURLParams();
         }
     }
   }

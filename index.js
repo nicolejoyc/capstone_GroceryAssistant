@@ -243,6 +243,7 @@ express()
         `SELECT
             listid,
             listitemid as id,
+            itemcount AS quantity,
             Product.name AS name,
             c.name AS category,
             c.CategoryId AS Categoryid,

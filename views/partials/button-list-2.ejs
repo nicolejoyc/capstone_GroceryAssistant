@@ -16,7 +16,30 @@
   <%} else {%>
     <% items.forEach(function(r, i) {%>
       <div class="button-wrapper-1">
-        
+
+        <img class="expand-item" id="expand-item-<%= r.id %>" src="image/hdpi/ic_arrow.png" alt="arrow">
+        <% if (r.rgbvalue) { %>
+          <div type="button" class="button-1 list-button select-button" id=select-button-<%= r.id %> style="border: .15rem solid <%= r.rgbvalue %>">
+            <h3><%= r.name %></h3>
+
+            <div class="listitem-info" id="info-<%= r.id %>">
+              <p>Category: <%= r.category %></p>
+              <p>Brand: <%= r.brand %></p>
+              <p>Quantity: <%= r.quantity %></p>
+            </div>
+          </div>
+        <% } else { %>
+          <div type="button" class="button-1 list-button select-button" id=select-button-<%= r.id %> style="border: 1px solid <%= r.rgbvalue %>">
+            <h3><%= r.name %></h3>
+
+            <div class="listitem-info" id="info-<%= r.id %>">
+              <p>Category: <%= r.category %></p>
+              <p>Brand: <%= r.brand %></p>
+              <p>Quantity: <%= r.quantity %></p>
+            </div>
+          </div>
+        <% } %>
+
         <div class="checkbox-sorting">
           <input type="checkbox" class="sort-by-purchased" id="purchased-<%= r.id %>" name="purchased" value="purchased">
           <label for="sort-by-purchased">Purchased</label>
@@ -31,12 +54,7 @@
           >
           <label for="sort-by-urgency">Urgent</label>
         </div>
-        
-        <% if (r.rgbvalue) { %>
-          <button type="button" class="button-1 list-button select-button" id=select-button-<%= r.id %> style="border: .15rem solid <%= r.rgbvalue %>"><%= r.name %></button>
-        <% } else { %>
-          <button type="button" class="button-1 list-button select-button" id=select-button-<%= r.id %> style="border: 1px solid <%= r.rgbvalue %>"><%= r.name %></button>
-        <% } %>
+
       </div>
     <% }); %>
   <%}%>

@@ -124,10 +124,23 @@ body {
 
 .button-wrapper-1 {
   margin: 1rem auto;
-  height: 3rem;
-  position: relative;
-  text-align: center;
+  height: 4rem;
   line-height: 1px;
+  position: relative;
+}
+
+.button-wrapper-1 h3 {
+  font-size: 1.5rem;
+  left: 6%;
+  position: absolute;
+  top: 20px;
+}
+
+.button-wrapper-1 img {
+  top: 4px;
+  left: 8%;
+  position: absolute;
+  z-index: 100;
 }
 
 .button {
@@ -158,6 +171,7 @@ body {
   display: block;
   text-align: left;
   padding-left: 30px;
+  position: relative;
 }
 
 .form-input-wrapper,
@@ -203,6 +217,18 @@ body {
 #on-view {
   float: right;
   padding-bottom: auto;
+}
+
+.listitem-info {
+  bottom: 20px;
+  display: none;
+  position: absolute;
+  left: 5%;
+}
+
+.listitem-info p {
+  font-size: 1.5rem;
+  margin-top: 2rem;
 }
 
 .hide-toolbar {
@@ -462,8 +488,10 @@ body {
 }
 
 .checkbox-sorting {
-  position: relative;
-  top: 40px;
+  font-size: 1.4rem;
+  top: 45px;
+  position: absolute;
+  right: 10%;
 }
 
 /* Only Tablet */
@@ -531,21 +559,30 @@ body {
     grid-template-columns: repeat(3, 120px);
   }
 
-  .list-button {
+  /* .list-button {
     padding-bottom: 20px;
-  }
-
-  .button-wrapper-1 {
-    height: 5rem;
-  }
+  } */
 
   #product-label {
     left: -125px;
     top: 40px;
   }
 
-  .checkbox-sorting {
-    right: -10px;
-    top: 70px;
+  .checkbox-sorting label {
+    font-size: 0.9rem;
+  }
+
+  .button-wrapper-1 h3 {
+    font-size: 1.3rem;
+    left: 10%;
+    top: 20px;
+  }
+
+  .button-wrapper-1 img {
+    left: 6%;
+  }
+
+  .listitem-info p {
+    font-size: 1.2rem;
   }
 }

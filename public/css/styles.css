@@ -340,24 +340,24 @@ body {
   text-align: center;
 }
 
-#aboutUsUrl {
+#about-us-url {
   text-decoration: underline;
 }
 
-#aboutUsh3 {
+.about-us-h3 {
   padding-bottom: 5px;
   text-decoration: underline;
 }
 
-#aboutUsUrl:link {
+#about-us-url:link {
   color: black;
 }
 
-#aboutUsUrl:visited {
+#about-us-url:visited {
   color: black;
 }
 
-#aboutUsUrl:hover {
+#about-us-url:hover {
   color: white;
 }
 

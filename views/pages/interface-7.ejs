@@ -19,7 +19,7 @@
           <form action="javascript:void(0)">
               <div class="form-input-wrapper">
                 <label for="dropdown-product"> Product:</label>
-                <% if (operation === 'view' ) {%>
+                <% if (operation === 'view' || operation === 'edit' ) {%>
                   <select class="form-input" name="dropdown-product" id="dropdown-product" placeholder="select product name" disabled>
                 <% } else { %>
                   <select class="form-input" name="dropdown-product" id="dropdown-product" placeholder="select product name" required>
@@ -92,6 +92,7 @@
               <input type="text" id="list-name" value="<%= list_name %>" hidden>
               <input type="text" id="listitem-id" value="<%= listitem_id %>" hidden>
               <input type="text" id="table-name" value="listitem" hidden>
+              <input type="text" id="product-id" value="<%= product_id %>" hidden>
 
               <% if (operation === 'add') { %>
                 <input type="submit" id="<%= operation %>-listitem" class="submit" value="Save">
@@ -111,10 +112,6 @@
           <%}%>
         </div>
       </div>
-      <footer>
-        <!-- Interface list of url buttons -->
-        <%- include('../partials/footer.ejs') %>
-      </footer>
     </div>
     <!-- Common javascript includes -->
     <%- include('../partials/common-js.ejs') %>

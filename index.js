@@ -209,6 +209,10 @@ express()
       const id = req.query.id;
 			const name = req.query.name;
       const orderBy = (req.query.orderBy) ? req.query.orderBy : 'name';
+      const showPurchased = (req.query.showPurchased) ? req.query.showPurchased : 'true';
+      const showHidden = (req.query.showHidden) ? req.query.showHidden : 'true';
+      const boolShowPurchased = (showPurchased === 'true') ? true : false;
+      const boolShowHidden = (showHidden === 'true') ? true : false;
 
       const groceryList = await client.query(
         `SELECT * FROM grocery_list INNER JOIN color USING (colorid) WHERE id = ${id}`
@@ -262,8 +266,11 @@ express()
                 INNER JOIN
                color USING (colorid)) AS color USING (listid)
             LEFT JOIN Urgency USING (UrgencyId)
-          WHERE (listid = ${sourceListId} ${storeCondition} ${categoryCondition})
-            OR (listid = ${id})
+          WHERE ((listid = ${sourceListId} ${storeCondition} ${categoryCondition})
+            OR (listid = ${id}))
+            AND ((((purchased = false) OR (${boolShowPurchased} = true)) 
+            AND ((hidden = false) OR (${boolShowHidden} = true)))
+            OR ((purchased = true) AND (hidden = true) AND (${boolShowHidden} = true)))
           ORDER BY ` + orderBy
       );
       //console.log(items);
@@ -283,6 +290,8 @@ express()
 
       const locals = {
         'orderBy': ordering,
+        'show_purchased': showPurchased,
+        'show_hidden': showHidden,
         'preference': false,
         'table': 'listitem',
         'title': name,
@@ -583,34 +592,55 @@ express()
       const client = await pool.connect();
       const listId = req.query.listid;
       const listName = req.query.listname;
-
+    
       const products = await client.query(
         `SELECT ProductId AS id, Name FROM product ORDER BY name ASC`
+      );     
+      const product_id = req.query.productid ? req.query.productid : products.rows[0].id;
+      const productID = parseInt(product_id);
+
+      const productcategory = await client.query(
+        `SELECT CategoryId AS id, Name FROM productcategory INNER JOIN category USING (categoryid) WHERE ProductId = ${productID} ORDER BY name ASC`
       );
-      const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM category ORDER BY name ASC`
+      let categories;
+      if (productcategory.rowCount) {
+        categories = productcategory;
+      } else {
+        categories = await client.query(
+          `SELECT CategoryId AS id, Name FROM category WHERE CategoryId = 0 ORDER BY id ASC`
+        );
+      }
+      const productbrand = await client.query(
+        `SELECT BrandId AS id, Name FROM productbrand INNER JOIN brand USING (brandid) WHERE ProductId = ${productID} ORDER BY name ASC`
       );
-      const brands = await client.query(
-        `SELECT BrandId AS id, Name FROM Brand ORDER BY name ASC`
-      );
+      let brands;
+      if (productbrand.rowCount) {
+        brands = productbrand;
+      } else {
+        brands = await client.query(
+          `SELECT BrandId AS id, Name FROM Brand WHERE BrandId = 0 ORDER BY id ASC`
+        );
+      }
       const urgencies = await client.query(
         `SELECT UrgencyId AS id, Name FROM Urgency ORDER BY id DESC`
       );
 
       const locals = {
         'operation': 'add',
-        'title': 'Add List Item',
+        'title': listName,
         'list_id' : listId,
         'list_name' : listName,
         'listitem_id': 0,
-        'product_id': 0, 
+        'product_id': productID, 
         'products': (products) ? products.rows : null,
-        'category_id': 0, 
+        'category_id': (categories.rowCount) ? categories.rows[0].categoryid : 0, 
         'categories': (categories) ? categories.rows : null,
-        'brand_id': 0, 
+        'brand_id':  (brands.rowCount) ? brands.rows[0].brandid : 0,  
         'brands': (brands) ? brands.rows : null,
         'urgency_id': 0,
         'urgencies': (urgencies) ? urgencies.rows : null,
+        'purchased': false,
+        'hidden': false,
         'itemcount': 1
       };
 
@@ -632,15 +662,33 @@ express()
       const listItem = await client.query(
         `SELECT * FROM listitem WHERE ListItemId = ` + listItemId
       );
+      const productID = listItem.rows[0].productid;
+
       const products = await client.query(
-        `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
+        `SELECT ProductId AS id, Name FROM product WHERE ProductId = ${productID}`
       );
-      const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM category ORDER BY id ASC`
+      const productcategory = await client.query(
+        `SELECT CategoryId  As id, Name FROM productcategory INNER JOIN category USING (categoryid) WHERE ProductId = ${productID} ORDER BY name ASC`
       );
-      const brands = await client.query(
-        `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
+      let categories;
+      if (productcategory.rowCount) {
+        categories = productcategory;
+      } else {
+        categories = await client.query(
+          `SELECT CategoryId AS id, Name FROM category WHERE CategoryId = 0 ORDER BY id ASC`
+        );
+      }
+      const productbrand = await client.query(
+        `SELECT BrandId AS id,  Name FROM productbrand INNER JOIN brand USING (brandid) WHERE ProductId = ${productID} ORDER BY name ASC`
       );
+      let brands;
+      if (productbrand.rowCount) {
+        brands = productbrand;
+      } else {
+        brands = await client.query(
+          `SELECT BrandId AS id, Name FROM Brand WHERE BrandId = 0 ORDER BY id ASC`
+        );
+      }
       const urgencies = await client.query(
         `SELECT UrgencyId AS id, Name FROM Urgency ORDER BY id DESC`
       );
@@ -659,6 +707,8 @@ express()
         'brands': (brands) ? brands.rows : null,
         'urgency_id': (listItem) ? listItem.rows[0].urgencyid :null,
         'urgencies': (urgencies) ? urgencies.rows : null,
+        'purchased':(listItem) ? listItem.rows[0].purchased: null,
+        'hidden':(listItem) ? listItem.rows[0].hidden: null,
         'itemcount':(listItem) ? listItem.rows[0].itemcount: null
       };
       res.render('pages/interface-7', locals);
@@ -679,15 +729,33 @@ express()
       const listItem = await client.query(
         `SELECT * FROM listitem WHERE ListItemId = ` + listItemId
       );
+      const productID = listItem.rows[0].productid;
+
       const products = await client.query(
-        `SELECT ProductId AS id, Name FROM product ORDER BY id ASC`
+        `SELECT ProductId AS id, Name FROM product WHERE ProductId = ${productID}`
       );
-      const categories = await client.query(
-        `SELECT CategoryId AS id, Name FROM category ORDER BY id ASC`
+      const productcategory = await client.query(
+        `SELECT CategoryId  As id, Name FROM productcategory INNER JOIN category USING (categoryid) WHERE ProductId = ${productID} ORDER BY name ASC`
       );
-      const brands = await client.query(
-        `SELECT BrandId AS id, Name FROM Brand ORDER BY id ASC`
+      let categories;
+      if (productcategory.rowCount) {
+        categories = productcategory;
+      } else {
+        categories = await client.query(
+          `SELECT CategoryId AS id, Name FROM category WHERE CategoryId = 0 ORDER BY id ASC`
+        );
+      }
+      const productbrand = await client.query(
+        `SELECT BrandId AS id,  Name FROM productbrand INNER JOIN brand USING (brandid) WHERE ProductId = ${productID} ORDER BY name ASC`
       );
+      let brands;
+      if (productbrand.rowCount) {
+        brands = productbrand;
+      } else {
+        brands = await client.query(
+          `SELECT BrandId AS id, Name FROM Brand WHERE BrandId = 0 ORDER BY id ASC`
+        );
+      }
       const urgencies = await client.query(
         `SELECT UrgencyId AS id, Name FROM Urgency ORDER BY id DESC`
       );
@@ -706,6 +774,8 @@ express()
         'brands': (brands) ? brands.rows : null,
         'urgency_id': (listItem) ? listItem.rows[0].urgencyid :null,
         'urgencies': (urgencies) ? urgencies.rows : null,
+        'purchased':(listItem) ? listItem.rows[0].purchased: null,
+        'hidden':(listItem) ? listItem.rows[0].hidden: null,
         'itemcount':(listItem) ? listItem.rows[0].itemcount: null
       };
       res.render('pages/interface-7', locals);
@@ -1049,6 +1119,20 @@ express()
       res.send("Error " + err);
     }
   })
+  .get('/about-us', async (req, res) => {
+    try {
+      const client = await pool.connect();
+
+      const params = { 'title' : 'About Us'};
+      
+      res.render('pages/aboutUs', params);
+      client.release();
+    }
+    catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
   .post('/add', async(req, res) => {
 		try {
       const client = await pool.connect();
@@ -1203,6 +1287,7 @@ express()
       const brandId = req.body.brand_id;
       const urgencyId = req.body.urgency_id;
       const itemCount = req.body.item_count;
+
       
 			const sqlInsert = await client.query(
         `INSERT INTO listitem (listid, productid, categoryid, brandid, urgencyid, itemcount)
@@ -1234,7 +1319,7 @@ express()
       const brandId = req.body.brand_id;
       const urgencyId = req.body.urgency_id;
       const itemCount = req.body.item_count;
-              // TODO: add user id to where clause
+
 			const sqlUpdate = await client.query(
         `UPDATE listitem SET productid = ${productId}, categoryid = ${categoryId}, brandid = ${brandId}, urgencyid = ${urgencyId}, itemcount = ${itemCount}
           WHERE listitemid = ${listItemId};`);
@@ -1261,7 +1346,6 @@ express()
 			const productName = req.body.item_name;
 			const userId = req.body.user_id;
       	
-      // TODO: add user id to where clause
 			const sqlUpdate = await client.query(
         `UPDATE Product SET Name = ${productName}
           WHERE ProductId = ${productId};`);
@@ -1540,6 +1624,58 @@ express()
       
 			const sqlUpdate = await client.query(
         `UPDATE listitem SET urgencyid = ` + urgencyId + ` WHERE listitemid = ` + itemId + `;`
+      );
+
+			const result = {
+				'response': (sqlUpdate) ? (sqlUpdate.rows[0]) : null
+			};
+
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/purchased-checkbox-change', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const itemId = req.body.listitem_id;
+			const purchased = req.body.purchased;
+      
+			const sqlUpdate = await client.query(
+        `UPDATE listitem SET purchased = ` + purchased + ` WHERE listitemid = ` + itemId + `;`
+      );
+
+			const result = {
+				'response': (sqlUpdate) ? (sqlUpdate.rows[0]) : null
+			};
+
+			res.set({
+				'Content-Type': 'application/json'
+			});
+				
+			res.json({ requestBody: result });
+			client.release();
+		}
+		catch (err) {
+			console.error(err);
+			res.send("Error: " + err);
+		}
+	})
+  .post('/hidden-checkbox-change', async(req, res) => {
+		try {
+			const client = await pool.connect();
+			const itemId = req.body.listitem_id;
+			const hidden = req.body.hidden;
+      
+			const sqlUpdate = await client.query(
+        `UPDATE listitem SET hidden = ` + hidden + ` WHERE listitemid = ` + itemId + `;`
       );
 
 			const result = {

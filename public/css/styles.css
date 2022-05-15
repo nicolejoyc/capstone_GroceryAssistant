@@ -38,12 +38,29 @@ body {
   float: left;
 }
 
+#logo {
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
+}
+
+.about-us-wrapper {
+  border: 2px solid rgb(95 78 78);
+  border-radius: 10px;
+  margin: 1%;
+  padding: 0.75%;
+  min-height: 38.9rem;
+  padding-left: 15px;
+  padding-right: 10px;
+}
+
 .footer-wrapper {
   background-color: #86bea0;
   border: 2px solid rgb(95 78 78);
   border-radius: 10px;
   margin: 1%;
   padding: 0.75%;
+  padding-left: 12px;
 }
 
 #footer-h3 {
@@ -59,6 +76,9 @@ body {
 
 #copyright {
   font-style: italic;
+  display: flex;
+  justify-content: center;
+  font-size: 13px;
 }
 
 .form-container,
@@ -67,33 +87,34 @@ body {
   border-radius: 20px;
   margin: 1%;
   height: auto;
+  min-height: 39.8rem;
   overflow: auto;
-  scrollbar-color: gray rgb(216 105 65);
+  scrollbar-color: #177820 white;
 }
 
 .buttons-wrapper {
   border: 2px solid rgb(95 78 78);
   border-radius: 20px;
   margin: 1%;
-  height: 27rem;
+  height: 22.5rem;
   overflow: auto;
-  scrollbar-color: gray rgb(216 105 65);
+  scrollbar-color: #177820 white;
 }
 
 .button-list-wrapper-6 { /* Used in interface 3.ejs */
   border: 2px solid rgb(95 78 78);
   border-radius: 20px;
   margin: 1%;
-  height: 27rem;
+  height: 35.9rem;
   overflow: auto;
-  scrollbar-color: gray rgb(216 105 65);
+  scrollbar-color: #177820 white;
 }
 
 .button-list-wrapper-7 { /* Used in index.ejs and interfaces 1&5 */
   border: 2px solid rgb(95 78 78);
   border-radius: 20px;
   margin: 1%;
-  height: 23rem;
+  height: 32rem;
   overflow: auto;
   scrollbar-color: #177820 white;
 }
@@ -102,7 +123,7 @@ body {
   border: 2px solid rgb(95 78 78);
   border-radius: 20px;
   margin: 1%;
-  height: 19.5rem;
+  height: 28.5rem;
   overflow: auto;
   scrollbar-color: #177820 white;
 }
@@ -172,6 +193,10 @@ body {
   text-align: left;
   padding-left: 30px;
   position: relative;
+}
+
+.url-button {
+  line-height: 45px;
 }
 
 .form-input-wrapper,
@@ -313,6 +338,27 @@ body {
   font-size: 1.7rem;
   margin-top: 1rem;
   text-align: center;
+}
+
+#aboutUsUrl {
+  text-decoration: underline;
+}
+
+#aboutUsh3 {
+  padding-bottom: 5px;
+  text-decoration: underline;
+}
+
+#aboutUsUrl:link {
+  color: black;
+}
+
+#aboutUsUrl:visited {
+  color: black;
+}
+
+#aboutUsUrl:hover {
+  color: white;
 }
 
 /* List Button Styles */
@@ -584,5 +630,12 @@ body {
 
   .listitem-info p {
     font-size: 1.2rem;
+  }
+
+  #logo {
+    padding-bottom: 5px;
+    padding-left: 20px;
+    width: 300px;
+    height: 60px;
   }
 }

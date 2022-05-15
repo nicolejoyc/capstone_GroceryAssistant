@@ -41,11 +41,19 @@
         <% } %>
 
         <div class="checkbox-sorting">
-          <input type="checkbox" class="sort-by-purchased" id="purchased-<%= r.id %>" name="purchased" value="purchased">
+          <input type="checkbox" class="sort-by-purchased" id="purchased-<%= r.id %>" name="purchased" value="<%= r.purchased %>"
+          <% if (r.purchased === true) {%>
+            checked
+          <%}%>
+        >
           <label for="sort-by-purchased">Purchased</label>
 
-          <input type="checkbox" class="sort-by-hidden" id="hidden-<%= r.id %>" name="hidden" value="hidden">
-          <label for="sort-by-hidden">Hidden</label>
+          <input type="checkbox" class="sort-by-hidden" id="hidden-<%= r.id %>" name="hidden" value="<%= r.hidden %>"
+          <% if (r.hidden == true) {%>
+            checked
+          <%}%>
+        >
+          <label for="sort-by-hidden">Hide</label>
 
           <input type="checkbox" class="sort-by-urgency" id="urgency-<%= r.id %>" name="urgency" value="urgency"
             <% if (r.urgency == '1') {%>

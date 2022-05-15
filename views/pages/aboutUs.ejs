@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <!-- Interface HTML head statements -->
+   <%- include('../partials/head-1.ejs') %>
+   <!-- ===== Link Swiper's CSS ===== -->
+   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+
+</head>
+  <body>
+    <div class="interface-wrapper">
+      <header class="header-wrapper">
+          <a href="/"><img id="back-icon" class="control" src="/image/hdpi/ic_back.png"></a>
+          <h1>About Us</h1>
+      </header>
+      <div class="about-us-wrapper">
+        <h3 id="aboutUsh3" style="padding-top:5px;">Who we are:</h3>
+        <p>We are group one from the IT Developer Capstone class.</p>
+        <p>
+          Our team members include Brian Lind, Nicole Crumbaker, 
+            Samantha Kukuk, and Richard Valien.
+        </p><br>
+        <h3 id="aboutUsh3">The Need:</h3>
+        <p>
+          We aim to help organized shoppers who want to track 
+            their shopping habits and who commonly buy the same items from a certain store. 
+            Overall we want to make the process for these shoppers to be quicker and easier.
+            Besides organized shoppers, we want to help 
+            forgetful people who need help remembering certain or 
+            multiple products they might need while they are shopping.
+        </p><br>
+        <h3 id="aboutUsh3">Our Soultion:</h3>
+        <p>
+          Grocery Assistant is a website based list creation and organization system.
+        </p>
+        <p>
+          Just like an online personal assistant, Grocery Assistant focuses on helping you remember everything on your list so you only have to take one trip to the store.
+        </p><br>
+        <p>
+          With Grocery Assistant, you can create, edit, and delete your lists, products, brands, and stores.
+            Grocery Assistant allows you to group your lists by store and then organize items by category, product, and even urgency. 
+            You can also sort/show purchased and hidden items as well.
+          </p><br>
+        <p>
+          Aside from creating lists and adding items to that list, another cool feature is product prefrences.
+            With your preferred product you can add a preferred category, store, and brand.
+        </p><br>
+        <div id="logo">
+          <img src="/image/logo.png">
+        </div>
+      </div>
+    </div>
+    <!-- Common javascript includes -->
+    <%- include('../partials/common-js.ejs') %>
+    <script src="/js/InterfaceComponent.js"></script>
+    <script src="/js/interfaceControl.js"></script>
+    <script src="/js/delete.js"></script>
+  </body>
+</html>

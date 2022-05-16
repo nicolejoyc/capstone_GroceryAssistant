@@ -1,6 +1,13 @@
 $(function() {
     $("#on-view").click(function() {
         $("#out-of-sight").toggleClass("show-toolbar");
+
+        // Update toolbar open / closed state
+        if(sessionStorage.getItem(ToolbarKey) === 'open') {
+          sessionStorage.setItem(ToolbarKey, 'closed');
+        } else {
+          sessionStorage.setItem(ToolbarKey, 'open');
+        }
     });
 
     $('input[type=radio][name="sortBy"]').change(function() {
@@ -25,6 +32,7 @@ $(function() {
                 break;
         }
 
+        sessionStorage.setItem(SortByKey, this.value);
         let purchased = $('#show-purchased').prop('checked');
         let hidden = $('#show-hidden').prop('checked');
         let show = `&showPurchased=${purchased}`;
@@ -52,7 +60,24 @@ $(function() {
         let hidden = $('#show-hidden').prop('checked');
         let show = `&showPurchased=${purchased}`;
         show += `&showHidden=${hidden}`;
+        sessionStorage.setItem(ShowPurchasedKey, purchased);
+        sessionStorage.setItem(ShowHiddenKey,hidden);
 
         window.location.href = ('list?id=' + listId + '&name=' + name + orderBy + show);
     });
+
+    if(sessionStorage.getItem(ToolbarKey) === 'open') {
+        $("#out-of-sight").toggleClass("show-toolbar");
+    }
+
+    // Toolbar defaults
+    if(!(sessionStorage.getItem(SortByKey))) {
+      const sortBy = $('input[type=radio][name="sortBy"]').val();
+      const showPurchased = $('#show-purchased').prop('checked');
+      const showHidden = $('#show-hidden').prop('checked');
+      sessionStorage.setItem(SortByKey, sortBy);
+      sessionStorage.setItem(ShowPurchasedKey, showPurchased);
+      sessionStorage.setItem(ShowHiddenKey, showHidden);
+      sessionStorage.setItem(ToolbarKey, 'closed');
+    }
 });

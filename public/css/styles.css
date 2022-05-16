@@ -534,7 +534,7 @@ body {
 
 .checkbox-sorting {
   font-size: 1.4rem;
-  top: 45px;
+  top: 38px;
   position: absolute;
   right: 10%;
 }
@@ -558,6 +558,10 @@ body {
   #product-label {
     left: -278px;
     top: 35px;
+  }
+
+  .button-wrapper-1 h3 {
+    left: 8%;
   }
 }
 

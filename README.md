@@ -101,4 +101,28 @@
 >
 > Users can edit all other items such as list names, categories, products, stores, or brands.
 >
+>## Version 0.4.0 Release Notes
+> Users can now sort list by product, category, and urgency.
+>
+> Users can can choose to hide or mark as purchased their product items.
+>
+> Users can view product details with a new expandable button feature.
+>
+> New design with an about us, introduces our team to the user.
+>
+> CSS rendering errors should all be resolved.
+> 
+> Inconvient pop-ups removed.
+> 
+> Adding an item using preferred products, categories, and brands.
+>
+> New logo and footer added.
+>
+> Search no longer does "starts with matching exclusively"
+>
+> User can create lists filtered by store and or category even basing it off another list.
+>
+> Retaining a scroll position on grocery list
+>
+> Users will be informed when there are no items in a list.
 >

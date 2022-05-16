@@ -219,6 +219,7 @@ express()
       );
 
       // Preload query parameters
+      let tableUnion = "";
       let storeSubquery = "";
       let categorySubquery = "INNER JOIN Category AS c USING (CategoryId)";
       let storeCondition = "";
@@ -239,6 +240,32 @@ express()
               ProductCategory USING (CategoryId)) AS c USING(ProductId) `;
             categoryCondition += `AND c.CategoryId = ${rowItem.categoryid}`;
           }
+          tableUnion =
+            `UNION SELECT
+              listid,
+              listitemid as id,
+              itemcount AS quantity,
+              Product.name AS name,
+              c.name AS category,
+              c.CategoryId AS Categoryid,
+              Brand.name AS brand,
+              color.RGBValue,
+              UrgencyId AS urgency,
+              purchased,
+              hidden
+            FROM ListItem AS li
+              INNER JOIN Product USING (ProductId)
+              INNER JOIN Category AS c USING (CategoryId)
+              INNER JOIN Brand USING (BrandId)
+              INNER JOIN
+                (SELECT id AS ListId, RGBValue FROM grocery_list
+                  INNER JOIN
+                color USING (colorid)) AS color USING (listid)
+              LEFT JOIN Urgency USING (UrgencyId)
+            WHERE (listid = ${id})
+            AND ((((purchased = false) OR (${boolShowPurchased} = true)) 
+            AND ((hidden = false) OR (${boolShowHidden} = true)))
+            OR ((purchased = true) AND (hidden = true) AND (${boolShowHidden} = true)))`;
         }
       }
 
@@ -266,11 +293,11 @@ express()
                 INNER JOIN
                color USING (colorid)) AS color USING (listid)
             LEFT JOIN Urgency USING (UrgencyId)
-          WHERE ((listid = ${sourceListId} ${storeCondition} ${categoryCondition})
-            OR (listid = ${id}))
+          WHERE (listid = ${sourceListId} ${storeCondition} ${categoryCondition})
             AND ((((purchased = false) OR (${boolShowPurchased} = true)) 
             AND ((hidden = false) OR (${boolShowHidden} = true)))
             OR ((purchased = true) AND (hidden = true) AND (${boolShowHidden} = true)))
+          ${tableUnion}
           ORDER BY ` + orderBy
       );
       //console.log(items);

@@ -592,13 +592,15 @@ express()
       const client = await pool.connect();
       const listId = req.query.listid;
       const listName = req.query.listname;
-    
+      
       const products = await client.query(
         `SELECT ProductId AS id, Name FROM product ORDER BY name ASC`
+       
       );     
-      const product_id = req.query.productid ? req.query.productid : products.rows[0].id;
+      
+      const product_id = req.query.productid ? req.query.productid : (products.rowCount) ? products.rows[0].id : 0;
       const productID = parseInt(product_id);
-
+      console.log("hello");
       const productcategory = await client.query(
         `SELECT CategoryId AS id, Name FROM productcategory INNER JOIN category USING (categoryid) WHERE ProductId = ${productID} ORDER BY name ASC`
       );

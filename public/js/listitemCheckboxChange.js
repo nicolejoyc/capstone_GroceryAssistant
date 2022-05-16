@@ -27,7 +27,7 @@ $(function() {
     console.log(result);
 
     //if (document.querySelector('input[name="sortBy"]:checked').value === "urgency") {
-      location.reload();
+      window.location.assign(window.location.href);
     //}
   });
   $(".sort-by-purchased").click(async function() {
@@ -55,7 +55,7 @@ $(function() {
     console.log(result);
 
     if (purchased) {
-      location.reload();
+      window.location.assign(window.location.href);
     }
   });
   $(".sort-by-hidden").click(async function() {
@@ -85,7 +85,7 @@ $(function() {
     console.log(result);
 
     if (hidden) {
-      location.reload();
+      window.location.assign(window.location.href);
     }
   });
 

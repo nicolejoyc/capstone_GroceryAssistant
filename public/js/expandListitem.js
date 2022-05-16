@@ -14,4 +14,12 @@ $(function() {
 
   });
 
+  const ScrollPosition8 = 'scrollPosition8';
+  $('.button-list-wrapper-8').scroll(function (e) {
+    sessionStorage.setItem(ScrollPosition8, e.target.scrollTop);
+  });
+
+  const y = sessionStorage.getItem(ScrollPosition8) || 0;
+  $('.button-list-wrapper-8').scrollTop(y);
+
 });

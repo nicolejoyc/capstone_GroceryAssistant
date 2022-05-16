@@ -2,6 +2,7 @@ const SortByKey = 'sortBy';
 const ShowPurchasedKey = 'ShowPurchased';
 const ShowHiddenKey = 'ShowHidden';
 const ToolbarKey = 'ToolbarKey';
+const ScrollPosition8 = 'scrollPosition8';
 
 const serverRequest = function(url) {
   var baseURL = (window.location.href.split('?')[0]);

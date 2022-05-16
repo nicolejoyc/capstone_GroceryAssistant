@@ -52,7 +52,7 @@
                     <% } %>
                   </div>
 
-                  <br<p>The preferred store and preferred category filters only affect the items aliased from the "Source Grocery List". Items manually added by the shopper to this list will NOT be affected by the filters and can be made uniquely identifiable by selecting a border color from the "List Border Color" drop-down below. Actions taken on an aliased list item WILL affect the item from the Source Grocery List, so marking an item purchased affects both lists. Deleting this "filtered" list will not delete items in the "Source Grocery List", however all items manually added by the shopper will be removed.</p><br>
+                  <br<p>The preferred store and preferred category filters only affect the items included from the "Source Grocery List". Items added to this list by the shopper are NOT affected by these filters and can be made uniquely identifiable by selecting a color from the "List Border Color" drop-down. Any action taken on an item included from the source list WILL affect the source list, so the action of marking an item purchased or deleting an item will be seen in this list and the source list. Items added to this list by the shopper are unique to this list, actions on those items only affect this list. Deleting this list removes this list and only those items added by the shopper.</p><br>
 
                   <label for="dropdown-color"> List Border Color:</label>
                   <% if (operation === 'view' || filtered !== true) {%>

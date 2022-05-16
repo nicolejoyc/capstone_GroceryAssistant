@@ -600,7 +600,6 @@ express()
       
       const product_id = req.query.productid ? req.query.productid : (products.rowCount) ? products.rows[0].id : 0;
       const productID = parseInt(product_id);
-      console.log("hello");
       const productcategory = await client.query(
         `SELECT CategoryId AS id, Name FROM productcategory INNER JOIN category USING (categoryid) WHERE ProductId = ${productID} ORDER BY name ASC`
       );
